@@ -17,7 +17,7 @@ joueur de la moitié inférieure, et ainsi de suite. Si nous avons huit
 joueurs triés par rang, alors le joueur 1 est jumelé avec le joueur 5, 
 -le joueur 2 est jumelé avec le joueur 6, etc.
  """
-objects_players_by_ranking = sorted(tournoi1.tournament_players, key=lambda x: x.rank, reverse = True)
+objects_players_by_ranking = sorted(tournoi1.tournament_players, key=lambda x: x.rank, reverse=True)
 
 middle_index = len(objects_players_by_ranking) // 2
 

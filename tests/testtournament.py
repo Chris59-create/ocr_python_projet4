@@ -16,19 +16,19 @@ test_instance = [Player("lastname1", "firstname1", 11111900, "H", 10), Player("l
 for element in test_instance:
     tournoi1.add_player(element)
 
-round = Round("test round")
+"""round = Round("test round")
 tournoi1.add_round(round)
 
 round = Round("test2 round")
 tournoi1.add_round(round)
-round.end_round()
+round.end_round()"""
    
 print("Lieu : ", tournoi1.place)
-print("Liste objets joueurs: ", tournoi1.tournament_players)
+"""print("Liste objets joueurs: ", tournoi1.tournament_players)
 print("Nom de famille joueur2 : ", tournoi1.tournament_players[1].first_name)
 print("Liste objets tours : ", tournoi1.rounds)
 print("Nom tour1 : ", tournoi1.rounds[0].round_name)
 print("Début du tour : ", tournoi1.rounds[0].start_date_time)
 print("Tour : ", tournoi1.rounds[1].round_name)
 print("Début : ", tournoi1.rounds[0].start_date_time)
-print("Fin : ", tournoi1.rounds[1].end_date_time)
+print("Fin : ", tournoi1.rounds[1].end_date_time)"""
