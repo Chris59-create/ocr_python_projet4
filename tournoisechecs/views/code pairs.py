@@ -1,22 +1,8 @@
-# Create un new tournament
-# Add 8 players
-    # App generates pairs of players for the first round
-    # App generate round and matches
-# Enter the results of the first round
-# Repeat for the next '"rounds the following steps : pairs / results
-from tests.testtournament import test_instance, tournoi1
-from tournoisechecs.models.tournament import Tournament
-from tournoisechecs.models.player import Player
 
-""" appaire les joueurs pour le round1 avec les règles du tournoi suisse.
-Au début du premier tour, triez tous les joueurs en fonction de leur 
-classement.
-Divisez les joueurs en deux moitiés, une supérieure et une inférieure.
-Le meilleur joueur de la moitié supérieure est jumelé avec le meilleur
-joueur de la moitié inférieure, et ainsi de suite. Si nous avons huit 
-joueurs triés par rang, alors le joueur 1 est jumelé avec le joueur 5, 
--le joueur 2 est jumelé avec le joueur 6, etc.
- """
+
+
+
+
 objects_players_by_ranking = sorted(tournoi1.tournament_players, key=lambda x: x.rank, reverse=True)
 
 middle_index = len(objects_players_by_ranking) // 2

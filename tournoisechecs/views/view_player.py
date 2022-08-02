@@ -29,8 +29,9 @@ class ViewPlayer:
         mode = pypi.inputMenu(["Saisie des joueurs", "Génération automatique des joueurs en mode test"],
                               numbered=True)
         if mode == "Saisie des joueurs":
-            view = self.manual_input_player()
+            player_data = self.manual_input_player()
         if mode == "Génération automatique des joueurs en mode test":
-            view = self.random_input_player()
+            player_data = self.random_input_player()
 
-        return view
+        return player_data
+
