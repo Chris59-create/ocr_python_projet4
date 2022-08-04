@@ -27,6 +27,6 @@ class ViewRound:
             score_joueur1 = 0.5
             score_joueur2 = 0.5
 
-        print(f"{joueur1.last_name} : {score_joueur1}, {joueur2.last_name} : {score_joueur2}")
+        print(f"score du match :\n{joueur1.last_name} : {score_joueur1}, {joueur2.last_name} : {score_joueur2}")
 
         return score_joueur1, score_joueur2

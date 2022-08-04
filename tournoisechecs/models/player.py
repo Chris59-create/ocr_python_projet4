@@ -8,6 +8,10 @@ class Player:
         self.date_birth = date_birth
         self.gender = gender
         self.rank = rank
+        self.current_tournament_score = 0
 
     def change_rank(self, new_rank):
         self.rank = new_rank
+
+    def update_current_tournament_score(self, round_score):
+        self.current_tournament_score += round_score

@@ -12,7 +12,7 @@ class ViewPlayer:
         gender = pypi.inputMenu(["Femme", "Homme", "Autre"], numbered=True)
         rank = pypi.inputInt("Classement : ", default=0, min=0)
 
-        return first_name, last_name, date_birth, gender, rank
+        return last_name, first_name, date_birth, gender, rank
 
     def random_input_player(self):
         first_name = "Firstname" + str(random.randint(0, 100))
@@ -22,7 +22,7 @@ class ViewPlayer:
         gender = random.choice(["Femme", "Homme", "Autre"])
         rank = random.randint(0, 1000)
 
-        return first_name, last_name, date_birth, gender, rank
+        return last_name, first_name, date_birth, gender, rank
 
     def input_player_data(self):
 

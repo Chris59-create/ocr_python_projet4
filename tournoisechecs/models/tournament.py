@@ -9,24 +9,16 @@ class Tournament:
         self.dates_tournament = dates_tournament
         self.time_control = time_control
         self.tournament_description = tournament_description
-        self.rounds = []
+        self.tournament_rounds = []
         self.tournament_players = []
+        self.tournament_scores = []
 
 
     def add_player(self, player):
         self.tournament_players.append(player)
 
     def add_round(self, round_):
-        self.rounds.append(round_)
+        self.tournament_rounds.append(round_)
 
-class TournamentScore(Tournament):
-
-    def __init__(self, player, round_score):
-        self.player = player
-        self.round_score = round_score
-        self.total_score = 0
-        self.tournament_total_scores = []
-
-
-    def totalize_score(self):
-        self.total_score += self.round_score
+    def update_tournament_scores(self, tournament_score):
+        self.tournament_scores.append(tournament_score)

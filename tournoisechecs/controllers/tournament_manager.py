@@ -1,6 +1,5 @@
 from models.player import Player
 from models.tournament import Tournament
-from models.tournament import TournamentScore
 from models.round import Round
 from models.match import Match
 from controllers.swisspairs_manager import SwissPairs
@@ -55,7 +54,8 @@ class TournamentManager:
     # Calcule les paires de joueurs pour le round
     def calculate_pairs(self):
         pairs = SwissPairs()
-        pairs_players = pairs.run_creation_pairs_players(self.tournament.tournament_players)
+        pairs_players = pairs.run_creation_pairs_players(self.tournament.tournament_players,
+                                                         self.tournament.tournament_rounds, self.number_rounds)
         return pairs_players
 
     def prepare_round(self):
@@ -66,7 +66,7 @@ class TournamentManager:
         view_round = ViewRound()
         view_round.display_pairs_round(self.pairs_players)
 
-        #self.number_rounds += 1 à supprimer après vérification
+        self.number_rounds += 1
         
         return self.round_name, self.pairs_players
         
@@ -77,14 +77,16 @@ class TournamentManager:
     def update_score(self):
         view_round = ViewRound()
         for pair_players in self.round_.pairs_players:
-            score_joueur1, score_joueur2 = view_round.input_score(pair_players[0], pair_players[1])
-            match = Match(pair_players[0], score_joueur1, pair_players[1], score_joueur2)
+            joueur1 = pair_players[0]
+            joueur2 = pair_players[1]
+            score_joueur1, score_joueur2 = view_round.input_score(joueur1, joueur2 )
+            match = Match(joueur1, score_joueur1, joueur2, score_joueur2)
 
-            tournament_score1 = TournamentScore(pair_players[0], score_joueur1)
-            tournament_score1.totalize_score()
-            tournament_score2 = TournamentScore(pair_players[1], score_joueur2)
-            tournament_score2.totalize_score()
+            joueur1.update_current_tournament_score(score_joueur1)
+            joueur2.update_current_tournament_score(score_joueur2)
 
+            print(f"\ntotal score {joueur1.last_name} : {joueur1.current_tournament_score}\n"
+                  f"total score {joueur2.last_name} : {joueur2.current_tournament_score}\n")
 
             self.round_.add_match(match.match_tuple)
         print(self.round_.matches)
@@ -112,7 +114,7 @@ class TournamentManager:
                                      "Ce sont des informations statiques")
         self.display_tournament_data()
         self.test_add_players()
-        i=0
+        i = 0
         while i < NUMBER_ROUNDS:
             self.prepare_round()
             self.start_round()
