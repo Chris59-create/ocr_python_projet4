@@ -7,8 +7,6 @@ from views.view_player import ViewPlayer
 from views.view_tournament import ViewTournament
 from views.view_round import ViewRound
 
-#from models.round import Round
-
 NUMBER_TOURNAMENT_PLAYERS = 8
 NUMBER_ROUNDS = 4
 
@@ -17,6 +15,7 @@ class TournamentManager:
     """Tournament controller"""
 
     number_rounds = 1
+
 
     # Crée le tournoi
     def input_tournament_data(self):
@@ -77,19 +76,38 @@ class TournamentManager:
     def update_score(self):
         view_round = ViewRound()
         for pair_players in self.round_.pairs_players:
-            joueur1 = pair_players[0]
-            joueur2 = pair_players[1]
-            score_joueur1, score_joueur2 = view_round.input_score(joueur1, joueur2 )
-            match = Match(joueur1, score_joueur1, joueur2, score_joueur2)
+            player1 = pair_players[0]
+            player2 = pair_players[1]
+            score_player1, score_player2 = view_round.input_score(player1, player2 )
+            match = Match(player1, score_player1, player2, score_player2)
 
-            joueur1.update_current_tournament_score(score_joueur1)
-            joueur2.update_current_tournament_score(score_joueur2)
+            player1.update_current_tournament_score(score_player1)
+            player2.update_current_tournament_score(score_player2)
 
-            print(f"\ntotal score {joueur1.last_name} : {joueur1.current_tournament_score}\n"
-                  f"total score {joueur2.last_name} : {joueur2.current_tournament_score}\n")
+            print(f"\ntotal score {player1.last_name} : {player1.current_tournament_score}\n"
+                  f"total score {player2.last_name} : {player2.current_tournament_score}\n")
 
             self.round_.add_match(match.match_tuple)
         print(self.round_.matches)
+
+    def update_tournament_final_scores(self):
+        remaining_rounds = NUMBER_ROUNDS - len(self.tournament.tournament_rounds)
+        # ! Check if all rounds have been played before updating the tournament final scores
+        if remaining_rounds == 0:
+            for player in self.tournament.tournament_players:
+                final_tournament_score = [player, player.current_tournament_score]
+                self.tournament.tournament_final_scores.append(final_tournament_score)
+                player.current_tournament_score = 0
+        else:
+            view_tournament = ViewTournament()
+            view_tournament.display_tournament_in_progress(remaining_rounds)
+            # back to the menu
+
+    def display_tournament_total_scores(self):
+        remaining_rounds = NUMBER_ROUNDS - len(self.tournament.tournament_rounds)
+        view_tournament = ViewTournament()
+        view_tournament.display_tournament_total_scores(remaining_rounds)
+
 
 
 
@@ -116,15 +134,27 @@ class TournamentManager:
         self.test_add_players()
         i = 0
         while i < NUMBER_ROUNDS:
+            print("\nstart prepare_round\n")
             self.prepare_round()
+            print("\nend prepare_round\n")
+            print("\nstart start_round\n")
             self.start_round()
+            print("\nend start_round\n")
+            print("\nstart end_round\n")
             self.round_.end_round()
+            print("\nend end_round\n")
             print(self.round_.end_date_time)
+            print("\nstart update_score\n")
             self.update_score()
+            print("\nend update_score\n")
             print("test nombre de matchs dans le tour : ", len(self.round_.matches))
+            print("\nstart tournament.add_round\n")
             self.tournament.add_round(self.round_)
+            print("\nend tournament.add_round\n")
             print()
             i += 1
+        print()
+
 
 
         

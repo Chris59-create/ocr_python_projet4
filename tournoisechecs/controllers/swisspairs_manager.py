@@ -17,7 +17,7 @@ class SwissPairs:
             for pairs_players in round_.pairs_players:
                 self.played_pairs.append(pairs_players)
 
-        print("toutes les paires jouées dans le tournoi : ", self.played_pairs)
+        print("toutes les paires jouées dans le tournoi : ", "nombre : ", len(self.played_pairs))
         return self.played_pairs
 
     def search_opponent(self, players_by_score_rank, player):
@@ -25,7 +25,11 @@ class SwissPairs:
         i = 0
 
         while i < len(players_by_score_rank):
+            print(f"beginning  while i search component, len(players_by_score_rank : {len(players_by_score_rank)}")
             checker = 0
+
+            print(players_by_score_rank.index(player))
+
 
             next_player = players_by_score_rank[players_by_score_rank.index(player) + step]
             checker = self.check_opponent(self.played_pairs, player, next_player)
@@ -33,9 +37,12 @@ class SwissPairs:
             if checker == 0:
                 pair = [player, next_player]
                 i = len(players_by_score_rank)
+                print(f"In search_opponent i : {i} if checker == 0: ")
             else:
                 step += 1
                 i += 1
+                print(f"In search_opponent i : {i} if checker != 0: ")
+        print("In search_opponent, step : ", step, "player_index : ", players_by_score_rank.index(player))
 
         return pair
 
@@ -48,14 +55,19 @@ class SwissPairs:
             print("checked : ", pair[0].last_name, "/", pair[1].last_name)"""
 
             result = all(element in pair for element in [player, next_player])
-            """print(result)"""
+
+            # test à supprimer
+            print(f"pair joué : {pair[0].last_name} {pair[1].last_name} ")
 
             if result == True:
                 checker += 1
             else:
                 checker += 0
 
-        """print("checker in check", checker)"""
+        # test à supprimer
+        if checker != 0:
+            print(f"check_opponent {player.last_name}, {next_player.last_name}")
+
 
         return checker
 
@@ -84,7 +96,7 @@ class SwissPairs:
 
         players_by_score_rank = sorted(self.tournament_players, key=lambda x: (x.current_tournament_score, x.rank),
                                        reverse=True)
-        played_pairs = self.list_all_played_pairs()
+        self.list_all_played_pairs()
 
         while players_by_score_rank:
             #print("after while players_by_score_rank", players_by_score_rank)
@@ -97,7 +109,7 @@ class SwissPairs:
 
             players_by_score_rank.remove(player)
             players_by_score_rank.remove(pair[1])
-            #print(players_by_score_rank)
+            print("check boucle calculate pairs next round", len(players_by_score_rank))
 
 
 

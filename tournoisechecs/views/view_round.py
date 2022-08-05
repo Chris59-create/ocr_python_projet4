@@ -13,20 +13,21 @@ class ViewRound:
                   f" classé {element[1].rank}.")
         print()
 
-    def input_score(self, joueur1, joueur2):
-        print(joueur1.first_name, joueur1.last_name, " contre ", joueur2.first_name, joueur2.last_name)
+    def input_score(self, player1, player2):
+        print(f"Joueur 1 : {player1.first_name} {player1.last_name}\nJoueur 2 :"
+              f" {player2.first_name} {player2.last_name}")
         print("Qui a gagné le match ?")
-        match_winner = pypi.inputMenu([f"{joueur1.last_name}", f"{joueur2.last_name}", "Match nul"], numbered=True)
-        if match_winner == joueur1.last_name:
-            score_joueur1 = 1
-            score_joueur2 = 0
-        if match_winner == joueur2.last_name:
-            score_joueur1 = 0
-            score_joueur2 = 1
+        match_winner = pypi.inputMenu(["Joueur 1", "Joueur 2", "Match nul"], numbered=True)
+        if match_winner == "Joueur 1":
+            score_player1 = 1
+            score_player2 = 0
+        if match_winner == "Joueur 2":
+            score_player1 = 0
+            score_player2 = 1
         if match_winner == "Match nul":
-            score_joueur1 = 0.5
-            score_joueur2 = 0.5
+            score_player1 = 0.5
+            score_player2 = 0.5
 
-        print(f"score du match :\n{joueur1.last_name} : {score_joueur1}, {joueur2.last_name} : {score_joueur2}")
+        print(f"score du match :\n{player1.last_name} : {score_player1}, {player2.last_name} : {score_player2}")
 
-        return score_joueur1, score_joueur2
+        return score_player1, score_player2
