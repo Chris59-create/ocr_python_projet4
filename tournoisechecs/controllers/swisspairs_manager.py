@@ -1,3 +1,5 @@
+from itertools import combinations
+
 class SwissPairs:
     """ appaire les joueurs pour le round1 avec les règles du tournoi suisse.
     Au début du premier tour, triez tous les joueurs en fonction de leur 
@@ -30,18 +32,50 @@ class SwissPairs:
 
             print(players_by_score_rank.index(player))
 
+            if players_by_score_rank.index(player) + step < len(players_by_score_rank):
+                next_player = players_by_score_rank[players_by_score_rank.index(player) + step]
+                checker = self.check_opponent(self.played_pairs, player, next_player)
 
-            next_player = players_by_score_rank[players_by_score_rank.index(player) + step]
-            checker = self.check_opponent(self.played_pairs, player, next_player)
-
-            if checker == 0:
-                pair = [player, next_player]
-                i = len(players_by_score_rank)
-                print(f"In search_opponent i : {i} if checker == 0: ")
+                if checker == 0:
+                    pair = [player, next_player]
+                    i = len(players_by_score_rank)
+                    print(f"In search_opponent i : {i} if checker == 0: ")
+                else:
+                    step += 1
+                    i += 1
+                    print(f"In search_opponent i : {i} if checker != 0: ")
             else:
-                step += 1
-                i += 1
-                print(f"In search_opponent i : {i} if checker != 0: ")
+                print("method for pairing the player, because following the main swiss rule he already played against "
+                      "the last player available.Thus we will in this case chek the remaining not played pairs "
+                      "possible for the player and do the same for the next_player")
+
+                not_available_pairs = self.played_pairs + self.pairs_players
+                all_pairs = []
+                for element in self.theoretical_combinations_players:
+                    list_element = list(element)
+                    all_pairs.append(list_element)
+
+
+                print("not_available_pairs : ", len(not_available_pairs))
+                print("not_available_pairs : ", not_available_pairs)
+                available_pairs = [pair for pair in all_pairs if pair not in
+                                   not_available_pairs]
+                print("available pairs : ", len(available_pairs))
+                for_player_available_players = []
+
+                for pair in available_pairs:
+                    pair_list = list(pair)
+                    if player in pair_list:
+                        pair_list.remove(player)
+                        available_player = pair_list[0]
+                        for_player_available_players.append(available_player)
+
+                available_players_by_score_rank = sorted(for_player_available_players, key=lambda x: (
+                    x.current_tournament_score, x.rank))
+                print("nombre de joueurs encore disponible", len(available_players_by_score_rank))
+                pair = [player, available_players_by_score_rank[0]]
+                print(f"\n Choosen available pair : {pair}")
+                stop = input("wait an input to allow check previous process")
         print("In search_opponent, step : ", step, "player_index : ", players_by_score_rank.index(player))
 
         return pair
@@ -92,10 +126,14 @@ class SwissPairs:
 
     def calculate_pairs_players_next_round(self):
 
-        pairs_players = []
+        self.pairs_players = []
 
         players_by_score_rank = sorted(self.tournament_players, key=lambda x: (x.current_tournament_score, x.rank),
                                        reverse=True)
+        self.theoretical_combinations_players = [i for i in combinations(self.tournament_players, 2)]
+        print("theoretical combinations : ", self.theoretical_combinations_players)
+        print(len(self.theoretical_combinations_players))
+
         self.list_all_played_pairs()
 
         while players_by_score_rank:
@@ -103,7 +141,7 @@ class SwissPairs:
             player = players_by_score_rank[0]
 
             pair = self.search_opponent(players_by_score_rank, player)
-            pairs_players.append(pair)
+            self.pairs_players.append(pair)
             """for pair in pairs_players:
                 print(pair[0].last_name, "/", pair[1].last_name)"""
 
@@ -115,7 +153,7 @@ class SwissPairs:
 
 
 
-        return pairs_players
+        return self.pairs_players
 
 
 
