@@ -1,5 +1,5 @@
 
-NUMBER_ROUNDS = 4
+NUMBER_ROUNDS = 4 # à supprimer ou à récupérer par le contrôleur
 
 class Tournament:
     def __init__(self, tournament_name, place, dates_tournament, time_control, tournament_description=""):

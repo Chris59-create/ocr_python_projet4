@@ -8,18 +8,20 @@ from views.view_tournament import ViewTournament
 from views.view_round import ViewRound
 
 NUMBER_TOURNAMENT_PLAYERS = 8
-NUMBER_ROUNDS = 4
+NUMBER_ROUNDS = 4 # à récupérer dans le model Tournament ou à supprimer dans ce dernier
 
 
 class TournamentManager:
     """Tournament controller"""
 
     number_rounds = 1
+    def __init__(self):
+        self.view_tournament = ViewTournament()
 
 
     # Crée le tournoi
     def input_tournament_data(self):
-        view_tournament = ViewTournament()
+        #self.view_tournament = ViewTournament()
         tournament_data = view_tournament.input_tournament_data()
         self.tournament = Tournament(tournament_data[0], tournament_data[1], tournament_data[2],
                                 tournament_data[3], tournament_data[4])
@@ -28,8 +30,8 @@ class TournamentManager:
 
     # Affiche les infos du tournoi
     def display_tournament_data(self):
-        view_tournament = ViewTournament()
-        view_tournament.display_tournament_data(self.tournament)
+        #view_tournament = ViewTournament()
+            self.view_tournament.display_tournament_data(self.tournament)
 
     # Ajoute la liste des joueurs au tournoi
     def add_players(self):
@@ -88,7 +90,7 @@ class TournamentManager:
                   f"total score {player2.last_name} : {player2.current_tournament_score}\n")
 
             self.round_.add_match(match.match_tuple)
-        print(self.round_.matches)
+        print("les matches joués dans le round : ", self.round_.matches) #à supprimer
 
     def update_tournament_final_scores(self):
         remaining_rounds = NUMBER_ROUNDS - len(self.tournament.tournament_rounds)
@@ -99,14 +101,18 @@ class TournamentManager:
                 self.tournament.tournament_final_scores.append(final_tournament_score)
                 player.current_tournament_score = 0
         else:
-            view_tournament = ViewTournament()
-            view_tournament.display_tournament_in_progress(remaining_rounds)
+            #view_tournament = ViewTournament()
+            self.view_tournament.display_tournament_in_progress(remaining_rounds)
             # back to the menu
 
     def display_tournament_total_scores(self):
+        print("Number rounds : ", NUMBER_ROUNDS) #à supprimer
+        print("nombre de rounds : ",  len(self.tournament.tournament_rounds)) # à supprimer
+        print("nom du tournoi : ", self.tournament.tournament_name) # à supprimer
+        stop = input("pause to check the process : ") #à supprimer
         remaining_rounds = NUMBER_ROUNDS - len(self.tournament.tournament_rounds)
-        view_tournament = ViewTournament()
-        view_tournament.display_tournament_total_scores(remaining_rounds)
+        #view_tournament = ViewTournament() # à vérifier si nécessaire
+        self.view_tournament.display_tournament_total_scores(remaining_rounds)
 
 
 
@@ -153,7 +159,11 @@ class TournamentManager:
             print("\nend tournament.add_round\n")
             print()
             i += 1
+        self.update_tournament_final_scores()
+        print("start display_tournament_total_score")
+        self.display_tournament_total_scores()
         print()
+
 
 
 

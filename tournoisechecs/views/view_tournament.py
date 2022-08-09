@@ -39,8 +39,8 @@ class ViewTournament:
     def display_tournament_total_scores(self, remaining_rounds):
 
         print(f"Il reste {remaining_rounds} tournée(s) à jouer pour ce tournoi.\n")
-        for element in self.tournament.tournament_scores:
-            print(f"le score total de  {element[0].first_name} {element[0].last_name} est de "
-                  f"{element[1]} ;")
+        print(self.tournament.tournament_final_scores)
+        for element in sorted(self.tournament.tournament_final_scores, key=lambda x: x[1], reverse=True):
+            print(f"Score total de  {element[0].first_name} {element[0].last_name} : {element[1]} ;")
 
 

@@ -54,7 +54,7 @@ class SwissPairs:
                       "against the last player available.Thus we will look in the pairs already established in this "
                       "round, if possible to permute the players between the two pairs.")
                 reverse = 1
-                for pair_player in reversed(self.pairs_players):
+                for pair_player in reversed(self.future_pairs_players):
                     print("tentative reverse : ", reverse)
 
                     print("played_pairs : ", len(self.played_pairs))
@@ -63,7 +63,7 @@ class SwissPairs:
 
                         stop = input("Pause to check the process after played_pairs True") #à supprimer
 
-                        print("reversed list : ", reversed(self.pairs_players)) #à supprimer
+                        print("reversed list : ", reversed(self.future_pairs_players)) #à supprimer
                         print("pair_player dans 1er for", pair_player) #à supprimer
 
 
@@ -153,7 +153,7 @@ class SwissPairs:
 
     def calculate_pairs_players_next_round(self):
 
-        self.pairs_players = []
+        self.future_pairs_players = []
 
         players_by_score_rank = sorted(self.tournament_players, key=lambda x: (x.current_tournament_score, x.rank),
                                        reverse=True)
@@ -165,9 +165,11 @@ class SwissPairs:
             player = players_by_score_rank[0]
 
             pair = self.search_opponent(players_by_score_rank, player)
-            self.pairs_players.append(pair)
+            self.future_pairs_players.append(pair)
 
             print(pair[0].last_name, "/", pair[1].last_name) #à supprimer
+            print(players_by_score_rank[0].last_name, players_by_score_rank[1].last_name)
+            print("nombre de joueurs dans players_by_score_rank : ", len(players_by_score_rank))
             stop = input("pause to check the process") #à supprimer
 
 
@@ -176,7 +178,7 @@ class SwissPairs:
             players_by_score_rank.remove(pair[1])
             print("check boucle calculate pairs next round", len(players_by_score_rank))
 
-        return self.pairs_players
+        return self.future_pairs_players
 
     def choice_pairs_players_mode(self , number_rounds):
 
