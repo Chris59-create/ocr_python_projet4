@@ -1,5 +1,5 @@
 #from controllers.tournament_manager import TournamentManager
-from views.menu_main import MenuMain
+from views.view_menus import MenuMain
 
 
 

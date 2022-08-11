@@ -15,9 +15,9 @@ class TournamentManager:
     """Tournament controller"""
 
     number_rounds = 1
+
     def __init__(self):
         self.view_tournament = ViewTournament()
-
 
     # Crée le tournoi
     def input_tournament_data(self):
