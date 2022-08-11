@@ -2,12 +2,16 @@
 NUMBER_ROUNDS = 4 # à supprimer ou à récupérer par le contrôleur
 
 class Tournament:
+
+    tournaments_instances = []
+
     def __init__(self, tournament_name, place, dates_tournament, time_control, tournament_description=""):
         self.tournament_name = tournament_name
         self.place = place
         self.dates_tournament = dates_tournament
         self.time_control = time_control
         self.tournament_description = tournament_description
+        self.__class__.tournaments_instances.append(self)
         self.tournament_rounds = []
         self.tournament_players = []
         self.tournament_final_scores = []

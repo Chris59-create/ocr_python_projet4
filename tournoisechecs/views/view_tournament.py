@@ -1,22 +1,25 @@
-import pyinputplus as pypi
+import pyinputplus as pyip
 from datetime import datetime
 
 
 class ViewTournament:
 
+    def test_tournament_data(self):
+        return "tournoi test", "Solbach", ["10/08/2022"], "Bullet", "blablabla"
+
     def input_tournament_data(self):
         dates_tournament = []
-        tournament_name = pypi.inputStr("Nom du tournoi : ")
-        place = pypi.inputStr("Lieu du tournoi : ")
+        tournament_name = pyip.inputStr("Nom du tournoi : ")
+        place = pyip.inputStr("Lieu du tournoi : ")
 
         input_date = True
         while input_date == True:
-            date_tournament = pypi.inputDate("Date (jjmmaaaa) : ", formats=['%d%m%Y'])
+            date_tournament = pyip.inputDate("Date (jjmmaaaa) : ", formats=['%d%m%Y'])
             dates_tournament.append(datetime.strftime(date_tournament, '%d/%m/%Y'))
-            input_date = pypi.inputBool("Voulez-vous ajouter une date au tournoi Oui = t Non = f: ", "True", "False")
+            input_date = pyip.inputBool("Voulez-vous ajouter une date au tournoi Oui = t Non = f: ", "True", "False")
 
-        time_control = pypi.inputMenu(["Bullet", "Blitz", "Coup rapide"], numbered=True)
-        tournament_description = pypi.inputStr("Description du tournoi : ", blank=True)
+        time_control = pyip.inputMenu(["Bullet", "Blitz", "Coup rapide"], numbered=True)
+        tournament_description = pyip.inputStr("Description du tournoi : ", blank=True)
 
         return tournament_name, place, dates_tournament, time_control, tournament_description
 
