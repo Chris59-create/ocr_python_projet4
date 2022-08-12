@@ -1,4 +1,5 @@
 import pyinputplus as pyip
+import sys
 from controllers.tournament_manager import TournamentManager, NUMBER_ROUNDS
 
 manage_tournament = None
@@ -25,7 +26,8 @@ class MenuMain:
         MenuReports()
 
     def choices(self):
-        main_choice = pyip.inputMenu(["Gérer un tournoi", "Gérer les joueurs", "Editer les rapports"],
+        main_choice = pyip.inputMenu(["Gérer un tournoi", "Gérer les joueurs", "Editer les rapports",
+                                      "Quitter l'application"],
                                      prompt="Saisir le chiffre de l'action désirée :\n", numbered=True)
         if main_choice == "Gérer un tournoi":
             self.manage_tournament()
@@ -33,6 +35,9 @@ class MenuMain:
             self.manage_players()
         if main_choice == "Editer les rapports":
             self.edit_reports()
+        if main_choice == "Quitter l'application":
+            sys.exit("Application fermée par l'utilisateur")
+
 
 i = 0
 
@@ -62,7 +67,7 @@ class MenuTournament:
                 self.choices()
             elif main_choice == "Enregistrer les joueurs du tournoi":
                 print("test enregistrer les joueurs du tournoi")
-                self.tournament_manager.test_add_players(self.tournament) # à changer avant prod
+                self.tournament_manager.test_tournament_add_players(self.tournament) # à changer avant prod
                 i += 1
                 self.choices()
             elif main_choice == "Afficher les matchs à jouer":
@@ -94,3 +99,10 @@ class MenuTournament:
 
         init_menu = MenuMain()
         init_menu.choices()
+
+class MenuPlayer:
+    print("Vous êtes dans le menu Player")
+
+
+class MenuReports:
+    print("Vous êtes dans le menu Rapports")

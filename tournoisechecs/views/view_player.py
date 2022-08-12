@@ -1,16 +1,17 @@
-import pyinputplus as pypi
-import random
+import pyinputplus as pyip
 from datetime import datetime
+import random
+
 
 
 class ViewPlayer:
 
     def manual_input_player(self):
-        first_name = pypi.inputStr("Nom de Famille : ")
-        last_name = pypi.inputStr("Prénom : ")
-        date_birth = pypi.inputDate("Date de naissance (jjmmaaaa) : ", formats=['%d%m%Y'])
-        gender = pypi.inputMenu(["Femme", "Homme", "Autre"], numbered=True)
-        rank = pypi.inputInt("Classement : ", default=0, min=0)
+        first_name = pyip.inputStr("Nom de Famille : ")
+        last_name = pyip.inputStr("Prénom : ")
+        date_birth = pyip.inputDate("Date de naissance (jjmmaaaa) : ", formats=['%d%m%Y'])
+        gender = pyip.inputMenu(["Femme", "Homme", "Autre"], numbered=True)
+        rank = pyip.inputInt("Classement : ", default=0, min=0)
 
         return last_name, first_name, date_birth, gender, rank
 
@@ -26,7 +27,7 @@ class ViewPlayer:
 
     def input_player_data(self):
 
-        mode = pypi.inputMenu(["Saisie des joueurs", "Génération automatique des joueurs en mode test"],
+        mode = pyip.inputMenu(["Saisie des joueurs", "Génération automatique des joueurs en mode test"],
                               numbered=True)
         if mode == "Saisie des joueurs":
             player_data = self.manual_input_player()
@@ -34,4 +35,11 @@ class ViewPlayer:
             player_data = self.random_input_player()
 
         return player_data
+    
+    def input_player_new_rank(self):
+        player_id = pyip.inputStr(prompt="\nSaisir le nom de famille du joueur : \n")
+        new_rank = pyip.inputInt(prompt="\nSaisir le nouveau classement du joueur : \n")
+
+        return player_id, new_rank
+
 

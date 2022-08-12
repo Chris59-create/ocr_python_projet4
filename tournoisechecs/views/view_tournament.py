@@ -35,7 +35,7 @@ class ViewTournament:
               f"Description : {self.tournament.tournament_description}")
         print()
 
-    def display_tournament_in_progress(self, remaining_rounds):
+    def display_tournament_in_progress(self, remaining_rounds): # Vérifier si pas inutile
         print("\nCette action n'est pas possible tant que le tournoi n'est pas terminé !\n")
         print(f"Il reste {remaining_rounds} tournée(s) à jouer pour ce tournoi.")
 
@@ -44,6 +44,7 @@ class ViewTournament:
         print(f"Il reste {remaining_rounds} tournée(s) à jouer pour ce tournoi.\n")
         print(self.tournament.tournament_final_scores)
         for element in sorted(self.tournament.tournament_final_scores, key=lambda x: x[1], reverse=True):
-            print(f"Score total de  {element[0].first_name} {element[0].last_name} : {element[1]} ;")
+            print(f"Score total de  {element[0].first_name} {element[0].last_name} (ID {element[0].player_id}) :"
+                  f" {element[1]} ;")
 
 

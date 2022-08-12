@@ -35,7 +35,7 @@ class TournamentManager:
             self.view_tournament.display_tournament_data(tournament)
 
     # Ajoute la liste des joueurs au tournoi
-    def add_players(self, tournament):
+    def tournament_add_players(self, tournament):
         view_player = ViewPlayer()
         while len(tournament.tournament_players) < NUMBER_TOURNAMENT_PLAYERS:
             player_data = view_player.input_player_data()
@@ -44,13 +44,13 @@ class TournamentManager:
 
         return tournament.tournament_players
 
-    def test_add_players(self, tournament):
+    def test_tournament_add_players(self, tournament):
         view_player = ViewPlayer()
         while len(tournament.tournament_players) < NUMBER_TOURNAMENT_PLAYERS:
             player_data = view_player.random_input_player()
             player = Player(player_data[0], player_data[1], player_data[2], player_data[3], player_data[4])
             tournament.tournament_players.append(player)
-        print("test : joueurs ajoutés au tournoi")
+        print("\nJoueurs ajoutés au tournoi\n")
 
         return tournament.tournament_players
 
@@ -75,7 +75,7 @@ class TournamentManager:
         
     def start_round(self, round_name, pairs_players ):
         round_ = Round(round_name, pairs_players)
-        print(round_.start_date_time)
+        print(f"Date et heure du début de {round_name} : {round_.start_date_time}")
 
         return round_
 
@@ -89,9 +89,6 @@ class TournamentManager:
 
             player1.update_current_tournament_score(score_player1)
             player2.update_current_tournament_score(score_player2)
-
-            print(f"\ntotal score {player1.last_name} : {player1.current_tournament_score}\n"
-                  f"total score {player2.last_name} : {player2.current_tournament_score}\n")
 
             round_.add_match(match.match_tuple)
         print("les matches joués dans le round : ", round_.matches) #à supprimer
@@ -112,64 +109,8 @@ class TournamentManager:
             # back to the menu
 
     def display_tournament_total_scores(self, tournament):
-        print("Number rounds : ", NUMBER_ROUNDS) #à supprimer
-        print("nombre de rounds : ",  len(tournament.tournament_rounds)) # à supprimer
-        print("nom du tournoi : ", tournament.tournament_name) # à supprimer
-        stop = input("pause to check the process : ") #à supprimer
         remaining_rounds = NUMBER_ROUNDS - len(tournament.tournament_rounds)
-        #view_tournament = ViewTournament() # à vérifier si nécessaire
         self.view_tournament.display_tournament_total_scores(remaining_rounds)
-
-
-
-
-    # Met à jour les scores des matchs de la tournée
-    # Ajoute les matchs à la tournée
-    # Totalise les scores de chaque joueur du tournoi
-# Calcule les paires de joueurs pour tournée suivante restante
-    # idem chaque tournée
-
-# Affiche les scores du tournoi
-
-    def run_tournament_manager(self):
-        self.input_tournament_data()
-        self.display_tournament_data()
-        self.add_players()
-        self.prepare_round(NUMBER_ROUNDS)
-        self.start_round()
-        self.round_.end_round()
-
-    def run_tournament_test(self):
-        tournament = Tournament("tournoi test", "Villeneuve d'Ascq", ['22/07/2022', '30/07/2022'], "Bullet",
-                                     "Ce sont des informations statiques")
-        self.display_tournament_data()
-        self.test_add_players()
-        i = 0
-        while i < NUMBER_ROUNDS:
-            print("\nstart prepare_round\n")
-            self.prepare_round()
-            print("\nend prepare_round\n")
-            print("\nstart start_round\n")
-            self.start_round()
-            print("\nend start_round\n")
-            print("\nstart end_round\n")
-            self.round_.end_round()
-            print("\nend end_round\n")
-            print(self.round_.end_date_time)
-            print("\nstart update_score\n")
-            self.update_score()
-            print("\nend update_score\n")
-            print("test nombre de matchs dans le tour : ", len(self.round_.matches))
-            print("\nstart tournament.add_round\n")
-            tournament.add_round(self.round_)
-            print("\nend tournament.add_round\n")
-            print()
-            i += 1
-        self.update_tournament_final_scores()
-        print("start display_tournament_total_score")
-        self.display_tournament_total_scores()
-        print()
-
 
 
 

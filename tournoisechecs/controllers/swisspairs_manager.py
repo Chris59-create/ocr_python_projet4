@@ -19,9 +19,8 @@ class SwissPairs:
             for pairs_players in round_.pairs_players:
                 self.played_pairs.append(pairs_players)
 
-        print("toutes les paires jouées dans le tournoi : ", "nombre : ", len(self.played_pairs))
+        # print("toutes les paires jouées dans le tournoi : ", "nombre : ", len(self.played_pairs))
 
-        #stop = input("\npause pour test played_pairs") # à supprimer
 
         return self.played_pairs
 
@@ -30,10 +29,10 @@ class SwissPairs:
         i = 0
 
         while i < len(players_by_score_rank):
-            print(f"beginning  while i search component, len(players_by_score_rank : {len(players_by_score_rank)}")
+            #print(f"beginning  while i search component, len(players_by_score_rank : {len(players_by_score_rank)}")
             checker = 0
 
-            print("index player in players_by_score_rank : ", players_by_score_rank.index(player))
+            #print("index player in players_by_score_rank : ", players_by_score_rank.index(player))
 
             if players_by_score_rank.index(player) + step < len(players_by_score_rank):
                 next_player = players_by_score_rank[players_by_score_rank.index(player) + step]
@@ -42,29 +41,28 @@ class SwissPairs:
                 if checker == 0:
                     pair = [player, next_player]
                     i = len(players_by_score_rank)
-                    print(f"In search_opponent i : {i} if checker == 0: ")
-                    stop = input("pause to check the process checker == 0") #à supprimer
+                    #print(f"In search_opponent i : {i} if checker == 0: ")
+                    #stop = input("pause to check the process checker == 0") #à supprimer
                 else:
                     step += 1
                     i += 1
-                    print(f"In search_opponent i : {i} if checker != 0: ")
-                    stop = input("pause to check the process") #à supprimer
-            else:
-                print("method for pairing the player, because following the main swiss rule he already played "
-                      "against the last player available.Thus we will look in the pairs already established in this "
-                      "round, if possible to permute the players between the two pairs.")
-                reverse = 1
-                for pair_player in reversed(self.future_pairs_players):
-                    print("tentative reverse : ", reverse)
 
-                    print("played_pairs : ", len(self.played_pairs))
+                    #print(f"In search_opponent i : {i} if checker != 0: ")
+                    #stop = input("pause to check the process") #à supprimer
+            else:
+                reverse = 1
+
+                for pair_player in reversed(self.future_pairs_players):
+                    #print("tentative reverse : ", reverse)
+
+                    #print("played_pairs : ", len(self.played_pairs))
 
                     if self.played_pairs:
 
-                        stop = input("Pause to check the process after played_pairs True") #à supprimer
+                        #stop = input("Pause to check the process after played_pairs True") #à supprimer
 
-                        print("reversed list : ", reversed(self.future_pairs_players)) #à supprimer
-                        print("pair_player dans 1er for", pair_player) #à supprimer
+                        #print("reversed list : ", reversed(self.future_pairs_players)) #à supprimer
+                        #print("pair_player dans 1er for", pair_player) #à supprimer
 
 
 
@@ -78,7 +76,7 @@ class SwissPairs:
                         t = 1 # à supprimer
                         for played_pair in self.played_pairs:
 
-                            print("tentative : ", t)
+                            #print("tentative : ", t)
 
 
                             """print("to check : ", "player", player.last_name, "next player : ", 
@@ -89,11 +87,11 @@ class SwissPairs:
                             result_new_pair2 = all(element in played_pair for element in new_pair2)
 
                             if result_new_pair1 is False and result_new_pair2 is False:
-                                print("pair_player dans if avant remove1", pair_player) #à supprimer
+                                #print("pair_player dans if avant remove1", pair_player) #à supprimer
                                 self.played_pairs.remove(played_pair)
                                 pair = new_pair1
-                                print("new_pair ok)") #à supprimer
-                                stop = input("pause to check the process") #à supprimer
+                                #print("new_pair ok)") #à supprimer
+                                #stop = input("pause to check the process") #à supprimer
                             else:
                                 t += 1
 
@@ -118,7 +116,7 @@ class SwissPairs:
             result = all(element in pair for element in [player, next_player])
 
             # test à supprimer
-            print(f"pair joué : {pair[0].last_name} {pair[1].last_name} ")
+            #print(f"pair joué : {pair[0].last_name} {pair[1].last_name} ")
 
             if result == True:
                 checker += 1
@@ -126,8 +124,9 @@ class SwissPairs:
                 checker += 0
 
         # test à supprimer
-        if checker != 0:
-            print(f"check_opponent {player.last_name}, {next_player.last_name}")
+
+        #if checker != 0:
+            #print(f"check_opponent {player.last_name}, {next_player.last_name}")
 
 
         return checker
@@ -147,7 +146,7 @@ class SwissPairs:
             pair = [player_sup, player_inf]
             pairs_players.append(pair)
 
-        print( "dans la fonction : ", pairs_players )
+        #print( "dans la fonction : ", pairs_players )
 
         return pairs_players
 
@@ -167,16 +166,12 @@ class SwissPairs:
             pair = self.search_opponent(players_by_score_rank, player)
             self.future_pairs_players.append(pair)
 
-            print(pair[0].last_name, "/", pair[1].last_name) #à supprimer
-            print(players_by_score_rank[0].last_name, players_by_score_rank[1].last_name)
-            print("nombre de joueurs dans players_by_score_rank : ", len(players_by_score_rank))
-            stop = input("pause to check the process") #à supprimer
-
+        
 
 
             players_by_score_rank.remove(player)
             players_by_score_rank.remove(pair[1])
-            print("check boucle calculate pairs next round", len(players_by_score_rank))
+            #print("check boucle calculate pairs next round", len(players_by_score_rank))
 
         return self.future_pairs_players
 

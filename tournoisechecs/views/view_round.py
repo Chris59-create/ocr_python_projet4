@@ -7,10 +7,9 @@ class ViewRound:
 
         print("\nVont jouer lors de ce tour :\n")
         for element in pairs_players:
-            print(f"{element[0].first_name} {element[0].last_name} classé {element[0].rank} contre"
-                  f" {element[1].first_name}"
-                  f" {element[1].last_name}"
-                  f" classé {element[1].rank}.")
+            print(f"{element[0].first_name} {element[0].last_name} (ID {element[0].player_id}) classé"
+                  f" {element[0].rank} contre {element[1].first_name} {element[1].last_name} (ID"
+                  f" {element[0].player_id}) classé {element[1].rank}.")
         print()
 
     def input_score(self, player1, player2):
@@ -28,6 +27,7 @@ class ViewRound:
             score_player1 = 0.5
             score_player2 = 0.5
 
-        print(f"score du match :\n{player1.last_name} : {score_player1}, {player2.last_name} : {score_player2}")
+        print(f"score du match :\n{player1.last_name} ID {player1.player_id} : {score_player1}, {player2.last_name} "
+              f"ID {player2.player_id} : {score_player2}")
 
         return score_player1, score_player2
