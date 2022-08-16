@@ -5,14 +5,13 @@ from views.view_menus import MenuMain
 
 
 def main():
-    # init_tournament = TournamentManager()
-    #init_tournament.run_tournament_test()
 
+    # install data from db.json
+
+
+    # Launch the main menu
     init_menu = MenuMain()
-    init_menu.choices()
-
-
-
+    init_menu.main_choices()
 
 if __name__ == "__main__":
     main()

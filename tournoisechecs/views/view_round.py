@@ -9,7 +9,7 @@ class ViewRound:
         for element in pairs_players:
             print(f"{element[0].first_name} {element[0].last_name} (ID {element[0].player_id}) classé"
                   f" {element[0].rank} contre {element[1].first_name} {element[1].last_name} (ID"
-                  f" {element[0].player_id}) classé {element[1].rank}.")
+                  f" {element[1].player_id}) classé {element[1].rank}.")
         print()
 
     def input_score(self, player1, player2):

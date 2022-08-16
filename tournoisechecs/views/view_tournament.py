@@ -41,10 +41,19 @@ class ViewTournament:
 
     def display_tournament_total_scores(self, remaining_rounds):
 
-        print(f"Il reste {remaining_rounds} tournée(s) à jouer pour ce tournoi.\n")
-        print(self.tournament.tournament_final_scores)
+        print(f"Il reste {remaining_rounds} tournée(s) à jouer pour ce tournoi.\nLes scores à ce stade du tournoi : "
+              f"\n")
+        tournament_final_scores_sorted = sorted(self.tournament.tournament_final_scores, key=lambda x: x[1],
+                                                reverse=True)
         for element in sorted(self.tournament.tournament_final_scores, key=lambda x: x[1], reverse=True):
-            print(f"Score total de  {element[0].first_name} {element[0].last_name} (ID {element[0].player_id}) :"
-                  f" {element[1]} ;")
+            print(f"{tournament_final_scores_sorted.index(element)+1}. {element[0].first_name} "
+                  f"{element[0].last_name} (ID {element[0].player_id}) - Score : {element[1]} ;")
 
+    def input_tournament_player_new_rank(self):
 
+        new_rank = pyip.inputInt(prompt="\nSaisir le nouveau classement du joueur : \n")
+
+        return new_rank
+
+    def display_all_players_by_rank(self):
+        pass

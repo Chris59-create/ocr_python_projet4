@@ -166,9 +166,6 @@ class SwissPairs:
             pair = self.search_opponent(players_by_score_rank, player)
             self.future_pairs_players.append(pair)
 
-        
-
-
             players_by_score_rank.remove(player)
             players_by_score_rank.remove(pair[1])
             #print("check boucle calculate pairs next round", len(players_by_score_rank))

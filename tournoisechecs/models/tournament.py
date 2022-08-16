@@ -25,3 +25,11 @@ class Tournament:
 
     def update_tournament_final_scores(self, tournament_score):
         self.tournament_final_scores.append(tournament_score)
+
+    def save_tournaments_data(self):
+        # deserialization
+        pass
+
+    def install_tournaments_data(self):
+        # serialization
+        pass
