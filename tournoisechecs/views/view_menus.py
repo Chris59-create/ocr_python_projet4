@@ -39,6 +39,9 @@ class MenuMain:
         if main_choice == "Editer les rapports":
             self.edit_reports()
         if main_choice == "Quitter l'application":
+            player_manager = PlayerManager()
+            player_manager.save_players_data()
+
             sys.exit("Application fermée par l'utilisateur")
 
 
