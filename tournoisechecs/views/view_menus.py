@@ -15,7 +15,7 @@ class MenuMain:
         global manage_tournament
 
         if isinstance(manage_tournament, MenuTournament):
-            manage_tournament.choices()
+            manage_tournament.tournament_choices()
         else:
             manage_tournament = MenuTournament()
             manage_tournament.tournament_choices()
