@@ -10,38 +10,54 @@ players_table = db.table("players")
 class PlayerManager:
 
     view_player = ViewPlayer()
+    players_instances = []
 
     def add_single_player(self):
         player_data = self.view_player.manual_input_player()
         player = Player(player_data[0], player_data[1], player_data[2], player_data[3], player_data[4])
+        self.players_instances.append(player)
+
+    # Ajoute la liste des joueurs au tournoi
+    def tournament_add_players(self, tournament, NUMBER_TOURNAMENT_PLAYERS):
+        while len(tournament.tournament_players) < NUMBER_TOURNAMENT_PLAYERS:
+            player_data = view_player.input_player_data()
+            player = Player(player_data[0], player_data[1], player_data[2], player_data[3], player_data[4])
+            self.players_instances.append(player)
+            tournament.tournament_players.append(player)
+
+    def test_tournament_add_players(self, tournament, NUMBER_TOURNAMENT_PLAYERS):
+        view_player = ViewPlayer()
+        while len(tournament.tournament_players) < NUMBER_TOURNAMENT_PLAYERS:
+            player_data = view_player.random_input_player()
+            player = Player(player_data[0], player_data[1], player_data[2], player_data[3], player_data[4])
+            self.players_instances.append(player)
+            tournament.tournament_players.append(player)
+        print("\nJoueurs ajoutés au tournoi\n")
 
     def display_all_players(self):
-        for player in Player.players_instances:
+        for player in self.players_instances:
             print(player)
 
-    def display_all_players_by_name(self):
-        all_players_by_rank = sorted(Player.players_instances, key=lambda x: (x.first_name, x.last_name))
-        for player in all_players_by_rank:
+    def display_all_players_by_name(self): # à mettre dans la vue
+        all_players_by_name = sorted(Player.players_instances, key=lambda x: (x.first_name, x.last_name))
+        for player in all_players_by_name:
             print(player)
 
     def update_player_rank(self):
-        self.display_all_players()
+        self.display_all_players_by_name()
         player_id, new_rank = self.view_player.input_player_new_rank()
         print(player_id) # à supprimer
         print(new_rank) # à supprimer
         for player in Player.players_instances:
             if player.player_id == player_id:
                 player.change_rank(new_rank)
-            else:
-                print("Aucun joueur avec cet ID dans la liste des joueurs !\nVérifier l'ID et recommencer la saisie.")
-                break
 
     def save_players_data(self):
 
         players_table.truncate()
 
         serialized_players = []
-        for player in Player.players_instances:
+        for player in self.players_instances:
             date_birth_str = player.date_birth.strftime('%d%m%Y')
             serialized_player = {
                 'last_name': player.last_name,

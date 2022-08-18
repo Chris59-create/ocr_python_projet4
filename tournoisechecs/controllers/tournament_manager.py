@@ -1,7 +1,8 @@
-from models.player import Player
+from tinydb import TinyDB
 from models.tournament import Tournament
 from models.round import Round
 from models.match import Match
+from controllers.player_manager import PlayerManager
 from controllers.swisspairs_manager import SwissPairs
 from views.view_player import ViewPlayer
 from views.view_tournament import ViewTournament
@@ -14,6 +15,7 @@ NUMBER_ROUNDS = 4 # à récupérer dans le model Tournament ou à supprimer dans
 class TournamentManager:
     """Tournament controller"""
 
+    tournaments_instances = []
     number_rounds = 1
 
     def __init__(self):
@@ -21,11 +23,11 @@ class TournamentManager:
 
     # Crée le tournoi
     def input_tournament_data(self):
-        #self.view_tournament = ViewTournament()
         #tournament_data = self.view_tournament.input_tournament_data() #à rétablir pour prod
         tournament_data = self.view_tournament.test_tournament_data() # test à supprimer pour prod
         self.tournament = Tournament(tournament_data[0], tournament_data[1], tournament_data[2],
                                 tournament_data[3], tournament_data[4])
+        self.tournaments_instances.append(self.tournament)
 
     # Affiche les infos du tournoi
     def display_tournament_data(self):
@@ -34,19 +36,12 @@ class TournamentManager:
 
     # Ajoute la liste des joueurs au tournoi
     def tournament_add_players(self):
-        view_player = ViewPlayer()
-        while len(self.tournament.tournament_players) < NUMBER_TOURNAMENT_PLAYERS:
-            player_data = view_player.input_player_data()
-            player = Player(player_data[0], player_data[1], player_data[2], player_data[3], player_data[4])
-            self.tournament.tournament_players.append(player)
+        player_manager = PlayerManager()
+        player_manager.tournament_add_players(self.tournament, NUMBER_TOURNAMENT_PLAYERS)
 
     def test_tournament_add_players(self):
-        view_player = ViewPlayer()
-        while len(self.tournament.tournament_players) < NUMBER_TOURNAMENT_PLAYERS:
-            player_data = view_player.random_input_player()
-            player = Player(player_data[0], player_data[1], player_data[2], player_data[3], player_data[4])
-            self.tournament.tournament_players.append(player)
-        print("\nJoueurs ajoutés au tournoi\n")
+        player_manager = PlayerManager()
+        player_manager.test_tournament_add_players(self.tournament, NUMBER_TOURNAMENT_PLAYERS)
 
     # Calcule les paires de joueurs pour le round
     def calculate_pairs(self):

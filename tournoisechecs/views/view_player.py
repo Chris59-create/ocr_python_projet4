@@ -14,7 +14,7 @@ class ViewPlayer:
         gender = pyip.inputMenu(["Femme", "Homme", "Autre"], numbered=True)
         rank = pyip.inputInt("Classement : ", default=0, min=0)
 
-        return last_name, first_name, date_birth, gender, rank
+        return last_name, first_name, date_birth, gender, rank # à faire un dictionnaire
 
     def random_input_player(self):
         first_name = "Firstname" + str(random.randint(0, 100))
@@ -24,7 +24,7 @@ class ViewPlayer:
         gender = random.choice(["Femme", "Homme", "Autre"])
         rank = random.randint(0, 1000)
 
-        return last_name, first_name, date_birth, gender, rank
+        return last_name, first_name, date_birth, gender, rank # à faire un dictionnaire
 
     #vérifier si à supprimer
     def input_player_data(self):
@@ -40,7 +40,7 @@ class ViewPlayer:
     
     def input_player_new_rank(self):
         print("\nMettre à jour le classement du joueur : ")
-        player_id = pyip.inputStr(prompt="\nSaisir le numéro d'identification  (ID) du joueur : ")
+        player_id = pyip.inputInt(prompt="\nSaisir le numéro d'identification  (ID) du joueur : ")
         new_rank = pyip.inputInt(prompt="\nSaisir le nouveau classement du joueur : \n")
 
         return player_id, new_rank

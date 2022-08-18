@@ -1,9 +1,9 @@
-
 class Player:
     """Génère un joueur avec ses attributs et permet la modification
      de son classement"""
-    players_instances = []
+
     counter = 1
+
 
     def __init__(self, last_name, first_name, date_birth, gender, rank=0, current_tournament_score=0,
                  player_id=1):
@@ -13,7 +13,6 @@ class Player:
         self.date_birth = date_birth
         self.gender = gender
         self.rank = rank
-        self.__class__.players_instances.append(self)
         self.current_tournament_score = current_tournament_score
         self.player_id = player_id
         self.player_id = Player.counter
