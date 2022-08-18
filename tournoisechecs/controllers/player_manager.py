@@ -14,22 +14,33 @@ class PlayerManager:
 
     def add_single_player(self):
         player_data = self.view_player.manual_input_player()
-        player = Player(player_data[0], player_data[1], player_data[2], player_data[3], player_data[4])
+        player = Player(player_data["last_name"],
+                        player_data["first_name"],
+                        player_data["date_birth"],
+                        player_data["gender"],
+                        player_data["rank"])
         self.players_instances.append(player)
 
     # Ajoute la liste des joueurs au tournoi
     def tournament_add_players(self, tournament, NUMBER_TOURNAMENT_PLAYERS):
         while len(tournament.tournament_players) < NUMBER_TOURNAMENT_PLAYERS:
             player_data = view_player.input_player_data()
-            player = Player(player_data[0], player_data[1], player_data[2], player_data[3], player_data[4])
+            player = Player(player_data["last_name"],
+                            player_data["first_name"],
+                            player_data["date_birth"],
+                            player_data["gender"],
+                            player_data["rank"])
             self.players_instances.append(player)
             tournament.tournament_players.append(player)
 
     def test_tournament_add_players(self, tournament, NUMBER_TOURNAMENT_PLAYERS):
-        view_player = ViewPlayer()
         while len(tournament.tournament_players) < NUMBER_TOURNAMENT_PLAYERS:
-            player_data = view_player.random_input_player()
-            player = Player(player_data[0], player_data[1], player_data[2], player_data[3], player_data[4])
+            player_data = self.view_player.random_input_player()
+            player = Player(player_data["last_name"],
+                            player_data["first_name"],
+                            player_data["date_birth"],
+                            player_data["gender"],
+                            player_data["rank"])
             self.players_instances.append(player)
             tournament.tournament_players.append(player)
         print("\nJoueurs ajoutés au tournoi\n")
@@ -39,7 +50,7 @@ class PlayerManager:
             print(player)
 
     def display_all_players_by_name(self): # à mettre dans la vue
-        all_players_by_name = sorted(Player.players_instances, key=lambda x: (x.first_name, x.last_name))
+        all_players_by_name = sorted(self.players_instances, key=lambda x: (x.first_name, x.last_name))
         for player in all_players_by_name:
             print(player)
 
@@ -48,7 +59,7 @@ class PlayerManager:
         player_id, new_rank = self.view_player.input_player_new_rank()
         print(player_id) # à supprimer
         print(new_rank) # à supprimer
-        for player in Player.players_instances:
+        for player in self.players_instances:
             if player.player_id == player_id:
                 player.change_rank(new_rank)
 
@@ -74,8 +85,8 @@ class PlayerManager:
 
     def install_players_data(self):
 
-        serialized_players = players_table.all()
-        for deserialized_player in serialized_players:
+        deserialized_players = players_table.all()
+        for deserialized_player in deserialized_players:
             date_birth = datetime.strptime(deserialized_player['date_birth'], '%d%m%Y')
             player = Player(deserialized_player['last_name'],
                             deserialized_player['first_name'],
@@ -84,3 +95,4 @@ class PlayerManager:
                             deserialized_player['rank'],
                             deserialized_player['current_tournament_score'],
                             deserialized_player['player_id'])
+            self.players_instances.append(player)

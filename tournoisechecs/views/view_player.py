@@ -3,8 +3,6 @@ from datetime import datetime
 import random
 
 
-
-
 class ViewPlayer:
 
     def manual_input_player(self):
@@ -14,7 +12,12 @@ class ViewPlayer:
         gender = pyip.inputMenu(["Femme", "Homme", "Autre"], numbered=True)
         rank = pyip.inputInt("Classement : ", default=0, min=0)
 
-        return last_name, first_name, date_birth, gender, rank # à faire un dictionnaire
+        return {"last_name": last_name,
+                "first_name": first_name,
+                "date_birth": date_birth,
+                "gender": gender,
+                "rank": rank
+                }
 
     def random_input_player(self):
         first_name = "Firstname" + str(random.randint(0, 100))
@@ -24,7 +27,12 @@ class ViewPlayer:
         gender = random.choice(["Femme", "Homme", "Autre"])
         rank = random.randint(0, 1000)
 
-        return last_name, first_name, date_birth, gender, rank # à faire un dictionnaire
+        return {"last_name": last_name,
+                "first_name": first_name,
+                "date_birth": date_birth,
+                "gender": gender,
+                "rank": rank
+                }
 
     #vérifier si à supprimer
     def input_player_data(self):
