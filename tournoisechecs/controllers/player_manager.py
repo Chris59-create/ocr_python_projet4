@@ -45,17 +45,10 @@ class PlayerManager:
             tournament.tournament_players.append(player)
         print("\nJoueurs ajoutés au tournoi\n")
 
-    def display_all_players(self):
-        for player in self.players_instances:
-            print(player)
 
-    def display_all_players_by_name(self): # à mettre dans la vue
-        all_players_by_name = sorted(self.players_instances, key=lambda x: (x.first_name, x.last_name))
-        for player in all_players_by_name:
-            print(player)
 
     def update_player_rank(self):
-        self.display_all_players_by_name()
+        self.view_player.display_all_players_by_name(self.players_instances)
         player_id, new_rank = self.view_player.input_player_new_rank()
         print(player_id) # à supprimer
         print(new_rank) # à supprimer

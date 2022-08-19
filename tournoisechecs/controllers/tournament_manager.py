@@ -9,7 +9,7 @@ from views.view_tournament import ViewTournament
 from views.view_round import ViewRound
 
 NUMBER_TOURNAMENT_PLAYERS = 8
-NUMBER_ROUNDS = 4 # à récupérer dans le model Tournament ou à supprimer dans ce dernier
+NUMBER_ROUNDS = 4  # à récupérer dans le model Tournament ou à supprimer dans ce dernier
 
 
 class TournamentManager:
@@ -23,16 +23,16 @@ class TournamentManager:
 
     # Crée le tournoi
     def input_tournament_data(self):
-        #tournament_data = self.view_tournament.input_tournament_data() #à rétablir pour prod
-        tournament_data = self.view_tournament.test_tournament_data() # test à supprimer pour prod
-        self.tournament = Tournament(tournament_data[0], tournament_data[1], tournament_data[2],
-                                tournament_data[3], tournament_data[4])
+        # tournament_data = self.view_tournament.input_tournament_data() #à rétablir pour prod
+        tournament_data = self.view_tournament.test_tournament_data()  # test à supprimer pour prod
+        self.tournament = Tournament(tournament_data["tournament_name"], tournament_data["place"], tournament_data["dates_tournament"],
+                                     tournament_data["time_control"], tournament_data["tournament_description"])
         self.tournaments_instances.append(self.tournament)
 
     # Affiche les infos du tournoi
     def display_tournament_data(self):
-        #view_tournament = ViewTournament()
-            self.view_tournament.display_tournament_data(self.tournament)
+        # view_tournament = ViewTournament()
+        self.view_tournament.display_tournament_data(self.tournament)
 
     # Ajoute la liste des joueurs au tournoi
     def tournament_add_players(self):
@@ -52,17 +52,17 @@ class TournamentManager:
 
     def prepare_round(self):
         round_name = "Round " + str(self.number_rounds)
-        print(round_name) # test à supprimer
-      
+        print(round_name)  # test à supprimer
+
         pairs_players = self.calculate_pairs()
         view_round = ViewRound()
         view_round.display_pairs_round(pairs_players)
 
         self.number_rounds += 1
-        
+
         return round_name, pairs_players
-        
-    def start_round(self, round_name, pairs_players ):
+
+    def start_round(self, round_name, pairs_players):
         round_ = Round(round_name, pairs_players)
         print(f"Date et heure du début de {round_name} : {round_.start_date_time}")
 
@@ -73,7 +73,7 @@ class TournamentManager:
         for pair_players in round_.pairs_players:
             player1 = pair_players[0]
             player2 = pair_players[1]
-            score_player1, score_player2 = view_round.input_score(player1, player2 )
+            score_player1, score_player2 = view_round.input_score(player1, player2)
             match = Match(player1, score_player1, player2, score_player2)
 
             player1.update_current_tournament_score(score_player1)
@@ -84,38 +84,53 @@ class TournamentManager:
         self.tournament.add_round(round_)
 
     def update_tournament_final_scores(self):
-        remaining_rounds = NUMBER_ROUNDS - len(self.tournament.tournament_rounds)
+        self.remaining_rounds = NUMBER_ROUNDS - len(self.tournament.tournament_rounds)
         # ! Check if all rounds have been played before updating the tournament final scores
-        if remaining_rounds == 0:
+        if self.remaining_rounds == 0:
             for player in self.tournament.tournament_players:
                 final_tournament_score = [player, player.current_tournament_score]
                 self.tournament.tournament_final_scores.append(final_tournament_score)
                 player.current_tournament_score = 0
         else:
-            #view_tournament = ViewTournament()
+            # view_tournament = ViewTournament()
             self.view_tournament.display_tournament_in_progress(remaining_rounds)
             # back to the menu
 
+    def player_data(self, element, index_element):
+        tournament_rank = index_element
+        first_name = element[0].first_name
+        last_name = element[0].last_name
+        date_birth = element[0].date_birth
+        rank = element[0].rank
+        score = element[1]
+
+        player_data = {"tournament_rank": tournament_rank,
+                       "first_name": first_name,
+                       "last_name": last_name,
+                       "date_birth": date_birth,
+                       "rank": rank,
+                       "score": score
+                       }
+
+        return player_data
+
+
     def display_tournament_total_scores(self):
-        remaining_rounds = NUMBER_ROUNDS - len(self.tournament.tournament_rounds)
-        self.view_tournament.display_tournament_total_scores(remaining_rounds)
+
+        self.view_tournament.display_remaining_rounds(self.remaining_rounds)
+        self.tournament_final_scores_sorted = sorted(self.tournament.tournament_final_scores, key=lambda x: x[1],
+                                                     reverse=True)
+        for element in  self.tournament_final_scores_sorted:
+            index_element = self.tournament_final_scores_sorted.index(element)
+            player_data = self.player_data(element, index_element)
+            self.view_tournament.display_tournament_total_scores(player_data)
 
     def update_tournament_players_ranks(self):
-        view_player = ViewPlayer()
+
         self.display_tournament_total_scores()
-        tournament_final_scores_sorted = sorted(self.tournament.tournament_final_scores, key=lambda x: x[1],
-                                                reverse=True)
-        for element in tournament_final_scores_sorted:
-            print()
-            print(f"{tournament_final_scores_sorted.index(element)+1}. {element[0].first_name} "
-                  f"{element[0].last_name} (ID {element[0].player_id}) - Classement : {element[0].rank} - Score :"
-                  f" {element[1]} ;")
+        for element in self.tournament_final_scores_sorted:
+            index_element = self.tournament_final_scores_sorted.index(element)
+            player_data = self.player_data(element, index_element)
+            self.view_tournament.display_tournament_total_scores(player_data)
             new_rank = self.view_tournament.input_tournament_player_new_rank()
             element[0].rank = new_rank
-
-
-
-
-
-        
-

@@ -56,4 +56,12 @@ class ViewPlayer:
     def display_all_players_by_rank(self):
         pass
 
+    def display_all_players(self, players_instances):
+        for player in players_instances:
+            print(player)
+
+    def display_all_players_by_name(self, players_instances): # à mettre dans la vue
+        all_players_by_name = sorted(players_instances, key=lambda x: (x.first_name, x.last_name))
+        for player in all_players_by_name:
+            print(player)
 

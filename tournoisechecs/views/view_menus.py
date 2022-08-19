@@ -2,6 +2,8 @@ import pyinputplus as pyip
 import sys
 from controllers.tournament_manager import TournamentManager, NUMBER_ROUNDS
 from controllers.player_manager import PlayerManager
+from views.view_tournament import ViewTournament
+from views.view_player import ViewPlayer
 
 manage_tournament = None
 
@@ -60,6 +62,8 @@ class MenuTournament:
 
     def tournament_choices(self):
 
+        view_tournament = ViewTournament()
+
         global i
         global NUMBER_ROUNDS
 
@@ -88,7 +92,7 @@ class MenuTournament:
                 self.tournament_choices()
             elif tournament_choice == "Saisir les scores du tour":
                 self.tournament_manager.update_score(self.round_)
-                print(f"les scores de le tour {self.round_.round_name} sont saisis.\nVous pouvez afficher les matchs "
+                print(f"les scores du tour {self.round_.round_name} sont saisis.\nVous pouvez afficher les matchs "
                       f"du tour suivant.\n")
                 if self.tournament_manager.number_rounds <= NUMBER_ROUNDS:
                     i -= 2
@@ -128,7 +132,8 @@ class MenuPlayers:
             self.player_manager.update_player_rank()
             self.players_choices()
         if players_choice == "Afficher la liste des joueurs":
-            self.player_manager.display_all_players()
+            view_player = ViewPlayer()
+            view_player.display_all_players(self.player_manager.players_instances)
             self.players_choices()
         if players_choice == "Retour au menu principal":
             init_menu = MenuMain()

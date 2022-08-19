@@ -5,7 +5,12 @@ from datetime import datetime
 class ViewTournament:
 
     def test_tournament_data(self):
-        return "tournoi test", "Solbach", ["10/08/2022"], "Bullet", "blablabla"
+        return {"tournament_name": "tournoi test",
+                "place": "Solbach",
+                "dates_tournament": ["10/08/2022"],
+                "time_control": "Bullet",
+                "tournament_description": "blablabla"
+                }
 
     def input_tournament_data(self):
         dates_tournament = []
@@ -21,7 +26,12 @@ class ViewTournament:
         time_control = pyip.inputMenu(["Bullet", "Blitz", "Coup rapide"], numbered=True)
         tournament_description = pyip.inputStr("Description du tournoi : ", blank=True)
 
-        return tournament_name, place, dates_tournament, time_control, tournament_description
+        return {"tournament_name": tournament_name,
+                "place": place,
+                "dates_tournament": dates_tournament,
+                "time_control": time_control,
+                "tournament_description": tournament_description
+                }
 
     def display_tournament_data(self, tournament):
         self.tournament = tournament
@@ -35,19 +45,21 @@ class ViewTournament:
               f"Description : {self.tournament.tournament_description}")
         print()
 
-    def display_tournament_in_progress(self, remaining_rounds): # Vérifier si pas inutile
+    def display_tournament_in_progress(self): # Vérifier si pas inutile
         print("\nCette action n'est pas possible tant que le tournoi n'est pas terminé !\n")
-        print(f"Il reste {remaining_rounds} tournée(s) à jouer pour ce tournoi.")
 
-    def display_tournament_total_scores(self, remaining_rounds):
+    def display_remaining_rounds(self, remaining_rounds):
+        print(f"Il reste {remaining_rounds} tour(s) à jouer pour ce tournoi.\n")
 
-        print(f"Il reste {remaining_rounds} tournée(s) à jouer pour ce tournoi.\nLes scores à ce stade du tournoi : "
-              f"\n")
-        tournament_final_scores_sorted = sorted(self.tournament.tournament_final_scores, key=lambda x: x[1],
-                                                reverse=True)
-        for element in sorted(self.tournament.tournament_final_scores, key=lambda x: x[1], reverse=True):
-            print(f"{tournament_final_scores_sorted.index(element)+1}. {element[0].first_name} "
-                  f"{element[0].last_name} (ID {element[0].player_id}) - Score : {element[1]} ;")
+    def display_tournament_total_scores(self, player_data):
+        tournament_rank = player_data["tournament_rank"]
+        first_name = player_data["first_name"]
+        last_name = player_data["last_name"]
+        date_birth = player_data["date_birth"]
+        rank = player_data["rank"]
+        score = player_data["score"]
+
+        print(f"{tournament_rank+1}. {first_name} {last_name} né(e) le {date_birth} classé(e) {rank} - Score : {score}")
 
     def input_tournament_player_new_rank(self):
 
