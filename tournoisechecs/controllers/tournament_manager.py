@@ -8,6 +8,9 @@ from views.view_player import ViewPlayer
 from views.view_tournament import ViewTournament
 from views.view_round import ViewRound
 
+db = TinyDB('db.json')
+tournaments_table = db.table("tournaments")
+
 NUMBER_TOURNAMENT_PLAYERS = 8
 NUMBER_ROUNDS = 4  # à récupérer dans le model Tournament ou à supprimer dans ce dernier
 
@@ -93,7 +96,7 @@ class TournamentManager:
                 player.current_tournament_score = 0
         else:
             # view_tournament = ViewTournament()
-            self.view_tournament.display_tournament_in_progress(remaining_rounds)
+            self.view_tournament.display_tournament_in_progress(self.remaining_rounds)
             # back to the menu
 
     def player_data(self, element, index_element):
@@ -134,3 +137,36 @@ class TournamentManager:
             self.view_tournament.display_tournament_total_scores(player_data)
             new_rank = self.view_tournament.input_tournament_player_new_rank()
             element[0].rank = new_rank
+
+    def save_tournaments_data(self):
+
+        tournaments_table.truncate()
+
+        serialized_tournaments = []
+        for tournament in self.tournaments_instances:
+
+            for round_ in tournament.rounds:
+
+                m = 0
+                for match in round_.matches:
+                    serialized_match = {
+                        "player1 name": match.player1.player_name
+                    }
+
+                serialized_round = {
+                    "round_name": round_.name,
+                    "start_date_time": round_.start_date_time,
+                    "end_date_time": round_.end_date_time,
+                    "matches": "à définir",
+                    "pairs_players": "à définir"
+                }
+            serialized_tournament = {
+                "tournament name": tournament.tournament_name,
+                "place": tournament.place
+                "dates tournament": tournament.dates_tournament,
+                "time control": tournament.time_control,
+                "tournament description": tournament.tournament_description,
+                "tournament rounds": tournament.tournament_rounds,
+                "tournament players": tournament.tournament_players,
+                "tournament final scores": tournament.tournament_final_scores
+            }

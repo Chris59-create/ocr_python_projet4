@@ -50,8 +50,6 @@ class PlayerManager:
     def update_player_rank(self):
         self.view_player.display_all_players_by_name(self.players_instances)
         player_id, new_rank = self.view_player.input_player_new_rank()
-        print(player_id) # à supprimer
-        print(new_rank) # à supprimer
         for player in self.players_instances:
             if player.player_id == player_id:
                 player.change_rank(new_rank)
