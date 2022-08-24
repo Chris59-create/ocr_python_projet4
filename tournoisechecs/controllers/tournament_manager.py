@@ -1,4 +1,3 @@
-from tinydb import TinyDB
 from models.tournament import Tournament
 from models.round import Round
 from models.match import Match
@@ -8,8 +7,6 @@ from views.view_player import ViewPlayer
 from views.view_tournament import ViewTournament
 from views.view_round import ViewRound
 
-db = TinyDB('db.json')
-tournaments_table = db.table("tournaments")
 
 NUMBER_TOURNAMENT_PLAYERS = 8
 NUMBER_ROUNDS = 4  # à récupérer dans le model Tournament ou à supprimer dans ce dernier
@@ -66,14 +63,14 @@ class TournamentManager:
         return round_name, pairs_players
 
     def start_round(self, round_name, pairs_players):
-        round_ = Round(round_name, pairs_players)
-        print(f"Date et heure du début de {round_name} : {round_.start_date_time}")
+        self.round_ = Round(round_name, pairs_players)
+        print(f"Date et heure du début de {round_name} : {self.round_.start_date_time}")
 
-        return round_
 
-    def update_score(self, round_):
+    def update_score(self):
         view_round = ViewRound()
-        for pair_players in round_.pairs_players:
+        self.round_.end_round()
+        for pair_players in self.round_.pairs_players:
             player1 = pair_players[0]
             player2 = pair_players[1]
             score_player1, score_player2 = view_round.input_score(player1, player2)
@@ -82,9 +79,9 @@ class TournamentManager:
             player1.update_current_tournament_score(score_player1)
             player2.update_current_tournament_score(score_player2)
 
-            round_.add_match(match.match_tuple)
+            self.round_.add_match(match.match_tuple)
 
-        self.tournament.add_round(round_)
+        self.tournament.add_round(self.round_)
 
     def update_tournament_final_scores(self):
         self.remaining_rounds = NUMBER_ROUNDS - len(self.tournament.tournament_rounds)
@@ -131,6 +128,7 @@ class TournamentManager:
     def update_tournament_players_ranks(self):
 
         self.display_tournament_total_scores()
+        print("test affichage individuel des joueurs pour maj rank")
         for element in self.tournament_final_scores_sorted:
             index_element = self.tournament_final_scores_sorted.index(element)
             player_data = self.player_data(element, index_element)
@@ -138,35 +136,3 @@ class TournamentManager:
             new_rank = self.view_tournament.input_tournament_player_new_rank()
             element[0].rank = new_rank
 
-    def save_tournaments_data(self):
-
-        tournaments_table.truncate()
-
-        serialized_tournaments = []
-        for tournament in self.tournaments_instances:
-
-            for round_ in tournament.rounds:
-
-                m = 0
-                for match in round_.matches:
-                    serialized_match = {
-                        "player1 name": match.player1.player_name
-                    }
-
-                serialized_round = {
-                    "round_name": round_.name,
-                    "start_date_time": round_.start_date_time,
-                    "end_date_time": round_.end_date_time,
-                    "matches": "à définir",
-                    "pairs_players": "à définir"
-                }
-            serialized_tournament = {
-                "tournament name": tournament.tournament_name,
-                "place": tournament.place
-                "dates tournament": tournament.dates_tournament,
-                "time control": tournament.time_control,
-                "tournament description": tournament.tournament_description,
-                "tournament rounds": tournament.tournament_rounds,
-                "tournament players": tournament.tournament_players,
-                "tournament final scores": tournament.tournament_final_scores
-            }

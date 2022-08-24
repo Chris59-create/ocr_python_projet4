@@ -62,7 +62,7 @@ class ViewTournament:
         print(f"{tournament_rank+1}. {first_name} {last_name} né(e) le {date_birth} classé(e) {rank} - Score : {score}")
 
     def input_tournament_player_new_rank(self):
-
+        print("test saisie nouveau classement")
         new_rank = pyip.inputInt(prompt="\nSaisir le nouveau classement du joueur : \n")
 
         return new_rank
