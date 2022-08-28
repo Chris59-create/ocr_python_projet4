@@ -18,7 +18,7 @@ class ViewTournament:
         place = pyip.inputStr("Lieu du tournoi : ")
 
         input_date = True
-        while input_date == True:
+        while input_date:
             date_tournament = pyip.inputDate("Date (jjmmaaaa) : ", formats=['%d%m%Y'])
             dates_tournament.append(datetime.strftime(date_tournament, '%d/%m/%Y'))
             input_date = pyip.inputBool("Voulez-vous ajouter une date au tournoi Oui = t Non = f: ", "True", "False")
@@ -35,7 +35,7 @@ class ViewTournament:
 
     def display_tournament_data(self, tournament):
         self.tournament = tournament
-        
+
         print()
         print(f"Vous avez créé un tournoi avec les informations suivantes :\n \n"
               f"Nom du tournoi : {self.tournament.tournament_name}\n"
@@ -45,7 +45,7 @@ class ViewTournament:
               f"Description : {self.tournament.tournament_description}")
         print()
 
-    def display_tournament_in_progress(self): # Vérifier si pas inutile
+    def display_tournament_in_progress(self):  # Vérifier si pas inutile
         print("\nCette action n'est pas possible tant que le tournoi n'est pas terminé !\n")
 
     def display_remaining_rounds(self, remaining_rounds):
@@ -59,7 +59,8 @@ class ViewTournament:
         rank = player_data["rank"]
         score = player_data["score"]
 
-        print(f"{tournament_rank+1}. {first_name} {last_name} né(e) le {date_birth} classé(e) {rank} - Score : {score}")
+        print(f"{tournament_rank+1}. {first_name} {last_name} né(e) le {date_birth} classé(e) {rank} - Score : "
+              f"{score}")
 
     def input_tournament_player_new_rank(self):
         print("test saisie nouveau classement")

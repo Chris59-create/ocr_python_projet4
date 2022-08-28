@@ -34,7 +34,7 @@ class ViewPlayer:
                 "rank": rank
                 }
 
-    #vérifier si à supprimer
+    # vérifier si à supprimer
     def input_player_data(self):
 
         mode = pyip.inputMenu(["Saisie des joueurs", "Génération automatique des joueurs en mode test"],
@@ -45,7 +45,7 @@ class ViewPlayer:
             player_data = self.random_input_player()
 
         return player_data
-    
+
     def input_player_new_rank(self):
         print("\nMettre à jour le classement du joueur : ")
         player_id = pyip.inputInt(prompt="\nSaisir le numéro d'identification  (ID) du joueur : ")
@@ -60,8 +60,7 @@ class ViewPlayer:
         for player in players_instances:
             print(player)
 
-    def display_all_players_by_name(self, players_instances): # à mettre dans la vue
+    def display_all_players_by_name(self, players_instances):  # à mettre dans la vue
         all_players_by_name = sorted(players_instances, key=lambda x: (x.first_name, x.last_name))
         for player in all_players_by_name:
             print(player)
-

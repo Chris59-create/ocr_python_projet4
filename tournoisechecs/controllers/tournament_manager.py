@@ -3,7 +3,6 @@ from models.round import Round
 from models.match import Match
 from controllers.player_manager import PlayerManager
 from controllers.swisspairs_manager import SwissPairs
-from views.view_player import ViewPlayer
 from views.view_tournament import ViewTournament
 from views.view_round import ViewRound
 
@@ -25,8 +24,12 @@ class TournamentManager:
     def input_tournament_data(self):
         # tournament_data = self.view_tournament.input_tournament_data() #à rétablir pour prod
         tournament_data = self.view_tournament.test_tournament_data()  # test à supprimer pour prod
-        self.tournament = Tournament(tournament_data["tournament_name"], tournament_data["place"], tournament_data["dates_tournament"],
-                                     tournament_data["time_control"], tournament_data["tournament_description"])
+        self.tournament = Tournament(tournament_data["tournament_name"],
+                                     tournament_data["place"],
+                                     tournament_data["dates_tournament"],
+                                     tournament_data["time_control"],
+                                     tournament_data["tournament_description"]
+                                     )
         self.tournaments_instances.append(self.tournament)
 
     # Affiche les infos du tournoi
@@ -65,7 +68,6 @@ class TournamentManager:
     def start_round(self, round_name, pairs_players):
         self.round_ = Round(round_name, pairs_players)
         print(f"Date et heure du début de {round_name} : {self.round_.start_date_time}")
-
 
     def update_score(self):
         view_round = ViewRound()
@@ -114,13 +116,12 @@ class TournamentManager:
 
         return player_data
 
-
     def display_tournament_total_scores(self):
 
         self.view_tournament.display_remaining_rounds(self.remaining_rounds)
         self.tournament_final_scores_sorted = sorted(self.tournament.tournament_final_scores, key=lambda x: x[1],
                                                      reverse=True)
-        for element in  self.tournament_final_scores_sorted:
+        for element in self.tournament_final_scores_sorted:
             index_element = self.tournament_final_scores_sorted.index(element)
             player_data = self.player_data(element, index_element)
             self.view_tournament.display_tournament_total_scores(player_data)
@@ -135,4 +136,3 @@ class TournamentManager:
             self.view_tournament.display_tournament_total_scores(player_data)
             new_rank = self.view_tournament.input_tournament_player_new_rank()
             element[0].rank = new_rank
-

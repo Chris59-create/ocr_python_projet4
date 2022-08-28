@@ -3,10 +3,11 @@ import sys
 from controllers.tournament_manager import TournamentManager, NUMBER_ROUNDS
 from controllers.player_manager import PlayerManager
 from controllers.db_manager import TableTournament
-from views.view_tournament import ViewTournament
+from controllers.db_manager import TablePlayers
 from views.view_player import ViewPlayer
 
 manage_tournament = None
+
 
 class MenuMain:
 
@@ -42,8 +43,8 @@ class MenuMain:
         if main_choice == "Editer les rapports":
             self.edit_reports()
         if main_choice == "Quitter l'application":
-            player_manager = PlayerManager()
-            player_manager.save_players_data()
+            table_players = TablePlayers()
+            table_players.save_players_data()
             table_tournament = TableTournament()
             table_tournament.save_tournaments_data()
 
@@ -51,6 +52,7 @@ class MenuMain:
 
 
 i = 0
+
 
 class MenuTournament:
     tournament_steps = ["Créer un nouveau tournoi", "Enregistrer les joueurs du tournoi",
@@ -65,15 +67,13 @@ class MenuTournament:
 
     def tournament_choices(self):
 
-        view_tournament = ViewTournament()
-
         global i
         global NUMBER_ROUNDS
 
         while i < len(self.tournament_steps):
-            choices = [self.tournament_steps[i], "Retour au menu principal"]
+            choices = [self.tournament_steps[i], "Modifier le classement d'un joueur", "Retour au menu principal"]
             tournament_choice = pyip.inputMenu(choices, prompt="\nSaisir le chiffre de l'action désirée :\n\n",
-                                             numbered=True)
+                                               numbered=True)
 
             if tournament_choice == "Créer un nouveau tournoi":
                 self.tournament = self.tournament_manager.input_tournament_data()
@@ -81,7 +81,7 @@ class MenuTournament:
                 i += 1
                 self.tournament_choices()
             elif tournament_choice == "Enregistrer les joueurs du tournoi":
-                self.tournament_manager.test_tournament_add_players() # à changer avant prod
+                self.tournament_manager.test_tournament_add_players()  # à changer avant prod
                 i += 1
                 self.tournament_choices()
             elif tournament_choice == "Afficher les matchs à jouer":
@@ -109,7 +109,11 @@ class MenuTournament:
                 self.tournament_choices()
             elif tournament_choice == "Mettre à jour le classement des joueurs":
                 self.tournament_manager.update_tournament_players_ranks()
-                i += 1
+                i = 0
+                self.tournament_choices()
+            elif tournament_choice == "Modifier le classement d'un joueur":
+                player_manager = PlayerManager()
+                player_manager.update_player_rank()
                 self.tournament_choices()
             elif tournament_choice == "Retour au menu principal":
                 init_menu = MenuMain()
@@ -117,6 +121,7 @@ class MenuTournament:
 
         init_menu = MenuMain()
         init_menu.main_choices()
+
 
 class MenuPlayers:
 
@@ -126,9 +131,9 @@ class MenuPlayers:
         print("\nVous êtes dans le menu de gestion des joueurs : \n")
 
     def players_choices(self):
-        players_choice = pyip.inputMenu(["Créer un joueur", "Modifier le classement d'un joueur", "Afficher la liste "
-                                    "des joueurs", "Retour au menu principal"], prompt="Saisir le chiffre de l'action "
-                                    "désirée :\n\n", numbered=True)
+        players_choice = pyip.inputMenu(["Créer un joueur", "Modifier le classement d'un joueur",
+                                         "Afficher la liste des joueurs", "Retour au menu principal"],
+                                        prompt="Saisir le chiffre de l'action désirée :\n\n", numbered=True)
         if players_choice == "Créer un joueur":
             self.player_manager.add_single_player()
             self.players_choices()
@@ -151,8 +156,7 @@ class MenuReports:
 
     def reports_choices(self):
         reports_choice = pyip.inputMenu(["Liste des acteurs par ordre alphabétique", "Retour au menu principal"],
-                                        prompt="Saisir le chiffre de l'action "
-                                    "désirée :\n\n", numbered=True)
+                                        prompt="Saisir le chiffre de l'action désirée :\n\n", numbered=True)
         if reports_choice == "Liste des acteurs par ordre alphabétique":
 
             self.reports_choices()

@@ -1,17 +1,17 @@
 from views.view_menus import MenuMain
-from controllers.player_manager import PlayerManager
+from controllers.db_manager import TablePlayers
 
 
 def main():
 
     # install data from db.json
-    player_manager = PlayerManager()
-    player_manager.install_players_data()
-
+    table_players = TablePlayers()
+    table_players.install_players_data()
 
     # Launch the main menu
     init_menu = MenuMain()
     init_menu.main_choices()
+
 
 if __name__ == "__main__":
     main()

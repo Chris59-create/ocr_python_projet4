@@ -4,7 +4,6 @@ class Player:
 
     counter = 1
 
-
     def __init__(self, last_name, first_name, date_birth, gender, rank=0, current_tournament_score=0,
                  player_id=1):
 

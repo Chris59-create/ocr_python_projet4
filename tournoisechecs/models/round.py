@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class Round:
 
     def __init__(self, round_name, pairs_players):
@@ -15,9 +16,5 @@ class Round:
     def end_round(self):
         self.end_date_time = datetime.now()
 
-
-    def add_match(self, match ):
+    def add_match(self, match):
         self.matches.append(match)
-
-
-

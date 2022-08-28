@@ -1,5 +1,6 @@
 
-NUMBER_ROUNDS = 4 # à supprimer ou à récupérer par le contrôleur
+NUMBER_ROUNDS = 4  # à supprimer ou à récupérer par le contrôleur
+
 
 class Tournament:
 
