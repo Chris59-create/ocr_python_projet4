@@ -1,11 +1,12 @@
-from tinydb import TinyDB
 from datetime import datetime
-from controllers.tournament_manager import TournamentManager
+
 from controllers.player_manager import PlayerManager
-from models.player import Player
+from controllers.tournament_manager import TournamentManager
 from models.match import Match
+from models.player import Player
 from models.round import Round
 from models.tournament import Tournament
+from tinydb import TinyDB
 
 db = TinyDB('db.json')
 tournaments_table = db.table("tournaments")
@@ -36,7 +37,7 @@ class TableTournament:
                     for player, score in match:
                         serialized_player = self.table_player.serialize_player(player)
                         serialized_match_player = {'serialized_player': serialized_player, 'score player': score}
-                            
+
                         serialized_match.append(serialized_match_player)
 
                     serialized_matches.append(serialized_match)
@@ -45,9 +46,9 @@ class TableTournament:
 
                 serialized_pairs_players = []
                 for pair_players in round_.pairs_players:
-                    serialized_player_O = self.table_player.serialize_player(pair_players[0])
+                    serialized_player_0 = self.table_player.serialize_player(pair_players[0])
                     serialized_player_1 = self.table_player.serialize_player(pair_players[1])
-                    serialized_pair_players = {'serialized_player_O': serialized_player_O, 
+                    serialized_pair_players = {'serialized_player_0': serialized_player_0,
                                                'serialized_player_1': serialized_player_1
                                                }
                     serialized_pairs_players.append(serialized_pair_players)
@@ -79,7 +80,7 @@ class TableTournament:
             for player, final_score in tournament.tournament_final_scores:
                 serialized_player = self.table_player.serialize_player(player)
                 serialized_final_score = {'player': serialized_player, 'final_score': final_score}
-         
+
                 serialized_tournament_final_scores.append(serialized_final_score)
 
             print("test serialized_tournament_final_scores", serialized_tournament_final_scores)
@@ -106,7 +107,6 @@ class TableTournament:
         serialized_tournaments = tournaments_table.all()
 
         # Deserialization of tournaments
-        deserialized_tournaments = []
         for serialized_tournament in serialized_tournaments:
 
             # Deserialization of tournament rounds
@@ -125,10 +125,10 @@ class TableTournament:
 
                     serialized_player_1 = player_score_1['serialized_player']
                     deserialized_player_1 = self.table_player.deserialize_player(serialized_player_1)
-                    score_player_1 = player_score_1['score_player']
+                    score_player_1 = player_score_1['score player']
                     serialized_player_2 = player_score_2['serialized_player']
                     deserialized_player_2 = self.table_player.deserialize_player(serialized_player_2)
-                    score_player_2 = player_score_2['score_player']
+                    score_player_2 = player_score_2['score player']
 
                     deserialized_match = Match(deserialized_player_1,
                                                score_player_1,
@@ -178,7 +178,6 @@ class TableTournament:
 
                 deserialized_tournament_final_scores.append(deserialized_tournament_final_score)
 
-
             # Deserialization of all tournament
             deserialized_tournament = Tournament(
                 serialized_tournament['tournament name'],
@@ -201,7 +200,7 @@ class TablePlayers:
         self.player_manager = PlayerManager()
 
     def serialize_player(self, player):
-        
+
         date_birth_str = player.date_birth.strftime('%d%m%Y')
         serialized_player = {
             'last_name': player.last_name,
@@ -212,7 +211,7 @@ class TablePlayers:
             'current_tournament_score': player.current_tournament_score,
             'player_id': player.player_id
         }
-                
+
         return serialized_player
 
     def deserialize_player(self, serialized_player):
@@ -227,11 +226,10 @@ class TablePlayers:
                         serialized_player['player_id'])
 
         return player
-        
+
     def save_players_data(self):
 
         players_table.truncate()
-
         serialized_players = []
         for player in self.player_manager.players_instances:
             serialized_player = self.serialize_player(player)

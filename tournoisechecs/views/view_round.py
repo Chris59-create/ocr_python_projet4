@@ -16,7 +16,10 @@ class ViewRound:
         print(f"Joueur 1 : {player1.first_name} {player1.last_name}\nJoueur 2 :"
               f" {player2.first_name} {player2.last_name}")
         print("Qui a gagné le match ?")
-        match_winner = pyip.inputMenu(["Joueur 1", "Joueur 2", "Match nul"], numbered=True)
+        match_winner = pyip.inputMenu(["Joueur 1", "Joueur 2", "Match nul"],
+                                      prompt="Saisir le chiffre de l'action désirée : \n",
+                                      numbered=True
+                                      )
         if match_winner == "Joueur 1":
             score_player1 = 1
             score_player2 = 0

@@ -1,6 +1,7 @@
-import pyinputplus as pyip
-from datetime import datetime
 import random
+from datetime import datetime
+
+import pyinputplus as pyip
 
 
 class ViewPlayer:
@@ -60,7 +61,7 @@ class ViewPlayer:
         for player in players_instances:
             print(player)
 
-    def display_all_players_by_name(self, players_instances):  # à mettre dans la vue
+    def display_all_players_by_name(self, players_instances):
         all_players_by_name = sorted(players_instances, key=lambda x: (x.first_name, x.last_name))
         for player in all_players_by_name:
             print(player)

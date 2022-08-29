@@ -1,14 +1,13 @@
-from models.tournament import Tournament
-from models.round import Round
-from models.match import Match
 from controllers.player_manager import PlayerManager
 from controllers.swisspairs_manager import SwissPairs
-from views.view_tournament import ViewTournament
+from models.match import Match
+from models.round import Round
+from models.tournament import Tournament
 from views.view_round import ViewRound
-
+from views.view_tournament import ViewTournament
 
 NUMBER_TOURNAMENT_PLAYERS = 8
-NUMBER_ROUNDS = 4  # à récupérer dans le model Tournament ou à supprimer dans ce dernier
+NUMBER_ROUNDS = 4
 
 
 class TournamentManager:
@@ -22,8 +21,8 @@ class TournamentManager:
 
     # Crée le tournoi
     def input_tournament_data(self):
-        # tournament_data = self.view_tournament.input_tournament_data() #à rétablir pour prod
-        tournament_data = self.view_tournament.test_tournament_data()  # test à supprimer pour prod
+        tournament_data = self.view_tournament.input_tournament_data()  # à rétablir pour prod
+        # tournament_data = self.view_tournament.input_tournament_data()  # test à supprimer pour prod
         self.tournament = Tournament(tournament_data["tournament_name"],
                                      tournament_data["place"],
                                      tournament_data["dates_tournament"],
@@ -51,6 +50,7 @@ class TournamentManager:
         pairs = SwissPairs()
         pairs_players = pairs.run_creation_pairs_players(self.tournament.tournament_players,
                                                          self.tournament.tournament_rounds, self.number_rounds)
+        print("test pairs_players : ", pairs_players)
         return pairs_players
 
     def prepare_round(self):
@@ -95,7 +95,7 @@ class TournamentManager:
                 player.current_tournament_score = 0
         else:
             # view_tournament = ViewTournament()
-            self.view_tournament.display_tournament_in_progress(self.remaining_rounds)
+            self.view_tournament.display_tournament_in_progress()
             # back to the menu
 
     def player_data(self, element, index_element):
@@ -125,6 +125,8 @@ class TournamentManager:
             index_element = self.tournament_final_scores_sorted.index(element)
             player_data = self.player_data(element, index_element)
             self.view_tournament.display_tournament_total_scores(player_data)
+
+        print()
 
     def update_tournament_players_ranks(self):
 

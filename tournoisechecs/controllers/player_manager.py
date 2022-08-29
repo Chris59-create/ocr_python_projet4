@@ -46,4 +46,3 @@ class PlayerManager:
         for player in self.players_instances:
             if player.player_id == player_id:
                 player.change_rank(new_rank)
-

@@ -1,5 +1,6 @@
-import pyinputplus as pyip
 from datetime import datetime
+
+import pyinputplus as pyip
 
 
 class ViewTournament:
@@ -63,8 +64,8 @@ class ViewTournament:
               f"{score}")
 
     def input_tournament_player_new_rank(self):
-        print("test saisie nouveau classement")
-        new_rank = pyip.inputInt(prompt="\nSaisir le nouveau classement du joueur : \n")
+
+        new_rank = pyip.inputInt(prompt="Saisir le nouveau classement du joueur : \n")
 
         return new_rank
 
