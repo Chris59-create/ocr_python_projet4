@@ -5,6 +5,8 @@ from controllers.player_manager import PlayerManager
 from controllers.db_manager import TableTournament
 from controllers.db_manager import TablePlayers
 from views.view_player import ViewPlayer
+from views.view_tournament import ViewTournament
+
 
 manage_tournament = None
 
@@ -155,15 +157,38 @@ class MenuReports:
         print("\nVous êtes dans le menu Rapports\n")
 
     def reports_choices(self):
-        reports_choice = pyip.inputMenu(["Liste des acteurs par ordre alphabétique", "Retour au menu principal"],
+        reports_choice = pyip.inputMenu(["Liste alphabétique des acteurs",
+                                         "Liste des acteurs par classement",
+                                         "Liste alphabétique des joueurs d'un tournoi",
+                                         "Liste des joueurs d'un tournoi par classement",
+                                         "Liste de tous les tournois",
+                                         "Liste de tous les tours d'un tournoi",
+                                         "Liste de tous les matchs d'un tournoi",
+                                         "Retour au menu principal"
+                                         ],
                                         prompt="Saisir le chiffre de l'action désirée :\n\n", numbered=True)
-        if reports_choice == "Liste des acteurs par ordre alphabétique":
+        if reports_choice == "Liste alphabétique des acteurs":
 
             self.reports_choices()
-        if reports_choice == "Modifier le classement d'un joueur":
+        if reports_choice == "Liste des acteurs par classement":
 
             self.reports_choices()
-        if reports_choice == "Afficher la liste des joueurs":
+        if reports_choice == "Liste alphabétique des joueurs d'un tournoi":
+
+            self.reports_choices()
+        if reports_choice == "Liste des joueurs d'un tournoi par classement":
+
+            self.reports_choices()
+        if reports_choice == "Liste de tous les tournois":
+            tournament_manager = TournamentManager()
+            view_tournament = ViewTournament()
+            for tournament in tournament_manager.tournaments_instances:
+                view_tournament.display_tournament_data(tournament)
+            self.reports_choices()
+        if reports_choice == "Liste de tous les tours d'un tournoi":
+
+            self.reports_choices()
+        if reports_choice == "Liste de tous les matchs d'un tournoi":
 
             self.reports_choices()
         if reports_choice == "Retour au menu principal":
