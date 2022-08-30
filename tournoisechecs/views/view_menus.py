@@ -18,11 +18,11 @@ class MenuMain:
     def manage_tournament(self, manage_tournament=None):
 
         if isinstance(manage_tournament, MenuTournament):
-
-            manage_tournament.tournament_choices(i)
+            manage_tournament.tournament_choices()
         else:
             manage_tournament = MenuTournament()
-            manage_tournament.tournament_choices(i=0)
+            manage_tournament.tournament_choices()
+
 
     def manage_players(self):
         manage_players = MenuPlayers()
@@ -32,12 +32,12 @@ class MenuMain:
         edit_reports = MenuReports()
         edit_reports.reports_choices()
 
-    def main_choices(self, i):
+    def main_choices(self):
         main_choice = pyip.inputMenu(["Gérer un tournoi", "Gérer les joueurs", "Editer les rapports",
                                       "Quitter l'application"],
                                      prompt="Saisir le chiffre de l'action désirée : \n\n", numbered=True)
         if main_choice == "Gérer un tournoi":
-            self.manage_tournament(i)
+            self.manage_tournament()
         if main_choice == "Gérer les joueurs":
             self.manage_players()
         if main_choice == "Editer les rapports":
@@ -47,7 +47,6 @@ class MenuMain:
             table_players.save_players_data()
             table_tournament = TableTournament()
             table_tournament.save_tournaments_data()
-
             sys.exit("Application fermée par l'utilisateur")
 
 
@@ -58,63 +57,66 @@ class MenuTournament:
                         "le classement des joueurs"]
 
     tournament_manager = TournamentManager()
+    
+    i = 0
 
     def __init__(self):
         print("Vous êtes dans le menu pilotage de tournoi\n")
 
-    def tournament_choices(self, i):
+    def tournament_choices(self):
 
-        while i < len(self.tournament_steps):
-            choices = [self.tournament_steps[i], "Modifier le classement d'un joueur", "Retour au menu principal"]
+        while self.i < len(self.tournament_steps):
+            choices = [self.tournament_steps[self.i], "Modifier le classement d'un joueur", "Retour au menu principal"]
             tournament_choice = pyip.inputMenu(choices, prompt="\nSaisir le chiffre de l'action désirée :\n\n",
                                                numbered=True)
 
             if tournament_choice == "Créer un nouveau tournoi":
                 self.tournament = self.tournament_manager.input_tournament_data()
                 self.tournament_manager.display_tournament_data()
-                i += 1
-                self.tournament_choices(i)
+                self.i = 1
+                self.tournament_choices()
             elif tournament_choice == "Enregistrer les joueurs du tournoi":
                 self.tournament_manager.test_tournament_add_players()  # à changer avant prod
-                i += 1
-                self.tournament_choices(i)
+                self.i += 1
+                self.tournament_choices()
             elif tournament_choice == "Afficher les matchs à jouer":
                 self.round_name, self.pairs_players = self.tournament_manager.prepare_round()
-                i += 1
-                self.tournament_choices(i)
+                self.i += 1
+                self.tournament_choices()
             elif tournament_choice == "Démarrer le tour à jouer":
                 self.round_ = self.tournament_manager.start_round(self.round_name, self.pairs_players)
                 print(f"\nLe tour {self.round_name} a débuté !\n")
-                i += 1
-                self.tournament_choices(i)
+                self.i += 1
+                self.tournament_choices()
             elif tournament_choice == "Saisir les scores du tour":
                 self.tournament_manager.update_score()
                 print(f"les scores du tour {self.round_name} sont saisis.\nVous pouvez afficher les matchs "
                       f"du tour suivant.\n")
                 if self.tournament_manager.number_rounds <= NUMBER_ROUNDS:
-                    i -= 2
+                    self.i -= 2
                 else:
-                    i += 1
-                self.tournament_choices(i)
+                    self.i += 1
+                    self.tournament_manager.number_rounds = 1
+                self.tournament_choices()
             elif tournament_choice == "Afficher les scores finaux du tournoi":
                 self.tournament_manager.update_tournament_final_scores()
                 self.tournament_manager.display_tournament_total_scores()
-                i += 1
-                self.tournament_choices(i)
+                self.i += 1
+                self.tournament_choices()
             elif tournament_choice == "Mettre à jour le classement des joueurs":
                 self.tournament_manager.update_tournament_players_ranks()
-                i = 0
+                self.i = 0
                 manage_tournament = None
-                self.tournament_choices(i)
+                self.tournament_choices()
                 return manage_tournament
             elif tournament_choice == "Modifier le classement d'un joueur":
                 player_manager = PlayerManager()
                 player_manager.update_player_rank()
-                i = 0
-                self.tournament_choices(i)
+                self.i = 0
+                self.tournament_choices()
             elif tournament_choice == "Retour au menu principal":
                 init_menu = MenuMain()
-                init_menu.main_choices(i)
+                init_menu.main_choices()
 
 
 class MenuPlayers:

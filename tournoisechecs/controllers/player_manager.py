@@ -13,7 +13,8 @@ class PlayerManager:
                         player_data["first_name"],
                         player_data["date_birth"],
                         player_data["gender"],
-                        player_data["rank"])
+                        player_data["rank"]
+                        )
         self.players_instances.append(player)
 
     # Ajoute la liste des joueurs au tournoi
@@ -24,7 +25,8 @@ class PlayerManager:
                             player_data["first_name"],
                             player_data["date_birth"],
                             player_data["gender"],
-                            player_data["rank"])
+                            player_data["rank"]
+                            )
             self.players_instances.append(player)
             tournament.tournament_players.append(player)
 
@@ -35,10 +37,12 @@ class PlayerManager:
                             player_data["first_name"],
                             player_data["date_birth"],
                             player_data["gender"],
-                            player_data["rank"])
+                            player_data["rank"]
+                            )
             self.players_instances.append(player)
             tournament.tournament_players.append(player)
         print("\nJoueurs ajoutés au tournoi\n")
+        print(tournament.tournament_players)
 
     def update_player_rank(self):
         self.view_player.display_all_players_by_name(self.players_instances)

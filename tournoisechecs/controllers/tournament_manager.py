@@ -42,15 +42,17 @@ class TournamentManager:
         player_manager.tournament_add_players(self.tournament, NUMBER_TOURNAMENT_PLAYERS)
 
     def test_tournament_add_players(self):
+        print("test add players tournament_players before add : ", self.tournament.tournament_players)
         player_manager = PlayerManager()
         player_manager.test_tournament_add_players(self.tournament, NUMBER_TOURNAMENT_PLAYERS)
+        print("test add players tournament_players after add : ", self.tournament.tournament_players)
 
     # Calcule les paires de joueurs pour le round
     def calculate_pairs(self):
         pairs = SwissPairs()
         pairs_players = pairs.run_creation_pairs_players(self.tournament.tournament_players,
                                                          self.tournament.tournament_rounds, self.number_rounds)
-        print("test pairs_players : ", pairs_players)
+        print("test pairs_players after swisspairs : ", pairs_players)
         return pairs_players
 
     def prepare_round(self):

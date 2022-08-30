@@ -10,7 +10,7 @@ def main():
 
     # Launch the main menu
     init_menu = MenuMain()
-    init_menu.main_choices(i=0)
+    init_menu.main_choices()
 
 
 if __name__ == "__main__":

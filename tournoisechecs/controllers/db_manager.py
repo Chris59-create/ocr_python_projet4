@@ -31,9 +31,11 @@ class TableTournament:
             for round_ in tournament.tournament_rounds:
 
                 serialized_matches = []
+
                 for match in round_.matches:
 
                     serialized_match = []
+
                     for player, score in match:
                         serialized_player = self.table_player.serialize_player(player)
                         serialized_match_player = {'serialized_player': serialized_player, 'score player': score}
