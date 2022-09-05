@@ -204,15 +204,13 @@ class TablePlayers:
     def serialize_player(self, player):
 
         date_birth_str = player.date_birth.strftime('%d%m%Y')
-        serialized_player = {
-            'last_name': player.last_name,
-            'first_name': player.first_name,
-            'date_birth': date_birth_str,
-            'gender': player.gender,
-            'rank': player.rank,
-            'current_tournament_score': player.current_tournament_score,
-            'player_id': player.player_id
-        }
+        serialized_player = {'last_name': player.last_name,
+                             'first_name': player.first_name,
+                             'date_birth': date_birth_str,
+                             'gender': player.gender,
+                             'rank': player.rank,
+                             'current_tournament_score': player.current_tournament_score
+                             }
 
         return serialized_player
 
@@ -224,8 +222,8 @@ class TablePlayers:
                         date_birth,
                         serialized_player['gender'],
                         serialized_player['rank'],
-                        serialized_player['current_tournament_score'],
-                        serialized_player['player_id'])
+                        serialized_player['current_tournament_score']
+                        )
 
         return player
 

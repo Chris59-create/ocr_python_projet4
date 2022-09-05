@@ -1,11 +1,10 @@
-from datetime import datetime
-
 import pyinputplus as pyip
+from datetime import datetime
 
 
 class ViewTournament:
 
-    def test_tournament_data(self):
+    def test_tournament_data(self): # à voir si à supprimer
         return {"tournament_name": "tournoi test",
                 "place": "Solbach",
                 "dates_tournament": ["10/08/2022"],

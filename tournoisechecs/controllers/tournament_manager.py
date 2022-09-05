@@ -39,13 +39,9 @@ class TournamentManager:
     # Ajoute la liste des joueurs au tournoi
     def tournament_add_players(self):
         player_manager = PlayerManager()
-        player_manager.tournament_add_players(self.tournament, NUMBER_TOURNAMENT_PLAYERS)
-
-    def test_tournament_add_players(self):
-        print("test add players tournament_players before add : ", self.tournament.tournament_players)
-        player_manager = PlayerManager()
-        player_manager.test_tournament_add_players(self.tournament, NUMBER_TOURNAMENT_PLAYERS)
-        print("test add players tournament_players after add : ", self.tournament.tournament_players)
+        while len(self.tournament.tournament_players) < NUMBER_TOURNAMENT_PLAYERS:
+            player = player_manager.add_player()
+            self.tournament.tournament_players.append(player)
 
     # Calcule les paires de joueurs pour le round
     def calculate_pairs(self):

@@ -1,12 +1,110 @@
-import random
-from datetime import datetime
-
 import pyinputplus as pyip
+from operator import attrgetter
+from datetime import datetime
 
 
 class ViewPlayer:
 
-    def manual_input_player(self):
+    dict_attrs = {"Nom de famille": 'last_name',
+                  "Prénom": 'first_name',
+                  "Date de naissance": 'date_birth',
+                  "Genre": 'gender',
+                  "Classement": 'rank'
+                  }
+
+    french_attrs = list(dict_attrs.keys())
+
+    dict_input_function = {"Nom de famille": 'pyip.inputStr("Nom de Famille : ", applyFunc=lambda str_: str_.upper())',
+                           "Prénom": 'pyip.inputStr("Prénom : ", applyFunc=lambda str_: str_.upper())',
+                           "Date de naissance": 'pyip.inputDate("Date de naissance (jjmmaaaa) : ",'
+                                                ' formats=["%d%m%Y"])',
+                           "Genre": 'pyip.inputMenu(["Femme", "Homme", "Autre"],'
+                                    ' prompt="Saisir le numéro du critère souhaité de saisie :\\n",  numbered=True)',
+                           "Classement": 'pyip.inputInt("Classement : ", default=0, min=0)'
+                           }
+
+    def __init__(self, players_instances):
+        self.players_instances = players_instances
+
+    def player_selection(self, player_selection_data, players_list, i):
+
+        print("\nCréation / Sélection d'un joueur pour le tournoi : \n")
+
+        selected_player = []
+
+        while len(player_selection_data) < len(self.dict_attrs):
+            dict_french_english_attr_ = self.input_chosen_attr_(player_selection_data)
+            french_attr_ = list(dict_french_english_attr_.keys())[0]
+            chosen_attr_ = dict_french_english_attr_[french_attr_]
+
+            searched_value = self.input_search_value(french_attr_)  # renvoi vers view
+
+            player_selection_data[french_attr_] = searched_value
+
+            players_list = self.player_search(players_list, chosen_attr_, searched_value)
+
+            if len(players_list) > 0:
+                print("\nListe des joueurs correspondants aux critères :")
+                for player in players_list:
+                    print(player)
+
+                if len(players_list) == 1:
+                    choice = pyip.inputYesNo(prompt="est-ce le joueur cherché : Oui(y/Y) / Non(n/N) ?")
+                    if choice == "yes":
+                        for player in players_list:
+                            selected_player.append(player)
+                        player_selection_data = {}
+                        player_data = selected_player[0]
+                        break
+                    elif choice == "no":
+                        self.continue_or_restart(player_selection_data)
+
+            elif len(players_list) == 0 and i == 0:
+                self.continue_or_restart(player_selection_data)
+                i = 1
+
+            else:
+                pass
+
+            player_data = dict(zip(self.dict_attrs.values(), list(player_selection_data.values())))
+
+        return player_data
+
+    def input_chosen_attr_(self, player_selection_data):
+        treated_attrs = list(player_selection_data.keys())
+        remaining_french_attrs = [attr_ for attr_ in self.french_attrs + treated_attrs if
+                                  attr_ not in self.french_attrs or attr_ not in treated_attrs]
+        if len(remaining_french_attrs) > 1:
+            french_attr_ = pyip.inputMenu(remaining_french_attrs,
+                                          prompt="Saisir le numéro du critère souhaité de saisie :\n", numbered=True)
+        else:
+            french_attr_ = remaining_french_attrs[0]
+        chosen_attr_ = self.dict_attrs[french_attr_]
+        return {french_attr_: chosen_attr_}
+
+    def input_search_value(self, french_attr_):
+        searched_value = eval(self.dict_input_function[french_attr_])
+        return searched_value
+
+    def player_search(self, players_list, chosen_attr_, value):
+        getter = attrgetter(chosen_attr_)
+        players_found = [player for player in players_list if getter(player) == value]
+
+        return players_found
+
+    def continue_or_restart(self, player_selection_data):
+        next_choice = pyip.inputYesNo(prompt="Pas de joueur existant.\nVoulez-vous saisir les critères restants"
+                                             " pour créer un nouveau joueur, oui (y/N) ou non (n/N)")
+        if next_choice == "no":
+            player_selection_data = {}
+            print("\nReprise au début de la saisie des données d'un joueur : \n")
+            self.player_selection(player_selection_data, self.players_instances, i=0)
+        if next_choice == "yes":
+            print("\nContinuation de la saisie des données du joueur : \n")
+            self.player_selection(player_selection_data, players_list=[], i=1)
+
+
+    def input_player_data(self):
         first_name = pyip.inputStr("Nom de Famille : ")
         last_name = pyip.inputStr("Prénom : ")
         date_birth = pyip.inputDate("Date de naissance (jjmmaaaa) : ", formats=['%d%m%Y'])
@@ -20,48 +118,21 @@ class ViewPlayer:
                 "rank": rank
                 }
 
-    def random_input_player(self):
-        first_name = "Firstname" + str(random.randint(0, 100))
-        last_name = "Lastname" + str(random.randint(0, 100))
-        date_string = str(random.randint(10, 30)) + str(random.randint(10, 12)) + str(random.randint(1000, 9999))
-        date_birth = datetime.strptime(date_string, '%d%m%Y')
-        gender = random.choice(["Femme", "Homme", "Autre"])
-        rank = random.randint(0, 1000)
-
-        return {"last_name": last_name,
-                "first_name": first_name,
-                "date_birth": date_birth,
-                "gender": gender,
-                "rank": rank
-                }
-
-    # vérifier si à supprimer
-    def input_player_data(self):
-
-        mode = pyip.inputMenu(["Saisie des joueurs", "Génération automatique des joueurs en mode test"],
-                              numbered=True)
-        if mode == "Saisie des joueurs":
-            player_data = self.manual_input_player()
-        if mode == "Génération automatique des joueurs en mode test":
-            player_data = self.random_input_player()
-
-        return player_data
-
     def input_player_new_rank(self):
         print("\nMettre à jour le classement du joueur : ")
-        player_id = pyip.inputInt(prompt="\nSaisir le numéro d'identification  (ID) du joueur : ")
+        #player_id = pyip.inputInt(prompt="\nSaisir le numéro d'identification  (ID) du joueur : ")
         new_rank = pyip.inputInt(prompt="\nSaisir le nouveau classement du joueur : \n")
 
-        return player_id, new_rank
+        #return player_id, new_rank
 
     def display_all_players_by_rank(self):
         pass
 
-    def display_all_players(self, players_instances):
-        for player in players_instances:
+    def display_all_players(self):
+        for player in self.players_instances:
             print(player)
 
-    def display_all_players_by_name(self, players_instances):
-        all_players_by_name = sorted(players_instances, key=lambda x: (x.first_name, x.last_name))
+    def display_all_players_by_name(self):
+        all_players_by_name = sorted(self.players_instances, key=lambda x: (x.first_name, x.last_name))
         for player in all_players_by_name:
             print(player)

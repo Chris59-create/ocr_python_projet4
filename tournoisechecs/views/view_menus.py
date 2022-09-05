@@ -76,7 +76,7 @@ class MenuTournament:
                 self.i = 1
                 self.tournament_choices()
             elif tournament_choice == "Enregistrer les joueurs du tournoi":
-                self.tournament_manager.test_tournament_add_players()  # à changer avant prod
+                self.tournament_manager.tournament_add_players()
                 self.i += 1
                 self.tournament_choices()
             elif tournament_choice == "Afficher les matchs à jouer":
@@ -131,7 +131,7 @@ class MenuPlayers:
                                          "Afficher la liste des joueurs", "Retour au menu principal"],
                                         prompt="Saisir le chiffre de l'action désirée :\n\n", numbered=True)
         if players_choice == "Créer un joueur":
-            self.player_manager.add_single_player()
+            self.player_manager.add_player()
             self.players_choices()
         if players_choice == "Modifier le classement d'un joueur":
             self.player_manager.update_player_rank()
@@ -185,6 +185,15 @@ class MenuReports:
 
             self.reports_choices()
         if reports_choice == "Liste de tous les matchs d'un tournoi":
+            # Test
+            tournament_manager = TournamentManager()
+            view_tournament = ViewTournament()
+            table_tournament = TableTournament()
+            table_tournament.install_tournament_data()
+            for tournament in tournament_manager.tournaments_instances:
+                for round_ in tournament.tournament_rounds:
+                    for match in round_.matches:
+                        print(match)
 
             self.reports_choices()
         if reports_choice == "Retour au menu principal":
