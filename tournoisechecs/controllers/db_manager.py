@@ -30,11 +30,15 @@ class TableTournament:
             serialized_rounds = []
             for round_ in tournament.tournament_rounds:
 
+
+
                 serialized_matches = []
 
                 for match in round_.matches:
 
                     serialized_match = []
+
+                    print("test", match)
 
                     for player, score in match:
                         serialized_player = self.table_player.serialize_player(player)
@@ -44,7 +48,7 @@ class TableTournament:
 
                     serialized_matches.append(serialized_match)
 
-                print("test serialized_matches", serialized_matches)
+                print("\ntest serialized_matches\n", serialized_matches)
 
                 serialized_pairs_players = []
                 for pair_players in round_.pairs_players:
@@ -59,8 +63,8 @@ class TableTournament:
 
                 serialized_round = {
                     'round_name': round_.round_name,
-                    'start_date_time': round_.start_date_time.strftime('%d%m%Y %H:%M:%S'),
-                    'end_date_time': round_.end_date_time.strftime('%d%m%Y %H:%M:%S'),
+                    'start_date_time': round_.start_date_time.strftime('%d%m%Y, %H:%M:%S'),
+                    'end_date_time': round_.end_date_time.strftime('%d%m%Y, %H:%M:%S'),
                     'matches': serialized_matches,
                     'pairs_players': serialized_pairs_players
                 }
@@ -119,7 +123,6 @@ class TableTournament:
 
                 # Deserialization of matches
                 deserialized_matches = []
-
                 for serialized_match in serialized_round['matches']:
 
                     player_score_1 = serialized_match[0]
@@ -138,7 +141,7 @@ class TableTournament:
                                                score_player_2
                                                )
 
-                    deserialized_matches.append(deserialized_match)
+                    deserialized_matches.append(deserialized_match.match_tuple)
 
                 # Deserialization of pair players
                 deserialized_pairs_players = []

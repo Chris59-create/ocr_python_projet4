@@ -75,45 +75,55 @@ class MenuTournament:
                 self.tournament_manager.display_tournament_data()
                 self.i = 1
                 self.tournament_choices()
+
             elif tournament_choice == "Enregistrer les joueurs du tournoi":
                 self.tournament_manager.tournament_add_players()
                 self.i += 1
                 self.tournament_choices()
+
             elif tournament_choice == "Afficher les matchs à jouer":
                 self.round_name, self.pairs_players = self.tournament_manager.prepare_round()
                 self.i += 1
                 self.tournament_choices()
+
             elif tournament_choice == "Démarrer le tour à jouer":
                 self.round_ = self.tournament_manager.start_round(self.round_name, self.pairs_players)
                 print(f"\nLe tour {self.round_name} a débuté !\n")
                 self.i += 1
                 self.tournament_choices()
+
             elif tournament_choice == "Saisir les scores du tour":
                 self.tournament_manager.update_score()
-                print(f"les scores du tour {self.round_name} sont saisis.\nVous pouvez afficher les matchs "
-                      f"du tour suivant.\n")
+
                 if self.tournament_manager.number_rounds <= NUMBER_ROUNDS:
+                    print(f"les scores du tour {self.round_name} sont saisis.\nVous pouvez afficher les matchs "
+                          f"du tour suivant.\n")
                     self.i -= 2
                 else:
                     self.i += 1
                     self.tournament_manager.number_rounds = 1
+
                 self.tournament_choices()
+
             elif tournament_choice == "Afficher les scores finaux du tournoi":
                 self.tournament_manager.update_tournament_final_scores()
                 self.tournament_manager.display_tournament_total_scores()
                 self.i += 1
                 self.tournament_choices()
+
             elif tournament_choice == "Mettre à jour le classement des joueurs":
                 self.tournament_manager.update_tournament_players_ranks()
                 self.i = 0
                 manage_tournament = None
                 self.tournament_choices()
                 return manage_tournament
+
             elif tournament_choice == "Modifier le classement d'un joueur":
                 player_manager = PlayerManager()
                 player_manager.update_player_rank()
                 self.i = 0
                 self.tournament_choices()
+
             elif tournament_choice == "Retour au menu principal":
                 init_menu = MenuMain()
                 init_menu.main_choices()

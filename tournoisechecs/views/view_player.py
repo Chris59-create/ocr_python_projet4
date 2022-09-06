@@ -1,6 +1,5 @@
 import pyinputplus as pyip
 from operator import attrgetter
-from datetime import datetime
 
 
 class ViewPlayer:
@@ -37,14 +36,14 @@ class ViewPlayer:
             french_attr_ = list(dict_french_english_attr_.keys())[0]
             chosen_attr_ = dict_french_english_attr_[french_attr_]
 
-            searched_value = self.input_search_value(french_attr_)  # renvoi vers view
+            searched_value = self.input_search_value(french_attr_)
 
             player_selection_data[french_attr_] = searched_value
 
             players_list = self.player_search(players_list, chosen_attr_, searched_value)
 
             if len(players_list) > 0:
-                print("\nListe des joueurs correspondants aux critères :")
+                print("\nListe des joueurs correspondants aux critères :\n")
                 for player in players_list:
                     print(player)
 
@@ -76,7 +75,7 @@ class ViewPlayer:
                                   attr_ not in self.french_attrs or attr_ not in treated_attrs]
         if len(remaining_french_attrs) > 1:
             french_attr_ = pyip.inputMenu(remaining_french_attrs,
-                                          prompt="Saisir le numéro du critère souhaité de saisie :\n", numbered=True)
+                                          prompt="\nSaisir le numéro du critère souhaité de saisie :\n\n", numbered=True)
         else:
             french_attr_ = remaining_french_attrs[0]
         chosen_attr_ = self.dict_attrs[french_attr_]
@@ -104,7 +103,7 @@ class ViewPlayer:
             self.player_selection(player_selection_data, players_list=[], i=1)
 
 
-    def input_player_data(self):
+    '''def input_player_data(self):  # à supprimer
         first_name = pyip.inputStr("Nom de Famille : ")
         last_name = pyip.inputStr("Prénom : ")
         date_birth = pyip.inputDate("Date de naissance (jjmmaaaa) : ", formats=['%d%m%Y'])
@@ -116,14 +115,13 @@ class ViewPlayer:
                 "date_birth": date_birth,
                 "gender": gender,
                 "rank": rank
-                }
+                }'''
 
     def input_player_new_rank(self):
         print("\nMettre à jour le classement du joueur : ")
-        #player_id = pyip.inputInt(prompt="\nSaisir le numéro d'identification  (ID) du joueur : ")
         new_rank = pyip.inputInt(prompt="\nSaisir le nouveau classement du joueur : \n")
 
-        #return player_id, new_rank
+        return new_rank
 
     def display_all_players_by_rank(self):
         pass

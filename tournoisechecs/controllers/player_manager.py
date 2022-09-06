@@ -28,8 +28,9 @@ class PlayerManager:
         return player
 
     def update_player_rank(self):
-        self.view_player.display_all_players_by_name(self.players_instances)
-        #player_id, new_rank = self.view_player.input_player_new_rank()
-        for player in self.players_instances:
-            #if player.player_id == player_id:
-                player.change_rank(new_rank)
+        player = self.view_player.player_selection(player_selection_data={},
+                                                   players_list=self.players_instances,
+                                                   i=0
+                                                   )
+        new_rank = self.view_player.input_player_new_rank()
+        player.change_rank(new_rank)

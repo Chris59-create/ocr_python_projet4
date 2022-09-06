@@ -37,11 +37,16 @@ class TournamentManager:
         self.view_tournament.display_tournament_data(self.tournament)
 
     # Ajoute la liste des joueurs au tournoi
+
     def tournament_add_players(self):
         player_manager = PlayerManager()
+
+        number_players_added = 0
         while len(self.tournament.tournament_players) < NUMBER_TOURNAMENT_PLAYERS:
             player = player_manager.add_player()
             self.tournament.tournament_players.append(player)
+            number_players_added += 1
+            print("Nombre de joueurs ajoutés au tournoi : ", number_players_added)
 
     # Calcule les paires de joueurs pour le round
     def calculate_pairs(self):
@@ -65,7 +70,7 @@ class TournamentManager:
 
     def start_round(self, round_name, pairs_players):
         self.round_ = Round(round_name, pairs_players)
-        print(f"Date et heure du début de {round_name} : {self.round_.start_date_time}")
+        print(f"\nDate et heure du début de {round_name} : {self.round_.start_date_time}\n")
 
     def update_score(self):
         view_round = ViewRound()
@@ -129,7 +134,6 @@ class TournamentManager:
     def update_tournament_players_ranks(self):
 
         self.display_tournament_total_scores()
-        print("test affichage individuel des joueurs pour maj rank")
         for element in self.tournament_final_scores_sorted:
             index_element = self.tournament_final_scores_sorted.index(element)
             player_data = self.player_data(element, index_element)

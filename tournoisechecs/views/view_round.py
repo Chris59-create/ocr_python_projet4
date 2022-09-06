@@ -14,9 +14,9 @@ class ViewRound:
     def input_score(self, player1, player2):
         print(f"Joueur 1 : {player1.first_name} {player1.last_name}\nJoueur 2 :"
               f" {player2.first_name} {player2.last_name}")
-        print("Qui a gagné le match ?")
+        print("\nQui a gagné le match ?\n")
         match_winner = pyip.inputMenu(["Joueur 1", "Joueur 2", "Match nul"],
-                                      prompt="Saisir le chiffre de l'action désirée : \n",
+                                      prompt="Saisir le chiffre de l'action désirée : \n\n",
                                       numbered=True
                                       )
         if match_winner == "Joueur 1":
