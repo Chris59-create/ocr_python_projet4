@@ -121,6 +121,11 @@ class TableTournament:
             deserialized_rounds = []
             for serialized_round in serialized_tournament_rounds:
 
+                deserialized_start_date_time = datetime.strptime(serialized_round['start_date_time'],
+                                                                 '%d/%m/%Y, %H:%M:%S'),
+                deserialized_end_date_time = datetime.strptime(serialized_round['end_date_time'],
+                                                                '%d/%m/%Y, %H:%M:%S')
+
                 # Deserialization of matches
                 deserialized_matches = []
                 for serialized_match in serialized_round['matches']:
@@ -159,8 +164,8 @@ class TableTournament:
 
                 deserialized_round = Round(serialized_round['round_name'],
                                            deserialized_pairs_players,
-                                           serialized_round['start_date_time'],
-                                           serialized_round['end_date_time'],
+                                           deserialized_start_date_time,
+                                           deserialized_end_date_time,
                                            deserialized_matches
                                            )
 
