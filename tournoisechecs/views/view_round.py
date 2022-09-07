@@ -1,9 +1,11 @@
 import pyinputplus as pyip
+from controllers.helpers import console_clear
 
 
 class ViewRound:
 
-    def display_pairs_round(self, pairs_players):
+    @staticmethod
+    def display_pairs_round(pairs_players):
 
         print("\nVont jouer lors de ce tour :\n")
         for element in pairs_players:
@@ -30,5 +32,7 @@ class ViewRound:
             score_player2 = 0.5
 
         print(f"score du match :\n{player1.last_name} : {score_player1}, {player2.last_name} : {score_player2}")
+
+        console_clear(5)
 
         return score_player1, score_player2

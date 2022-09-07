@@ -117,7 +117,8 @@ class ViewPlayer:
                 "rank": rank
                 }'''
 
-    def input_player_new_rank(self):
+    @staticmethod
+    def input_player_new_rank():
         print("\nMettre à jour le classement du joueur : ")
         new_rank = pyip.inputInt(prompt="\nSaisir le nouveau classement du joueur : \n")
 

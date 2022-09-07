@@ -1,6 +1,6 @@
 from controllers.db_manager import TablePlayers
 from views.view_menus import MenuMain
-from views.view_test import  PlayersListTest
+from views.view_test import PlayersListTest
 
 
 def main():
