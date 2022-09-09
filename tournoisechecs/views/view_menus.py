@@ -11,9 +11,7 @@ from views.view_tournament import ViewTournament
 
 class MenuMain:
 
-    def __init__(self):
-        print("\nMenu principal : \n")
-
+    @staticmethod
     def manage_tournament(self, manage_tournament=None):
 
         if isinstance(manage_tournament, MenuTournament):
@@ -22,16 +20,20 @@ class MenuMain:
             manage_tournament = MenuTournament()
             manage_tournament.tournament_choices()
 
-
+    @staticmethod
     def manage_players(self):
         manage_players = MenuPlayers()
         manage_players.players_choices()
 
+    @staticmethod
     def edit_reports(self):
         edit_reports = MenuReports()
         edit_reports.reports_choices()
 
     def main_choices(self):
+
+        print("\nMenu principal : \n")
+
         main_choice = pyip.inputMenu(["Gérer un tournoi", "Gérer les joueurs", "Editer les rapports",
                                       "Quitter l'application"],
                                      prompt="Saisir le chiffre de l'action désirée : \n\n", numbered=True)
@@ -152,7 +154,7 @@ class MenuTournament:
                 console_clear()
                 table_tournament = TableTournament()
                 table_tournament.save_tournaments_data()
-                self.i = 0
+                self.i += 1
                 self.tournament_choices()
 
             elif tournament_choice == "Retour au menu principal":
@@ -163,16 +165,17 @@ class MenuTournament:
 
 class MenuPlayers:
 
-    player_manager = PlayerManager()
-
     def __init__(self):
-
-        print("\nVous êtes dans le menu de gestion des joueurs : \n")
+        self.player_manager = PlayerManager()
 
     def players_choices(self):
 
+        print("\nVous êtes dans le menu de gestion des joueurs : \n")
+
         players_choice = pyip.inputMenu(["Créer un joueur", "Modifier le classement d'un joueur",
-                                         "Afficher la liste des joueurs", "Retour au menu principal"],
+                                         "Afficher la liste des joueurs", "Sauvegarder les données joueurs",
+                                         "Retour au menu principal"
+                                         ],
                                         prompt="Saisir le chiffre de l'action désirée :\n\n", numbered=True)
 
         if players_choice == "Créer un joueur":
@@ -184,8 +187,12 @@ class MenuPlayers:
             self.players_choices()
 
         if players_choice == "Afficher la liste des joueurs":
-            view_player = ViewPlayer()
-            view_player.display_all_players()
+            self.player_manager.display_players(self.player_manager.players_instances, 'alphabetical')
+            self.players_choices()
+
+        if players_choice == "Sauvegarder les données joueurs":
+            table_players_manager = TablePlayers()
+            table_players_manager.save_players_data()
             self.players_choices()
 
         if players_choice == "Retour au menu principal":
@@ -196,57 +203,76 @@ class MenuPlayers:
 class MenuReports:
 
     def __init__(self):
-
-        print("\nVous êtes dans le menu Rapports\n")
+        self.player_manager = PlayerManager()
+        self.tournament_manager = TournamentManager()
+        self.table_tournament = TableTournament()
+        self.table_tournament.install_tournament_data()
 
     def reports_choices(self):
+
+        print("\nVous êtes dans le menu Rapports\n")
 
         reports_choice = pyip.inputMenu(["Liste alphabétique des acteurs",
                                          "Liste des acteurs par classement",
                                          "Liste alphabétique des joueurs d'un tournoi",
-                                         "Liste des joueurs d'un tournoi par classement",
+                                         "Liste  par classement des joueurs d'un tournoi",
                                          "Liste de tous les tournois",
                                          "Liste de tous les tours d'un tournoi",
                                          "Liste de tous les matchs d'un tournoi",
                                          "Retour au menu principal"
                                          ],
-                                        prompt="Saisir le chiffre de l'action désirée :\n\n", numbered=True)
-        if reports_choice == "Liste alphabétique des acteurs":
+                                        prompt="Saisir le chiffre de l'action désirée :\n\n", numbered=True
+                                        )
 
+        if reports_choice == "Liste alphabétique des acteurs":
+            console_clear()
+            self.player_manager.display_players(self.player_manager.players_instances, "alphabetical")
             self.reports_choices()
 
         if reports_choice == "Liste des acteurs par classement":
-
+            console_clear()
+            self.player_manager.display_players(self.player_manager.players_instances, "rank")
             self.reports_choices()
 
         if reports_choice == "Liste alphabétique des joueurs d'un tournoi":
+            console_clear()
+            tournament = self.tournament_manager.select_tournament()
+
+            if tournament:
+                self.player_manager.display_players(tournament.tournament_players, "alphabetical")
 
             self.reports_choices()
 
-        if reports_choice == "Liste des joueurs d'un tournoi par classement":
+        if reports_choice == "Liste  par classement des joueurs d'un tournoi":
+            console_clear()
+            tournament = self.tournament_manager.select_tournament()
+
+            if tournament:
+                self.player_manager.display_players(tournament.tournament_players, "rank")
 
             self.reports_choices()
 
         if reports_choice == "Liste de tous les tournois":
-            tournament_manager = TournamentManager()
-            view_tournament = ViewTournament()
-            table_tournament = TableTournament()
-            table_tournament.install_tournament_data()
-            for tournament in tournament_manager.tournaments_instances:
-                view_tournament.display_tournament_data(tournament)
+            console_clear()
+
+            for tournament in self.tournament_manager.tournaments_instances:
+                self.tournament_manager.display_tournament_data(tournament)
+
             self.reports_choices()
 
         if reports_choice == "Liste de tous les tours d'un tournoi":
+            # console_clear()
+            tournament = self.tournament_manager.select_tournament()
+
+            if tournament:
+                self.tournament_manager.display_rounds(tournament)
 
             self.reports_choices()
 
         if reports_choice == "Liste de tous les matchs d'un tournoi":
-            # Test
-            tournament_manager = TournamentManager()
-            view_tournament = ViewTournament()
-            table_tournament = TableTournament()
-            table_tournament.install_tournament_data()
-            for tournament in tournament_manager.tournaments_instances:
+            console_clear()
+
+            for tournament in self.tournament_manager.tournaments_instances:
                 for round_ in tournament.tournament_rounds:
                     for match in round_.matches:
                         print(match)

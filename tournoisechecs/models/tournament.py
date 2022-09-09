@@ -19,3 +19,7 @@ class Tournament:
 
     def update_tournament_final_scores(self, tournament_score):
         self.tournament_final_scores.append(tournament_score)
+
+    def __str__(self):
+        return f"Nom du tournoi : {self.tournament_name} - Lieu : {self.place} - Date(s) : {self.dates_tournament}, " \
+               f"Contrôle temps : {self.time_control}, Description : {self.tournament_description}\n"

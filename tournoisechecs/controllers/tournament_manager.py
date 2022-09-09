@@ -17,7 +17,7 @@ class TournamentManager:
     number_rounds = 1
 
     def __init__(self):
-        self.view_tournament = ViewTournament()
+        self.view_tournament = ViewTournament(self.tournaments_instances)
 
     # Crée le tournoi
     def input_tournament_data(self):
@@ -150,3 +150,21 @@ class TournamentManager:
             self.view_tournament.display_tournament_total_scores(player_data)
             new_rank = self.view_tournament.input_tournament_player_new_rank()
             element[0].rank = new_rank
+            
+    def select_tournament(self):
+
+        tournament = self.view_tournament.tournament_selection(tournament_selection_data={},
+                                                               tournaments_list=self.tournaments_instances,
+                                                               )
+
+        if tournament is None:
+            pass
+        else:
+            return tournament
+
+    def display_rounds(self, tournament):
+        view_round = ViewRound()
+
+        for round_ in tournament.tournament_rounds:
+            view_round.display_round(round_)
+

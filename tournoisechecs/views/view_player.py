@@ -4,23 +4,24 @@ from operator import attrgetter
 
 class ViewPlayer:
 
-    dict_attrs = {"Nom de famille": 'last_name',
-                  "Prénom": 'first_name',
-                  "Date de naissance": 'date_birth',
-                  "Genre": 'gender',
-                  "Classement": 'rank'
-                  }
+    player_attrs = {"Nom de famille": 'last_name',
+                    "Prénom": 'first_name',
+                    "Date de naissance": 'date_birth',
+                    "Genre": 'gender',
+                    "Classement": 'rank'
+                    }
 
-    french_attrs = list(dict_attrs.keys())
+    french_player_attrs = list(player_attrs.keys())
 
-    dict_input_function = {"Nom de famille": 'pyip.inputStr("Nom de Famille : ", applyFunc=lambda str_: str_.upper())',
-                           "Prénom": 'pyip.inputStr("Prénom : ", applyFunc=lambda str_: str_.upper())',
-                           "Date de naissance": 'pyip.inputDate("Date de naissance (jjmmaaaa) : ",'
-                                                ' formats=["%d%m%Y"])',
-                           "Genre": 'pyip.inputMenu(["Femme", "Homme", "Autre"],'
-                                    ' prompt="Saisir le numéro du critère souhaité de saisie :\\n",  numbered=True)',
-                           "Classement": 'pyip.inputInt("Classement : ", default=0, min=0)'
-                           }
+    player_input_function = {"Nom de famille": 'pyip.inputStr("Nom de Famille : ",'
+                                               ' applyFunc=lambda str_: str_.upper())',
+                             "Prénom": 'pyip.inputStr("Prénom : ", applyFunc=lambda str_: str_.upper())',
+                             "Date de naissance": 'pyip.inputDate("Date de naissance (jjmmaaaa) : ",'
+                                                  ' formats=["%d%m%Y"])',
+                             "Genre": 'pyip.inputMenu(["Femme", "Homme", "Autre"],'
+                                      ' prompt="Saisir le numéro du critère souhaité de saisie :\\n",  numbered=True)',
+                             "Classement": 'pyip.inputInt("Classement : ", default=0, min=0)'
+                             }
 
     def __init__(self, players_instances):
         self.players_instances = players_instances
@@ -31,7 +32,7 @@ class ViewPlayer:
 
         selected_player = []
 
-        while len(player_selection_data) < len(self.dict_attrs):
+        while len(player_selection_data) < len(self.player_attrs):
             dict_french_english_attr_ = self.input_chosen_attr_(player_selection_data)
             french_attr_ = list(dict_french_english_attr_.keys())[0]
             chosen_attr_ = dict_french_english_attr_[french_attr_]
@@ -65,33 +66,41 @@ class ViewPlayer:
             else:
                 pass
 
-            player_data = dict(zip(self.dict_attrs.values(), list(player_selection_data.values())))
+            player_data = dict(zip(self.player_attrs.values(), list(player_selection_data.values())))
 
         return player_data
 
     def input_chosen_attr_(self, player_selection_data):
+        
         treated_attrs = list(player_selection_data.keys())
-        remaining_french_attrs = [attr_ for attr_ in self.french_attrs + treated_attrs if
-                                  attr_ not in self.french_attrs or attr_ not in treated_attrs]
-        if len(remaining_french_attrs) > 1:
-            french_attr_ = pyip.inputMenu(remaining_french_attrs,
-                                          prompt="\nSaisir le numéro du critère souhaité de saisie :\n\n", numbered=True)
+        remaining_french_player_attrs = [attr_ for attr_ in self.french_player_attrs + treated_attrs
+                                         if attr_ not in self.french_player_attrs or attr_ not in treated_attrs
+                                         ]
+        if len(remaining_french_player_attrs) > 1:
+            french_attr_ = pyip.inputMenu(remaining_french_player_attrs,
+                                          prompt="\nSaisir le numéro du critère souhaité de saisie :\n\n",
+                                          numbered=True)
+            
         else:
-            french_attr_ = remaining_french_attrs[0]
-        chosen_attr_ = self.dict_attrs[french_attr_]
+            french_attr_ = remaining_french_player_attrs[0]
+        chosen_attr_ = self.player_attrs[french_attr_]
         return {french_attr_: chosen_attr_}
 
     def input_search_value(self, french_attr_):
-        searched_value = eval(self.dict_input_function[french_attr_])
+        
+        searched_value = eval(self.player_input_function[french_attr_])
         return searched_value
 
-    def player_search(self, players_list, chosen_attr_, value):
+    @ staticmethod
+    def player_search(players_list, chosen_attr_, value):
+        
         getter = attrgetter(chosen_attr_)
         players_found = [player for player in players_list if getter(player) == value]
 
         return players_found
 
     def continue_or_restart(self, player_selection_data):
+        
         next_choice = pyip.inputYesNo(prompt="Pas de joueur existant.\nVoulez-vous saisir les critères restants"
                                              " pour créer un nouveau joueur, oui (y/N) ou non (n/N)")
         if next_choice == "no":
@@ -101,21 +110,6 @@ class ViewPlayer:
         if next_choice == "yes":
             print("\nContinuation de la saisie des données du joueur : \n")
             self.player_selection(player_selection_data, players_list=[], i=1)
-
-
-    '''def input_player_data(self):  # à supprimer
-        first_name = pyip.inputStr("Nom de Famille : ")
-        last_name = pyip.inputStr("Prénom : ")
-        date_birth = pyip.inputDate("Date de naissance (jjmmaaaa) : ", formats=['%d%m%Y'])
-        gender = pyip.inputMenu(["Femme", "Homme", "Autre"], numbered=True)
-        rank = pyip.inputInt("Classement : ", default=0, min=0)
-
-        return {"last_name": last_name,
-                "first_name": first_name,
-                "date_birth": date_birth,
-                "gender": gender,
-                "rank": rank
-                }'''
 
     @staticmethod
     def input_player_new_rank():
@@ -131,7 +125,14 @@ class ViewPlayer:
         for player in self.players_instances:
             print(player)
 
-    def display_all_players_by_name(self):
-        all_players_by_name = sorted(self.players_instances, key=lambda x: (x.first_name, x.last_name))
-        for player in all_players_by_name:
+    @staticmethod
+    def display_players(players_sorted, criteria):
+
+        if criteria == "alphabetical":
+            print("Liste des joueurs par ordre alphabétique :\n")
+
+        elif criteria == "rank":
+            print("Liste des joueurs par classement :\n")
+
+        for player in players_sorted:
             print(player)

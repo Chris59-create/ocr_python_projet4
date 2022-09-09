@@ -30,8 +30,6 @@ class TableTournament:
             serialized_rounds = []
             for round_ in tournament.tournament_rounds:
 
-
-
                 serialized_matches = []
 
                 for match in round_.matches:
@@ -60,6 +58,8 @@ class TableTournament:
                     serialized_pairs_players.append(serialized_pair_players)
 
                 print("test serialized_pairs_players", serialized_pairs_players)
+
+                print("test type start date : ", type(round_.start_date_time), round_.start_date_time )
 
                 serialized_round = {
                     'round_name': round_.round_name,
@@ -120,9 +120,9 @@ class TableTournament:
 
             deserialized_rounds = []
             for serialized_round in serialized_tournament_rounds:
-
-                deserialized_start_date_time = datetime.strptime(serialized_round['start_date_time'],
-                                                                 '%d/%m/%Y, %H:%M:%S'),
+                print("test format serialized start date :", serialized_round['start_date_time'])
+                deserialized_start_date_time = datetime.strptime(serialized_round['start_date_time'], '%d/%m/%Y, %H:%M:%S')
+                print("test deserialized start date :", deserialized_start_date_time)
                 deserialized_end_date_time = datetime.strptime(serialized_round['end_date_time'], '%d/%m/%Y, %H:%M:%S')
 
                 # Deserialization of matches
@@ -160,6 +160,9 @@ class TableTournament:
                     deserialized_pair_players = [deserialized_player_0, deserialized_player_1]
 
                     deserialized_pairs_players.append(deserialized_pair_players)
+
+                print("\ntest dans deserialization round tye start date :", type(deserialized_start_date_time), deserialized_start_date_time)
+                print()
 
                 deserialized_round = Round(serialized_round['round_name'],
                                            deserialized_pairs_players,
@@ -208,7 +211,8 @@ class TablePlayers:
 
         self.player_manager = PlayerManager()
 
-    def serialize_player(self, player):
+    @staticmethod
+    def serialize_player(player):
 
         date_birth_str = player.date_birth.strftime('%d%m%Y')
         serialized_player = {'last_name': player.last_name,
@@ -221,9 +225,11 @@ class TablePlayers:
 
         return serialized_player
 
-    def deserialize_player(self, serialized_player):
+    @staticmethod
+    def deserialize_player(serialized_player):
 
         date_birth = datetime.strptime(serialized_player['date_birth'], '%d%m%Y')
+
         player = Player(serialized_player['last_name'],
                         serialized_player['first_name'],
                         date_birth,

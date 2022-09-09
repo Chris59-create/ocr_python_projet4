@@ -17,5 +17,5 @@ class Player:
         self.current_tournament_score += round_score
 
     def __str__(self):
-        return f"{self.last_name} {self.first_name}, {self.gender}, né(e) le {self.date_birth} classé(e) {self.rank} "\
-               f"- Score en cours : {self.current_tournament_score}"
+        return f"{self.last_name} {self.first_name}, {self.gender}, né(e) le {self.date_birth.strftime('%d/%m/%Y')} " \
+               f"classé(e) {self.rank} - Score en cours : {self.current_tournament_score}"

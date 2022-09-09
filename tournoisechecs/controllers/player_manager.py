@@ -34,3 +34,13 @@ class PlayerManager:
                                                    )
         new_rank = self.view_player.input_player_new_rank()
         player.change_rank(new_rank)
+
+    def display_players(self, players_list, criteria):
+
+        if criteria == "alphabetical":
+            players_sorted = sorted(players_list, key=lambda x: (x.last_name, x.first_name))
+
+        elif criteria == "rank":
+            players_sorted = sorted(players_list, key=lambda x: (x.rank, x.last_name, x.first_name))
+
+        self.view_player.display_players(players_sorted, criteria)

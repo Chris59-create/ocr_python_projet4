@@ -33,6 +33,9 @@ class ViewRound:
 
         print(f"score du match :\n{player1.last_name} : {score_player1}, {player2.last_name} : {score_player2}")
 
-        console_clear(5)
+        console_clear()
 
         return score_player1, score_player2
+
+    def display_round(self, round_):
+        print(round_)
