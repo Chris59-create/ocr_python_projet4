@@ -49,8 +49,6 @@ class MenuMain:
         if main_choice == "Quitter l'application":
             table_players = TablePlayers()
             table_players.save_players_data()
-            table_tournament = TableTournament()
-            table_tournament.save_tournaments_data()
             sys.exit("Application fermée par l'utilisateur")
 
 
@@ -66,6 +64,8 @@ class MenuTournament:
     i = 0
 
     def __init__(self):
+        self.table_tournament = TableTournament()
+        self.table_tournament.install_tournament_data()
 
         self.tournament = None
         self.round_name = None
@@ -147,7 +147,7 @@ class MenuTournament:
                 console_clear()
                 player_manager = PlayerManager()
                 player_manager.update_player_rank()
-                self.i = 0
+                self.i += 1
                 self.tournament_choices()
 
             elif tournament_choice == "Sauvegarder les données du tournoi":
@@ -159,6 +159,8 @@ class MenuTournament:
 
             elif tournament_choice == "Retour au menu principal":
                 console_clear()
+                table_tournament = TableTournament()
+                table_tournament.save_tournaments_data()
                 init_menu = MenuMain()
                 init_menu.main_choices()
 
@@ -271,11 +273,10 @@ class MenuReports:
 
         if reports_choice == "Liste de tous les matchs d'un tournoi":
             console_clear()
+            tournament = self.tournament_manager.select_tournament()
 
-            for tournament in self.tournament_manager.tournaments_instances:
-                for round_ in tournament.tournament_rounds:
-                    for match in round_.matches:
-                        print(match)
+            if tournament:
+                self.tournament_manager.display_matches(tournament)
 
             self.reports_choices()
 

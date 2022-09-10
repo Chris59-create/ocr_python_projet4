@@ -8,4 +8,5 @@ class Match:
         self.match_tuple = ([self.player1, score_player1], [self.player2, self.score_player2])
 
     def __str__(self):
-        return f"{self.match_tuple}"
+        return f"match {self.player1.last_name} {self.player1.first_name} contre {self.player2.last_name}" \
+               f" {self.player2.first_name} : {self.score_player1} - {self.score_player2}."

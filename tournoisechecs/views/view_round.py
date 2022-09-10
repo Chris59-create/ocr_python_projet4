@@ -1,4 +1,5 @@
 import pyinputplus as pyip
+from datetime import datetime
 from controllers.helpers import console_clear
 
 
@@ -37,5 +38,18 @@ class ViewRound:
 
         return score_player1, score_player2
 
-    def display_round(self, round_):
+    @staticmethod
+    def display_round(round_):
         print(round_)
+
+    @staticmethod
+    def display_match(match_result):
+
+        player_1 = list(match_result.keys())[0]
+        score_1 = match_result[player_1]
+        player_2 = list(match_result.keys())[1]
+        score_2 = match_result[player_2]
+        date_birth_1 = player_1.date_birth.strftime('%d/%m/%Y')
+        date_birth_2 = player_2.date_birth.strftime('%d/%m/%Y')
+        print(f"{player_1.last_name} {player_1.first_name} (né(e) le {date_birth_1}) contre {player_2.last_name} "
+              f"{player_2.first_name} (née(e) le {date_birth_2}) : {score_1} - {score_2} ")

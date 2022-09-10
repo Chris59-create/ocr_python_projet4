@@ -70,7 +70,9 @@ class TournamentManager:
 
     @staticmethod
     def start_round(round_name, pairs_players):
+
         round_ = Round(round_name, pairs_players)
+        round_.start_round()
 
         return round_
 
@@ -168,3 +170,14 @@ class TournamentManager:
         for round_ in tournament.tournament_rounds:
             view_round.display_round(round_)
 
+    def display_matches(self, tournament):
+        view_round = ViewRound()
+
+        for round_ in tournament.tournament_rounds:
+
+            for match in round_.matches:
+                match_result = {}
+                for player, score in match:
+                    match_result[player] = score
+
+                view_round.display_match(match_result)

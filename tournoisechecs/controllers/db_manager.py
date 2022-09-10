@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from controllers.player_manager import PlayerManager
 from controllers.tournament_manager import TournamentManager
 from models.match import Match
@@ -7,6 +6,7 @@ from models.player import Player
 from models.round import Round
 from models.tournament import Tournament
 from tinydb import TinyDB
+
 
 db = TinyDB('db.json')
 tournaments_table = db.table("tournaments")
@@ -39,6 +39,7 @@ class TableTournament:
                     print("test", match)
 
                     for player, score in match:
+                        print("test unpack match player score", player, score)
                         serialized_player = self.table_player.serialize_player(player)
                         serialized_match_player = {'serialized_player': serialized_player, 'score player': score}
 
@@ -256,3 +257,4 @@ class TablePlayers:
         for serialized_player in serialized_players:
             deserialized_player = self.deserialize_player(serialized_player)
             self.player_manager.players_instances.append(deserialized_player)
+
