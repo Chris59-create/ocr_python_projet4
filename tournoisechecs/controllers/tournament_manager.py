@@ -58,7 +58,6 @@ class TournamentManager:
 
     def prepare_round(self, tournament):
         round_name = "Round " + str(self.number_rounds)
-        print(round_name)  # test à supprimer
 
         pairs_players = self.calculate_pairs(tournament)
         view_round = ViewRound()

@@ -36,18 +36,13 @@ class TableTournament:
 
                     serialized_match = []
 
-                    print("test", match)
-
                     for player, score in match:
-                        print("test unpack match player score", player, score)
                         serialized_player = self.table_player.serialize_player(player)
                         serialized_match_player = {'serialized_player': serialized_player, 'score player': score}
 
                         serialized_match.append(serialized_match_player)
 
                     serialized_matches.append(serialized_match)
-
-                print("\ntest serialized_matches\n", serialized_matches)
 
                 serialized_pairs_players = []
                 for pair_players in round_.pairs_players:
@@ -57,10 +52,6 @@ class TableTournament:
                                                'serialized_player_1': serialized_player_1
                                                }
                     serialized_pairs_players.append(serialized_pair_players)
-
-                print("test serialized_pairs_players", serialized_pairs_players)
-
-                print("test type start date : ", type(round_.start_date_time), round_.start_date_time )
 
                 serialized_round = {
                     'round_name': round_.round_name,
@@ -72,15 +63,11 @@ class TableTournament:
 
                 serialized_rounds.append(serialized_round)
 
-            print("test serialized_rounds", serialized_rounds)
-
             # serialization de la liste des joueurs
             serialized_tournament_players = []
             for player in tournament.tournament_players:
                 serialized_player = self.table_player.serialize_player(player)
                 serialized_tournament_players.append(serialized_player)
-
-            print("test serialized_tournament_players", serialized_tournament_players)
 
             # serialisation de la liste des scores
             serialized_tournament_final_scores = []
@@ -89,8 +76,6 @@ class TableTournament:
                 serialized_final_score = {'player': serialized_player, 'final_score': final_score}
 
                 serialized_tournament_final_scores.append(serialized_final_score)
-
-            print("test serialized_tournament_final_scores", serialized_tournament_final_scores)
 
             # serialization de tout le tournoi
             serialized_tournament = {
@@ -106,7 +91,6 @@ class TableTournament:
 
             serialized_tournaments.append(serialized_tournament)
 
-        print("test serialized tournaments", serialized_tournaments)
         tournaments_table.insert_multiple(serialized_tournaments)
 
     def install_tournament_data(self):
@@ -121,9 +105,7 @@ class TableTournament:
 
             deserialized_rounds = []
             for serialized_round in serialized_tournament_rounds:
-                print("test format serialized start date :", serialized_round['start_date_time'])
                 deserialized_start_date_time = datetime.strptime(serialized_round['start_date_time'], '%d/%m/%Y, %H:%M:%S')
-                print("test deserialized start date :", deserialized_start_date_time)
                 deserialized_end_date_time = datetime.strptime(serialized_round['end_date_time'], '%d/%m/%Y, %H:%M:%S')
 
                 # Deserialization of matches
@@ -161,9 +143,6 @@ class TableTournament:
                     deserialized_pair_players = [deserialized_player_0, deserialized_player_1]
 
                     deserialized_pairs_players.append(deserialized_pair_players)
-
-                print("\ntest dans deserialization round tye start date :", type(deserialized_start_date_time), deserialized_start_date_time)
-                print()
 
                 deserialized_round = Round(serialized_round['round_name'],
                                            deserialized_pairs_players,

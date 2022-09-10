@@ -11,17 +11,20 @@ class SwissPairs:
 
     """Establish the list of all pairs of players who have played
     against each other during the current tournament"""
-    def list_all_played_pairs(self):
-        self.played_pairs = []
-        for round_ in self.tournament_rounds:
+
+    @staticmethod
+    def list_all_played_pairs(tournament_rounds):
+        
+        played_pairs = []
+        for round_ in tournament_rounds:
             for pairs_players in round_.pairs_players:
-                self.played_pairs.append(pairs_players)
+                played_pairs.append(pairs_players)
 
-        # print("toutes les paires jouées dans le tournoi : ", "nombre : ", len(self.played_pairs))
+        # print("toutes les paires jouées dans le tournoi : ", "nombre : ", len(played_pairs))
 
-        return self.played_pairs
+        return played_pairs
 
-    def search_opponent(self, players_by_score_rank, player):
+    def search_opponent(self, players_by_score_rank, player, future_pairs_players, played_pairs):
         step = 1
         i = 0
 
@@ -33,7 +36,7 @@ class SwissPairs:
 
             if players_by_score_rank.index(player) + step < len(players_by_score_rank):
                 next_player = players_by_score_rank[players_by_score_rank.index(player) + step]
-                checker = self.check_opponent(player, next_player)
+                checker = self.check_opponent(player, next_player, played_pairs)
 
                 if checker == 0:
                     pair = [player, next_player]
@@ -49,16 +52,16 @@ class SwissPairs:
             else:
                 reverse = 1
 
-                for pair_player in reversed(self.future_pairs_players):
+                for pair_player in reversed(future_pairs_players):
                     # print("tentative reverse : ", reverse)
 
-                    # print("played_pairs : ", len(self.played_pairs))
+                    # print("played_pairs : ", len(played_pairs))
 
-                    if self.played_pairs:
+                    if played_pairs:
 
                         # stop = input("Pause to check the process after played_pairs True") #à supprimer
 
-                        # print("reversed list : ", reversed(self.future_pairs_players)) #à supprimer
+                        # print("reversed list : ", reversed(future_pairs_players)) #à supprimer
                         # print("pair_player dans 1er for", pair_player) #à supprimer
 
                         player_to_reconsider_1 = pair_player[0]
@@ -69,7 +72,7 @@ class SwissPairs:
                         new_pair2 = [player_to_reconsider_2, available_player2]
 
                         t = 1  # à supprimer
-                        for played_pair in self.played_pairs:
+                        for played_pair in played_pairs:
 
                             # print("tentative : ", t)
 
@@ -82,7 +85,7 @@ class SwissPairs:
 
                             if result_new_pair1 is False and result_new_pair2 is False:
                                 # print("pair_player dans if avant remove1", pair_player) #à supprimer
-                                self.played_pairs.remove(played_pair)
+                                played_pairs.remove(played_pair)
                                 pair = new_pair1
                                 # print("new_pair ok)") #à supprimer
                                 # stop = input("pause to check the process") # à supprimer
@@ -96,11 +99,12 @@ class SwissPairs:
 
         return pair
 
-    def check_opponent(self, player, next_player):
+    @staticmethod
+    def check_opponent(player, next_player, played_pairs):
 
         checker = 0
 
-        for pair in self.played_pairs:
+        for pair in played_pairs:
 
             # print("to check : ", "player", player.last_name, "next player : ", next_player.last_name)
             # print("checked : ", pair[0].last_name, "/", pair[1].last_name)
@@ -121,11 +125,12 @@ class SwissPairs:
 
         return checker
 
-    def calculate_pairs_players_round1(self):
+    @staticmethod
+    def calculate_pairs_players_round1(tournament_players):
 
         pairs_players = []
 
-        tournament_players_by_ranking = sorted(self.tournament_players, key=lambda x: x.rank, reverse=True)
+        tournament_players_by_ranking = sorted(tournament_players, key=lambda x: x.rank, reverse=True)
 
         middle_index = len(tournament_players_by_ranking) // 2
         high_segment_players = tournament_players_by_ranking[:middle_index]
@@ -139,40 +144,39 @@ class SwissPairs:
 
         return pairs_players
 
-    def calculate_pairs_players_next_round(self):
+    def calculate_pairs_players_next_round(self, tournament_players, tournament_rounds):
 
-        self.future_pairs_players = []
+        future_pairs_players = []
 
-        players_by_score_rank = sorted(self.tournament_players, key=lambda x: (x.current_tournament_score, x.rank),
+        players_by_score_rank = sorted(tournament_players, key=lambda x: (x.current_tournament_score, x.rank),
                                        reverse=True)
 
-        self.list_all_played_pairs()
+        played_pairs = self.list_all_played_pairs(tournament_rounds)
 
         while players_by_score_rank:
             # print("after while players_by_score_rank", players_by_score_rank)
             player = players_by_score_rank[0]
 
-            pair = self.search_opponent(players_by_score_rank, player)
-            self.future_pairs_players.append(pair)
+            pair = self.search_opponent(players_by_score_rank, player, future_pairs_players, played_pairs)
+            future_pairs_players.append(pair)
 
             players_by_score_rank.remove(player)
             players_by_score_rank.remove(pair[1])
             # print("check boucle calculate pairs next round", len(players_by_score_rank))
 
-        return self.future_pairs_players
+        return future_pairs_players
 
-    def choice_pairs_players_mode(self, number_rounds):
+    def choice_pairs_players_mode(self, number_rounds, tournament_players, tournament_rounds):
 
         if number_rounds == 1:
-            pairs_players = self.calculate_pairs_players_round1()
+            pairs_players = self.calculate_pairs_players_round1(tournament_players)
         else:
-            pairs_players = self.calculate_pairs_players_next_round()
+            pairs_players = self.calculate_pairs_players_next_round(tournament_players, tournament_rounds)
 
         return pairs_players
 
     def run_creation_pairs_players(self, tournament_players, tournament_rounds, number_rounds):
-        self.tournament_players = tournament_players
-        self.tournament_rounds = tournament_rounds
-        pairs_players = self.choice_pairs_players_mode(number_rounds)
+
+        pairs_players = self.choice_pairs_players_mode(number_rounds, tournament_players, tournament_rounds)
 
         return pairs_players
