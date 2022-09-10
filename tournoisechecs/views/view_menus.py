@@ -12,7 +12,7 @@ from views.view_tournament import ViewTournament
 class MenuMain:
 
     @staticmethod
-    def manage_tournament(self, manage_tournament=None):
+    def manage_tournament(manage_tournament=None):
 
         if isinstance(manage_tournament, MenuTournament):
             manage_tournament.tournament_choices()
@@ -21,12 +21,12 @@ class MenuMain:
             manage_tournament.tournament_choices()
 
     @staticmethod
-    def manage_players(self):
+    def manage_players():
         manage_players = MenuPlayers()
         manage_players.players_choices()
 
     @staticmethod
-    def edit_reports(self):
+    def edit_reports():
         edit_reports = MenuReports()
         edit_reports.reports_choices()
 
