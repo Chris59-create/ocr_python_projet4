@@ -37,6 +37,8 @@ class PlayerManager:
 
     def display_players(self, players_list, criteria):
 
+        players_sorted = []
+
         if criteria == "alphabetical":
             players_sorted = sorted(players_list, key=lambda x: (x.last_name, x.first_name))
 

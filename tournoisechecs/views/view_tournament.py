@@ -32,6 +32,7 @@ class ViewTournament:
         print("\nSélection d'un tournoi : \n")
 
         selected_tournament = []
+        tournament = None
 
         while len(tournament_selection_data) < len(self.tournament_attrs):
             dict_french_english_attr_ = self.input_chosen_attr_(tournament_selection_data)
@@ -145,14 +146,17 @@ class ViewTournament:
     @staticmethod
     def display_tournament_data(tournament):
 
-        print()
-        print(f"Vous avez créé un tournoi avec les informations suivantes :\n \n"
+        print(f"\nVous avez créé un tournoi avec les informations suivantes :\n \n"
               f"Nom du tournoi : {tournament.tournament_name}\n"
               f"Lieu du tournoi : {tournament.place}\n"
               f"Date(s) : {tournament.dates_tournament}\n"
               f"Contrôle temps : {tournament.time_control}\n"
-              f"Description : {tournament.tournament_description}")
-        print()
+              f"Description : {tournament.tournament_description}\n")
+
+    @staticmethod
+    def display_tournament(tournament):
+
+        print("\n", tournament)
 
     @staticmethod
     def display_tournament_in_progress():  # Vérifier si pas inutile

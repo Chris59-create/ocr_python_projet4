@@ -39,8 +39,15 @@ class ViewRound:
         return score_player1, score_player2
 
     @staticmethod
-    def display_round(round_):
-        print(round_)
+    def display_round(round_, round_results):
+
+        print(f"\n{round_.round_name} :\n")
+
+        round_rank = 1
+        for player, score in sorted(round_results.items(), key=lambda x:x[1], reverse=True):
+            print(f"{round_rank}. {player.last_name} {player.first_name}"
+                  f" (né(e le {player.date_birth.strftime('%d/%m/%Y')} - score : {score}")
+            round_rank += 1
 
     @staticmethod
     def display_match(match_result):

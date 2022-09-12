@@ -34,7 +34,7 @@ class TournamentManager:
 
     # Affiche les infos du tournoi
     def display_tournament_data(self, tournament):
-        # view_tournament = ViewTournament()
+
         self.view_tournament.display_tournament_data(tournament)
 
     # Ajoute la liste des joueurs au tournoi
@@ -163,13 +163,32 @@ class TournamentManager:
         else:
             return tournament
 
-    def display_rounds(self, tournament):
+    def display_tournament(self, tournament):
+
+        self.view_tournament.display_tournament(tournament)
+
+    @staticmethod
+    def display_rounds(tournament, round_name=None):
         view_round = ViewRound()
 
-        for round_ in tournament.tournament_rounds:
-            view_round.display_round(round_)
 
-    def display_matches(self, tournament):
+        matches_flat = [element for match in round_.matches for player_score in match for element in player_score]
+        round_players = [matches_flat[index] for index in range(0, len(matches_flat), 2)]
+        round_scores = [matches_flat[index] for index in range(1, len(matches_flat), 2)]
+        round_results = dict(zip(round_players, round_scores))
+
+        if round_name:
+            for round_ in tournament.tournament_rounds:
+                if round_.round_name == round_name:
+                    view_round.display_round(round_, round_results)
+
+        else:
+
+            for round_ in tournament.tournament_rounds:
+                view_round.display_round(round_, round_results)
+
+    @staticmethod
+    def display_matches(tournament):
         view_round = ViewRound()
 
         for round_ in tournament.tournament_rounds:
