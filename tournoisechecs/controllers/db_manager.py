@@ -18,6 +18,7 @@ class TableTournament:
     def __init__(self):
         self.tournament_manager = TournamentManager()
         self.table_player = TablePlayers()
+        self.data_loaded = 0
 
     def save_tournaments_data(self):
 
@@ -105,7 +106,8 @@ class TableTournament:
 
             deserialized_rounds = []
             for serialized_round in serialized_tournament_rounds:
-                deserialized_start_date_time = datetime.strptime(serialized_round['start_date_time'], '%d/%m/%Y, %H:%M:%S')
+                deserialized_start_date_time = datetime.strptime(serialized_round['start_date_time'],
+                                                                 '%d/%m/%Y, %H:%M:%S')
                 deserialized_end_date_time = datetime.strptime(serialized_round['end_date_time'], '%d/%m/%Y, %H:%M:%S')
 
                 # Deserialization of matches
@@ -184,6 +186,8 @@ class TableTournament:
 
             self.tournament_manager.tournaments_instances.append(deserialized_tournament)
 
+        self.data_loaded = 1
+
 
 class TablePlayers:
 
@@ -236,4 +240,3 @@ class TablePlayers:
         for serialized_player in serialized_players:
             deserialized_player = self.deserialize_player(serialized_player)
             self.player_manager.players_instances.append(deserialized_player)
-

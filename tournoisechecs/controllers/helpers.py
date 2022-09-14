@@ -9,3 +9,5 @@ def console_clear(sleep_time=0):
         os.system('clear')
     else:
         os.system('cls')
+
+

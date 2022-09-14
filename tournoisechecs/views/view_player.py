@@ -71,7 +71,7 @@ class ViewPlayer:
         return player_data
 
     def input_chosen_attr_(self, player_selection_data):
-        
+
         treated_attrs = list(player_selection_data.keys())
         remaining_french_player_attrs = [attr_ for attr_ in self.french_player_attrs + treated_attrs
                                          if attr_ not in self.french_player_attrs or attr_ not in treated_attrs
@@ -80,27 +80,27 @@ class ViewPlayer:
             french_attr_ = pyip.inputMenu(remaining_french_player_attrs,
                                           prompt="\nSaisir le numéro du critère souhaité de saisie :\n\n",
                                           numbered=True)
-            
+
         else:
             french_attr_ = remaining_french_player_attrs[0]
         chosen_attr_ = self.player_attrs[french_attr_]
         return {french_attr_: chosen_attr_}
 
     def input_search_value(self, french_attr_):
-        
+
         searched_value = eval(self.player_input_function[french_attr_])
         return searched_value
 
     @ staticmethod
     def player_search(players_list, chosen_attr_, value):
-        
+
         getter = attrgetter(chosen_attr_)
         players_found = [player for player in players_list if getter(player) == value]
 
         return players_found
 
     def continue_or_restart(self, player_selection_data):
-        
+
         next_choice = pyip.inputYesNo(prompt="Pas de joueur existant.\nVoulez-vous saisir les critères restants"
                                              " pour créer un nouveau joueur, oui (y/N) ou non (n/N)")
         if next_choice == "no":

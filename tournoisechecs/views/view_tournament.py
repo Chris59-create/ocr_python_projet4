@@ -110,7 +110,7 @@ class ViewTournament:
                                              " oui (y/N) ou non (n/N) ?")
 
         if next_choice == "no":
-            tournament_selection_data = {}
+
             print("\nAbandon de la recherche d'un tournoi \n")
             tournament = None
 

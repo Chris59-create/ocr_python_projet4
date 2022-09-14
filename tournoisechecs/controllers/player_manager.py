@@ -23,6 +23,7 @@ class PlayerManager:
                             player_data["gender"],
                             player_data["rank"]
                             )
+
             self.players_instances.append(player)
 
         return player

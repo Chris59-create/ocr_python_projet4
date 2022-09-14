@@ -1,5 +1,4 @@
 import pyinputplus as pyip
-from datetime import datetime
 from controllers.helpers import console_clear
 
 
@@ -14,6 +13,7 @@ class ViewRound:
                   f"{element[1].first_name} {element[1].last_name} classé {element[1].rank}.")
         print()
 
+    @staticmethod
     def input_score(self, player1, player2):
         print(f"Joueur 1 : {player1.first_name} {player1.last_name}\nJoueur 2 :"
               f" {player2.first_name} {player2.last_name}")
@@ -44,7 +44,7 @@ class ViewRound:
         print(f"\n{round_.round_name} :\n")
 
         round_rank = 1
-        for player, score in sorted(round_results.items(), key=lambda x:x[1], reverse=True):
+        for player, score in sorted(round_results.items(), key=lambda x: x[1], reverse=True):
             print(f"{round_rank}. {player.last_name} {player.first_name}"
                   f" (né(e le {player.date_birth.strftime('%d/%m/%Y')} - score : {score}")
             round_rank += 1

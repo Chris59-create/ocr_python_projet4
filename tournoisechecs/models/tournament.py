@@ -22,4 +22,4 @@ class Tournament:
 
     def __str__(self):
         return f"Nom du tournoi : {self.tournament_name} - Lieu : {self.place} - Date(s) : {self.dates_tournament}, " \
-               f"Contrôle temps : {self.time_control}, Description : {self.tournament_description}\n"
+               f"Contrôle temps : {self.time_control}.\n Description : {self.tournament_description}\n"

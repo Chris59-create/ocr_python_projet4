@@ -151,7 +151,7 @@ class TournamentManager:
             self.view_tournament.display_tournament_total_scores(player_data)
             new_rank = self.view_tournament.input_tournament_player_new_rank()
             element[0].rank = new_rank
-            
+
     def select_tournament(self):
 
         tournament = self.view_tournament.tournament_selection(tournament_selection_data={},
@@ -171,20 +171,20 @@ class TournamentManager:
     def display_rounds(tournament, round_name=None):
         view_round = ViewRound()
 
+        for round_ in tournament.tournament_rounds:
 
-        matches_flat = [element for match in round_.matches for player_score in match for element in player_score]
-        round_players = [matches_flat[index] for index in range(0, len(matches_flat), 2)]
-        round_scores = [matches_flat[index] for index in range(1, len(matches_flat), 2)]
-        round_results = dict(zip(round_players, round_scores))
+            matches_flat = [element for match in round_.matches for player_score in match for element in player_score]
+            round_players = [matches_flat[index] for index in range(0, len(matches_flat), 2)]
+            round_scores = [matches_flat[index] for index in range(1, len(matches_flat), 2)]
+            round_results = dict(zip(round_players, round_scores))
 
-        if round_name:
-            for round_ in tournament.tournament_rounds:
+            if round_name:
+
                 if round_.round_name == round_name:
                     view_round.display_round(round_, round_results)
 
-        else:
+            else:
 
-            for round_ in tournament.tournament_rounds:
                 view_round.display_round(round_, round_results)
 
     @staticmethod

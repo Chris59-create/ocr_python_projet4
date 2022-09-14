@@ -1,4 +1,4 @@
-from controllers.db_manager import TablePlayers
+from controllers.db_manager import TablePlayers, TableTournament
 from views.view_menus import MenuMain
 
 
@@ -11,9 +11,12 @@ def main():
     table_players = TablePlayers()
     table_players.install_players_data()
 
+    # instantiate the class which manages to backup and and recovery of tournaments data
+    table_tournament = TableTournament()
+
     # Launch the main menu
     init_menu = MenuMain()
-    init_menu.main_choices()
+    init_menu.main_choices(table_tournament)
 
 
 if __name__ == "__main__":

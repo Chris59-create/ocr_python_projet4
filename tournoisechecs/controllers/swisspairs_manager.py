@@ -14,7 +14,7 @@ class SwissPairs:
 
     @staticmethod
     def list_all_played_pairs(tournament_rounds):
-        
+
         played_pairs = []
         for round_ in tournament_rounds:
             for pairs_players in round_.pairs_players:
@@ -51,11 +51,11 @@ class SwissPairs:
             result_new_2_pair4 = all(element in played_pair for element in new_2['new_pair4'])
 
             if result_new_1_pair1 is False and result_new_1_pair2 is False:
-                pairs = [new_1['new_pair1'], new_1[new_1['new_pair2']]]
+                pairs = [new_1['new_pair1'], new_1['new_pair2']]
                 break
 
             elif result_new_2_pair3 is False and result_new_2_pair4 is False:
-                pairs = [new_2['new_pair3'], new_1[new_2['new_pair4']]]
+                pairs = [new_2['new_pair3'], new_2['new_pair4']]
                 break
 
             else:
@@ -163,6 +163,3 @@ class SwissPairs:
             pairs_players = self.calculate_pairs_players_next_round(tournament_players, tournament_rounds)
 
         return pairs_players
-
-
-
