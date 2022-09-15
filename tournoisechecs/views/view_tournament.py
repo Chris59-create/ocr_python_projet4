@@ -18,7 +18,7 @@ class ViewTournament:
                                                    ' applyFunc=lambda str_: str_.upper())',
                                  "Lieu": 'pyip.inputStr("Lieu du tournoi : ",'
                                          ' applyFunc=lambda str_: str_.upper())',
-                                 "Date(s)": 'pyip.inputDate("Date du tournoi: ", formats=["%d%m%Y"])',
+                                 "Date(s)": 'pyip.inputDatetime("DDate (jjmmaaaa) : ", formats=["%d%m%Y"])',
                                  "Contrôle temps": 'pyip.inputMenu(["Bullet", "Blitz", "Coup rapide"],'
                                                    ' prompt="Saisir le numéro du critère souhaité de saisie :\\n",'
                                                    '  numbered=True)',
@@ -88,38 +88,53 @@ class ViewTournament:
 
         else:
             french_attr_ = remaining_french_tournament_attrs[0]
+
         chosen_attr_ = self.tournament_attrs[french_attr_]
+
         return {french_attr_: chosen_attr_}
 
     def input_search_value(self, french_attr_):
 
         searched_value = eval(self.tournament_input_function[french_attr_])
+
+        print("test type searched_value", type(searched_value))
+        print("test searched_value", searched_value)
+
         return searched_value
 
     @staticmethod
-    def tournament_search(tournaments_list, chosen_attr_, value):
+    def tournament_search(tournaments_list, chosen_attr_, searched_value):
 
-        getter = attrgetter(chosen_attr_)
-        tournaments_found = [tournament for tournament in tournaments_list if getter(tournament) == value]
+        if chosen_attr_ == 'dates_tournament':
 
-        return tournaments_found
+            searched_value = datetime.strftime(searched_value, '%d/%m/%Y')
+            tournaments_found = [tournament for tournament in tournaments_list
+                                 if searched_value in tournament.dates_tournament
+                                 ]
+
+            return tournaments_found
+
+        else:
+
+            getter = attrgetter(chosen_attr_)
+            tournaments_found = [tournament for tournament in tournaments_list if getter(tournament) == searched_value]
+
+            return tournaments_found
 
     def restart_or_cancel(self, tournament_selection_data):
-
         next_choice = pyip.inputYesNo(prompt="Pas de tournoi existant.\nVoulez-vous reprendre la recherche"
                                              " oui (y/N) ou non (n/N) ?")
 
         if next_choice == "no":
-
             print("\nAbandon de la recherche d'un tournoi \n")
             tournament = None
+            return tournament
 
         if next_choice == "yes":
             print("\nReprise au début de la recherche d'un tournoi : \n")
             tournament = self.tournament_selection(tournament_selection_data={},
                                                    tournaments_list=self.tournaments_instances)
-
-        return tournament
+            return tournament
 
     @staticmethod
     def input_tournament_data():
@@ -129,7 +144,7 @@ class ViewTournament:
 
         input_date = "yes"
         while input_date == "yes":
-            date_tournament = pyip.inputDate("Date (jjmmaaaa) : ", formats=['%d%m%Y'])
+            date_tournament = pyip.inputDatetime("Date (jjmmaaaa) : ", formats=['%d%m%Y'])
             dates_tournament.append(datetime.strftime(date_tournament, '%d/%m/%Y'))
             input_date = pyip.inputYesNo(prompt="Voulez-vous ajouter une date au tournoi Oui (y/Y) / Non (n/N) : ")
 

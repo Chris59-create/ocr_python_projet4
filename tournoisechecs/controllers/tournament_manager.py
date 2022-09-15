@@ -169,6 +169,7 @@ class TournamentManager:
 
         if tournament is None:
             pass
+
         else:
             return tournament
 

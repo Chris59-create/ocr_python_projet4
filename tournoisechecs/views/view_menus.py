@@ -2,7 +2,6 @@ import sys
 import pyinputplus as pyip
 from controllers.helpers import console_clear
 from controllers.db_manager import TablePlayers
-from controllers.db_manager import TableTournament
 from controllers.player_manager import PlayerManager
 from controllers.tournament_manager import TournamentManager, NUMBER_ROUNDS
 
@@ -81,9 +80,8 @@ class MenuTournament:
     i = 0
 
     def __init__(self):
-        
+
         self.init_menu = MenuMain()
-        
         self.tournament = None
         self.round_name = None
         self.pairs_players = None

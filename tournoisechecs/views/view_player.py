@@ -16,7 +16,7 @@ class ViewPlayer:
     player_input_function = {"Nom de famille": 'pyip.inputStr("Nom de Famille : ",'
                                                ' applyFunc=lambda str_: str_.upper())',
                              "Prénom": 'pyip.inputStr("Prénom : ", applyFunc=lambda str_: str_.upper())',
-                             "Date de naissance": 'pyip.inputDate("Date de naissance (jjmmaaaa) : ",'
+                             "Date de naissance": 'pyip.inputDatetime("Date de naissance (jjmmaaaa) : ",'
                                                   ' formats=["%d%m%Y"])',
                              "Genre": 'pyip.inputMenu(["Femme", "Homme", "Autre"],'
                                       ' prompt="Saisir le numéro du critère souhaité de saisie :\\n",  numbered=True)',
@@ -28,13 +28,12 @@ class ViewPlayer:
 
     def player_selection(self, player_selection_data, players_list, i):
 
-        print("test start player_selection player_selection_data", len(player_selection_data))
-
         print("\nCréation / Sélection d'un joueur pour le tournoi : \n")
 
         selected_player = []
 
         while len(player_selection_data) < len(self.player_attrs):
+
             dict_french_english_attr_ = self.input_chosen_attr_(player_selection_data)
             french_attr_ = list(dict_french_english_attr_.keys())[0]
             chosen_attr_ = dict_french_english_attr_[french_attr_]
@@ -68,25 +67,20 @@ class ViewPlayer:
                         player_selection_data = self.continue_or_restart(player_selection_data)
 
                         if not player_selection_data:
+
                             print("Abandon de l'action impliquant la création / sélection d'un joueur")
+
                             return None
-                        print("test player selection data continuation :", player_selection_data)
-                        print("test len(self.player_attrs", len(self.player_attrs))
-                        print("test i", i)
 
             elif len(players_list) == 0 and i == 0:
 
                 player_selection_data = self.continue_or_restart(player_selection_data)
                 i = 1
 
-                print("test player_selection_data", player_selection_data)
-
                 if not player_selection_data:
 
                     print("len(players°list = 0 : Abandon de l'action impliquant la création / sélection d'un joueur")
                     return None
-
-
 
         player_data = dict(zip(self.player_attrs.values(), list(player_selection_data.values())))
 
@@ -113,6 +107,7 @@ class ViewPlayer:
     def input_search_value(self, french_attr_):
 
         searched_value = eval(self.player_input_function[french_attr_])
+
         return searched_value
 
     @ staticmethod
@@ -143,21 +138,14 @@ class ViewPlayer:
         elif next_choice == "Reprise au début de la saisie des données d'un joueur.":
 
             player_selection_data = {}
-            print("test next_choice reprise player selection data :", len(player_selection_data))
+
             print("\nReprise au début de la saisie des données d'un joueur : \n")
 
             return player_selection_data
 
         elif next_choice == "Abandon de la création / sélection d'un joueur.":
 
-            player_selection_data = {}
-            players_list = []
-            print("test dans continue_or_restart", "Abandon de l'action impliquant la création / sélection d'un joueur")
-
             return None
-
-        else:
-            print("test next_choice non reconnu")
 
     @staticmethod
     def input_player_new_rank():
