@@ -1,9 +1,14 @@
 import sys
+
+from colorama import init, Fore
 import pyinputplus as pyip
-from controllers.helpers import console_clear
+
 from controllers.db_manager import TablePlayers
+from controllers.helpers import console_clear
 from controllers.player_manager import PlayerManager
 from controllers.tournament_manager import TournamentManager, NUMBER_ROUNDS
+
+init()
 
 
 class MenuMain:
@@ -41,7 +46,9 @@ class MenuMain:
 
     def main_choices(self, table_tournament):
 
-        print("\nMenu principal : \n")
+        print(Fore.MAGENTA+"\nMenu principal : \n")
+
+        print(Fore.RED)
 
         main_choice = pyip.inputMenu(["Gérer un tournoi", "Gérer les joueurs", "Editer les rapports",
                                       "Quitter l'application"],
@@ -65,6 +72,7 @@ class MenuMain:
             console_clear()
             table_players = TablePlayers()
             table_players.save_players_data()
+            print(Fore.RESET)
             sys.exit("Application fermée par l'utilisateur")
 
 
@@ -90,7 +98,8 @@ class MenuTournament:
 
     def tournament_choices(self, table_tournament):
 
-        print("Vous êtes dans le menu pilotage de tournoi\n")
+        print(Fore.MAGENTA+"Vous êtes dans le menu pilotage de tournoi\n")
+        print(Fore.RED)
 
         while self.i < len(self.tournament_steps):
 
@@ -127,7 +136,7 @@ class MenuTournament:
 
                 console_clear()
                 self.round_ = self.tournament_manager.start_round(self.round_name, self.pairs_players)
-                print(f"\nLe tour {self.round_name} a débuté !"
+                print(Fore.BLUE+f"\nLe tour {self.round_name} a débuté !"
                       f" Date et heure de début : {self.round_.start_date_time}\n")
                 self.i += 1
                 console_clear()
@@ -138,10 +147,13 @@ class MenuTournament:
                 self.tournament_manager.update_score(self.tournament, self.round_)
 
                 if self.tournament_manager.number_rounds <= NUMBER_ROUNDS:
-                    print(f"les scores du tour {self.round_name} sont saisis.\nVous pouvez afficher les matchs "
-                          f"du tour suivant.\n")
+
+                    print(Fore.BLUE+f"les scores du tour {self.round_name} sont saisis."
+                                    f"\nVous pouvez afficher les matchs du tour suivant.\n")
                     self.i -= 2
+
                 else:
+
                     self.i += 1
                     self.tournament_manager.number_rounds = 1
 
@@ -178,7 +190,6 @@ class MenuTournament:
             elif tournament_choice == "Sauvegarder les données du tournoi":
 
                 console_clear()
-                print("test Sauvegarder les données du tournoi")
                 self.init_menu.check_data_status(table_tournament)
                 table_tournament.save_tournaments_data()
                 self.i += 0
@@ -187,7 +198,6 @@ class MenuTournament:
             elif tournament_choice == "Retour au menu principal":
 
                 console_clear()
-                print("test retour au menu principal")
                 self.init_menu.check_data_status(table_tournament)
                 table_tournament.save_tournaments_data()
                 # init_menu = MenuMain() à vérifier
@@ -201,7 +211,8 @@ class MenuPlayers:
 
     def players_choices(self, table_tournament):
 
-        print("\nVous êtes dans le menu de gestion des joueurs : \n")
+        print(Fore.MAGENTA+"\nVous êtes dans le menu de gestion des joueurs : \n")
+        print(Fore.RED)
 
         players_choice = pyip.inputMenu(["Créer un joueur", "Modifier le classement d'un joueur",
                                          "Afficher la liste des joueurs", "Sauvegarder les données joueurs",
@@ -250,7 +261,8 @@ class MenuReports:
 
     def reports_choices(self, table_tournament):
 
-        print("\nVous êtes dans le menu Rapports\n")
+        print(Fore.MAGENTA+"\nVous êtes dans le menu Rapports\n")
+        print(Fore.RED)
 
         reports_choice = pyip.inputMenu(["Liste alphabétique des acteurs",
                                          "Liste des acteurs par classement",

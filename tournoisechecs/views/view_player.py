@@ -1,5 +1,8 @@
+from colorama import init, Fore
 import pyinputplus as pyip
 from operator import attrgetter
+
+init()
 
 
 class ViewPlayer:
@@ -28,7 +31,7 @@ class ViewPlayer:
 
     def player_selection(self, player_selection_data, players_list, i):
 
-        print("\nCréation / Sélection d'un joueur pour le tournoi : \n")
+        print(Fore.BLUE+"\nCréation / Sélection d'un joueur pour le tournoi : \n")
 
         selected_player = []
 
@@ -46,14 +49,15 @@ class ViewPlayer:
 
             if len(players_list) > 0:
 
-                print("\nListe des joueurs correspondants aux critères :\n")
+                print(Fore.BLUE+"\nListe des joueurs correspondants aux critères :\n")
+                print(Fore.WHITE)
 
                 for player in players_list:
                     print(player)
 
                 if len(players_list) == 1:
 
-                    choice = pyip.inputYesNo(prompt="est-ce le joueur cherché : Oui(y/Y) / Non(n/N) ?")
+                    choice = pyip.inputYesNo(prompt=Fore.RED+"est-ce le joueur cherché : Oui(y/Y) / Non(n/N) ?")
 
                     if choice == "yes":
 
@@ -68,7 +72,7 @@ class ViewPlayer:
 
                         if not player_selection_data:
 
-                            print("Abandon de l'action impliquant la création / sélection d'un joueur")
+                            print(Fore.BLUE+"Abandon de l'action impliquant la création / sélection d'un joueur")
 
                             return None
 
@@ -79,7 +83,6 @@ class ViewPlayer:
 
                 if not player_selection_data:
 
-                    print("len(players°list = 0 : Abandon de l'action impliquant la création / sélection d'un joueur")
                     return None
 
         player_data = dict(zip(self.player_attrs.values(), list(player_selection_data.values())))
@@ -93,11 +96,14 @@ class ViewPlayer:
                                          if attr_ not in self.french_player_attrs or attr_ not in treated_attrs
                                          ]
         if len(remaining_french_player_attrs) > 1:
+
+            print(Fore.RED)
             french_attr_ = pyip.inputMenu(remaining_french_player_attrs,
                                           prompt="\nSaisir le numéro du critère souhaité de saisie :\n\n",
                                           numbered=True)
 
         else:
+
             french_attr_ = remaining_french_player_attrs[0]
 
         chosen_attr_ = self.player_attrs[french_attr_]
@@ -106,6 +112,7 @@ class ViewPlayer:
 
     def input_search_value(self, french_attr_):
 
+        print(Fore.WHITE)
         searched_value = eval(self.player_input_function[french_attr_])
 
         return searched_value
@@ -127,11 +134,12 @@ class ViewPlayer:
                         ]
         message = "\nPas de joueur existant!\nSaisir le numéro du critère souhaité de saisie :\n\n"
 
+        print(Fore.RED)
         next_choice = pyip.inputMenu(next_choices, prompt=message, numbered=True)
 
         if next_choice == "Saisie des critères restants pour créer un nouveau joueur.":
 
-            print("\nSaisie des critères restants pour créer un nouveau joueur : \n")
+            print(Fore.BLUE+"\nSaisie des critères restants pour créer un nouveau joueur : \n")
 
             return player_selection_data
 
@@ -139,7 +147,7 @@ class ViewPlayer:
 
             player_selection_data = {}
 
-            print("\nReprise au début de la saisie des données d'un joueur : \n")
+            print(Fore.BLUE+"\nReprise au début de la saisie des données d'un joueur : \n")
 
             return player_selection_data
 
@@ -149,8 +157,8 @@ class ViewPlayer:
 
     @staticmethod
     def input_player_new_rank():
-        print("\nMettre à jour le classement du joueur : ")
-        new_rank = pyip.inputInt(prompt="\nSaisir le nouveau classement du joueur : \n")
+        print(Fore.BLUE+"\nMettre à jour le classement du joueur : ")
+        new_rank = pyip.inputInt(prompt=Fore.RED+"\nSaisir le nouveau classement du joueur : \n")
 
         return new_rank
 
@@ -158,6 +166,9 @@ class ViewPlayer:
         pass
 
     def display_all_players(self):
+
+        print(Fore.WHITE)
+
         for player in self.players_instances:
             print(player)
 
@@ -165,10 +176,11 @@ class ViewPlayer:
     def display_players(players_sorted, criteria):
 
         if criteria == "alphabetical":
-            print("Liste des joueurs par ordre alphabétique :\n")
+            print(Fore.BLUE+"Liste des joueurs par ordre alphabétique :\n")
 
         elif criteria == "rank":
-            print("Liste des joueurs par classement :\n")
+            print(Fore.BLUE+"Liste des joueurs par classement :\n")
 
         for player in players_sorted:
+            print(Fore.WHITE)
             print(player)

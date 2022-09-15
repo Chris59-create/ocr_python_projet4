@@ -1,6 +1,9 @@
+from colorama import init, Fore
 import pyinputplus as pyip
 from datetime import datetime
 from operator import attrgetter
+
+init()
 
 
 class ViewTournament:
@@ -29,7 +32,7 @@ class ViewTournament:
 
     def tournament_selection(self, tournament_selection_data, tournaments_list):
 
-        print("\nSélection d'un tournoi : \n")
+        print(Fore.BLUE+"\nSélection d'un tournoi : \n")
 
         selected_tournament = []
         tournament = None
@@ -47,11 +50,12 @@ class ViewTournament:
 
             if len(tournaments_list) > 0:
                 print("\nListe des tournois correspondants aux critères :\n")
+                print(Fore.WHITE)
                 for tournament in tournaments_list:
                     print(tournament)
 
                 if len(tournaments_list) == 1:
-                    choice = pyip.inputYesNo(prompt="est-ce le tournoi cherché : Oui(y/Y) / Non(n/N) ?\n")
+                    choice = pyip.inputYesNo(prompt=Fore.BLUE+"est-ce le tournoi cherché : Oui(y/Y) / Non(n/N) ?\n")
 
                     if choice == "yes":
                         for tournament in tournaments_list:
@@ -77,6 +81,8 @@ class ViewTournament:
 
     def input_chosen_attr_(self, tournament_selection_data):
 
+        print(Fore.RED)
+
         treated_attrs = list(tournament_selection_data.keys())
         remaining_french_tournament_attrs = [attr_ for attr_ in self.french_tournament_attrs + treated_attrs
                                              if attr_ not in self.french_tournament_attrs or attr_ not in treated_attrs
@@ -95,10 +101,9 @@ class ViewTournament:
 
     def input_search_value(self, french_attr_):
 
-        searched_value = eval(self.tournament_input_function[french_attr_])
+        print(Fore.WHITE)
 
-        print("test type searched_value", type(searched_value))
-        print("test searched_value", searched_value)
+        searched_value = eval(self.tournament_input_function[french_attr_])
 
         return searched_value
 
@@ -122,22 +127,24 @@ class ViewTournament:
             return tournaments_found
 
     def restart_or_cancel(self, tournament_selection_data):
-        next_choice = pyip.inputYesNo(prompt="Pas de tournoi existant.\nVoulez-vous reprendre la recherche"
+        next_choice = pyip.inputYesNo(prompt=Fore.RED+"Pas de tournoi existant.\nVoulez-vous reprendre la recherche"
                                              " oui (y/N) ou non (n/N) ?")
 
         if next_choice == "no":
-            print("\nAbandon de la recherche d'un tournoi \n")
+            print(Fore.RED+"\nAbandon de la recherche d'un tournoi \n")
             tournament = None
             return tournament
 
         if next_choice == "yes":
-            print("\nReprise au début de la recherche d'un tournoi : \n")
+            print(Fore.RED+"\nReprise au début de la recherche d'un tournoi : \n")
             tournament = self.tournament_selection(tournament_selection_data={},
                                                    tournaments_list=self.tournaments_instances)
             return tournament
 
     @staticmethod
     def input_tournament_data():
+
+        print(Fore.WHITE)
         dates_tournament = []
         tournament_name = pyip.inputStr("\nNom du tournoi : ", applyFunc=lambda str_: str_.upper())
         place = pyip.inputStr("Lieu : ", applyFunc=lambda str_: str_.upper())
@@ -161,8 +168,9 @@ class ViewTournament:
     @staticmethod
     def display_tournament_data(tournament):
 
-        print(f"\nVous avez créé un tournoi avec les informations suivantes :\n \n"
-              f"Nom du tournoi : {tournament.tournament_name}\n"
+        print(Fore.BLUE+f"\nVous avez créé un tournoi avec les informations suivantes :\n")
+        print(Fore.WHITE)
+        print(f"Nom du tournoi : {tournament.tournament_name}\n"
               f"Lieu du tournoi : {tournament.place}\n"
               f"Date(s) : {tournament.dates_tournament}\n"
               f"Contrôle temps : {tournament.time_control}\n"
@@ -171,15 +179,16 @@ class ViewTournament:
     @staticmethod
     def display_tournament(tournament):
 
+        print(Fore.WHITE)
         print("\n", tournament)
 
     @staticmethod
     def display_tournament_in_progress():  # Vérifier si pas inutile
-        print("\nCette action n'est pas possible tant que le tournoi n'est pas terminé !\n")
+        print(Fore.RED+"\nCette action n'est pas possible tant que le tournoi n'est pas terminé !\n")
 
     @staticmethod
     def display_remaining_rounds(remaining_rounds):
-        print(f"Il reste {remaining_rounds} tour(s) à jouer pour ce tournoi.\n")
+        print(Fore.BLUE+f"Il reste {remaining_rounds} tour(s) à jouer pour ce tournoi.\n")
 
     @staticmethod
     def display_tournament_total_scores(player_data):
@@ -190,8 +199,8 @@ class ViewTournament:
         rank = player_data["rank"]
         score = player_data["score"]
 
-        print(f"{tournament_rank+1}. {first_name} {last_name} né(e) le {date_birth} classé(e) {rank} - Score : "
-              f"{score}")
+        print(Fore.WHITE+f"{tournament_rank+1}. {first_name} {last_name} né(e) le {date_birth} classé(e) {rank} -"
+                         f" Score : {score}")
 
     @staticmethod
     def input_tournament_player_new_rank():

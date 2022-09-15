@@ -41,10 +41,8 @@ class PlayerManager:
                                                    i=0
                                                    )
 
-        print("test player: ", player)
-
         if player:
-            print("test player exist")
+
             new_rank = self.view_player.input_player_new_rank()
             player.change_rank(new_rank)
 

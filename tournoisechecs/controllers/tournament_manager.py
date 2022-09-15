@@ -1,3 +1,5 @@
+from colorama import init, Fore
+
 from controllers.player_manager import PlayerManager
 from controllers.swisspairs_manager import SwissPairs
 from models.match import Match
@@ -5,6 +7,8 @@ from models.round import Round
 from models.tournament import Tournament
 from views.view_round import ViewRound
 from views.view_tournament import ViewTournament
+
+init()
 
 NUMBER_TOURNAMENT_PLAYERS = 8
 NUMBER_ROUNDS = 4
@@ -54,7 +58,7 @@ class TournamentManager:
 
                 tournament.tournament_players.append(player)
                 number_players_added += 1
-                print("Nombre de joueurs ajoutés au tournoi : ", number_players_added)
+                print(Fore.BLUE+"Nombre de joueurs ajoutés au tournoi : ", number_players_added)
 
     # Calcule les paires de joueurs pour le round
     def calculate_pairs(self, tournament):
