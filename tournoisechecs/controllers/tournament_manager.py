@@ -40,20 +40,29 @@ class TournamentManager:
     # Ajoute la liste des joueurs au tournoi
     @staticmethod
     def tournament_add_players(tournament):
+
         player_manager = PlayerManager()
 
         number_players_added = 0
         while len(tournament.tournament_players) < NUMBER_TOURNAMENT_PLAYERS:
             player = player_manager.add_player()
-            tournament.tournament_players.append(player)
-            number_players_added += 1
-            print("Nombre de joueurs ajoutés au tournoi : ", number_players_added)
+
+            if not player:
+                pass
+
+            else:
+
+                tournament.tournament_players.append(player)
+                number_players_added += 1
+                print("Nombre de joueurs ajoutés au tournoi : ", number_players_added)
 
     # Calcule les paires de joueurs pour le round
     def calculate_pairs(self, tournament):
+
         pairs = SwissPairs()
         pairs_players = pairs.run_creation_pairs_players(tournament.tournament_players,
                                                          tournament.tournament_rounds, self.number_rounds)
+
         return pairs_players
 
     def prepare_round(self, tournament):

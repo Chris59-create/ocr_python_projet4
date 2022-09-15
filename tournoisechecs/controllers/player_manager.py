@@ -13,28 +13,44 @@ class PlayerManager:
                                                         i=0
                                                         )
 
-        if isinstance(player_data, Player):
-            player = player_data
+        if not player_data:
+
+            return None
 
         else:
-            player = Player(player_data["last_name"],
-                            player_data["first_name"],
-                            player_data["date_birth"],
-                            player_data["gender"],
-                            player_data["rank"]
-                            )
 
-            self.players_instances.append(player)
+            if isinstance(player_data, Player):
 
-        return player
+                return player_data
+
+            else:
+                player = Player(player_data["last_name"],
+                                player_data["first_name"],
+                                player_data["date_birth"],
+                                player_data["gender"],
+                                player_data["rank"]
+                                )
+
+                self.players_instances.append(player)
+
+                return player
 
     def update_player_rank(self):
         player = self.view_player.player_selection(player_selection_data={},
                                                    players_list=self.players_instances,
                                                    i=0
                                                    )
-        new_rank = self.view_player.input_player_new_rank()
-        player.change_rank(new_rank)
+
+        print("test player: ", player)
+
+        if player:
+            print("test player exist")
+            new_rank = self.view_player.input_player_new_rank()
+            player.change_rank(new_rank)
+
+        else:
+
+            return
 
     def display_players(self, players_list, criteria):
 

@@ -28,6 +28,8 @@ class ViewPlayer:
 
     def player_selection(self, player_selection_data, players_list, i):
 
+        print("test start player_selection player_selection_data", len(player_selection_data))
+
         print("\nCréation / Sélection d'un joueur pour le tournoi : \n")
 
         selected_player = []
@@ -44,29 +46,49 @@ class ViewPlayer:
             players_list = self.player_search(players_list, chosen_attr_, searched_value)
 
             if len(players_list) > 0:
+
                 print("\nListe des joueurs correspondants aux critères :\n")
+
                 for player in players_list:
                     print(player)
 
                 if len(players_list) == 1:
+
                     choice = pyip.inputYesNo(prompt="est-ce le joueur cherché : Oui(y/Y) / Non(n/N) ?")
+
                     if choice == "yes":
+
                         for player in players_list:
                             selected_player.append(player)
-                        player_selection_data = {}
-                        player_data = selected_player[0]
-                        break
+
+                        return selected_player[0]
+
                     elif choice == "no":
-                        self.continue_or_restart(player_selection_data)
+
+                        player_selection_data = self.continue_or_restart(player_selection_data)
+
+                        if not player_selection_data:
+                            print("Abandon de l'action impliquant la création / sélection d'un joueur")
+                            return None
+                        print("test player selection data continuation :", player_selection_data)
+                        print("test len(self.player_attrs", len(self.player_attrs))
+                        print("test i", i)
 
             elif len(players_list) == 0 and i == 0:
-                self.continue_or_restart(player_selection_data)
+
+                player_selection_data = self.continue_or_restart(player_selection_data)
                 i = 1
 
-            else:
-                pass
+                print("test player_selection_data", player_selection_data)
 
-            player_data = dict(zip(self.player_attrs.values(), list(player_selection_data.values())))
+                if not player_selection_data:
+
+                    print("len(players°list = 0 : Abandon de l'action impliquant la création / sélection d'un joueur")
+                    return None
+
+
+
+        player_data = dict(zip(self.player_attrs.values(), list(player_selection_data.values())))
 
         return player_data
 
@@ -83,7 +105,9 @@ class ViewPlayer:
 
         else:
             french_attr_ = remaining_french_player_attrs[0]
+
         chosen_attr_ = self.player_attrs[french_attr_]
+
         return {french_attr_: chosen_attr_}
 
     def input_search_value(self, french_attr_):
@@ -99,17 +123,41 @@ class ViewPlayer:
 
         return players_found
 
-    def continue_or_restart(self, player_selection_data):
+    @staticmethod
+    def continue_or_restart(player_selection_data):
 
-        next_choice = pyip.inputYesNo(prompt="Pas de joueur existant.\nVoulez-vous saisir les critères restants"
-                                             " pour créer un nouveau joueur, oui (y/N) ou non (n/N)")
-        if next_choice == "no":
+        next_choices = ["Saisie des critères restants pour créer un nouveau joueur.",
+                        "Reprise au début de la saisie des données d'un joueur.",
+                        "Abandon de la création / sélection d'un joueur."
+                        ]
+        message = "\nPas de joueur existant!\nSaisir le numéro du critère souhaité de saisie :\n\n"
+
+        next_choice = pyip.inputMenu(next_choices, prompt=message, numbered=True)
+
+        if next_choice == "Saisie des critères restants pour créer un nouveau joueur.":
+
+            print("\nSaisie des critères restants pour créer un nouveau joueur : \n")
+
+            return player_selection_data
+
+        elif next_choice == "Reprise au début de la saisie des données d'un joueur.":
+
             player_selection_data = {}
+            print("test next_choice reprise player selection data :", len(player_selection_data))
             print("\nReprise au début de la saisie des données d'un joueur : \n")
-            self.player_selection(player_selection_data, self.players_instances, i=0)
-        if next_choice == "yes":
-            print("\nContinuation de la saisie des données du joueur : \n")
-            self.player_selection(player_selection_data, players_list=[], i=1)
+
+            return player_selection_data
+
+        elif next_choice == "Abandon de la création / sélection d'un joueur.":
+
+            player_selection_data = {}
+            players_list = []
+            print("test dans continue_or_restart", "Abandon de l'action impliquant la création / sélection d'un joueur")
+
+            return None
+
+        else:
+            print("test next_choice non reconnu")
 
     @staticmethod
     def input_player_new_rank():
