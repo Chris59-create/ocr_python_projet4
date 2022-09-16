@@ -12,13 +12,13 @@ class ViewPlayer:
     methods are called by the methods of the class PlayerManager (module
     controller player_manager.
     Class variables:
-    - players_attrs: a dict with as keys the French items seen by the user
+    - player_attrs: a dict with as keys the French items seen by the user
     and as values the relative attributes as initialized in the class Player
     (module model player).
-    - french_players_attrs: a list of al French keys extracted from the
+    - french_player_attrs: a list of al French keys extracted from the
     previous dict.
     - player_input_function: a dict with the French items as keys and as
-    values under string format the methods of pyinputplus  the user will
+    values under string format the methods of pyinputplus the user will
     call to input the values of the attributes. These strings including
     the typo of pyip methods with their parameters will be called by the
      method eval() to be used the relative method.
@@ -48,22 +48,24 @@ class ViewPlayer:
         self.players_instances = players_instances
 
     def player_selection(self, player_selection_data, players_list, i):
-        """ Allow to select a player if exit or if not to create one.
+        """
+        Allow to select a player if exit or if not to create one.
         The controller player_manager call the method with an empty dict
         player_selection_data, a players_list with all the existing
-        players and a variable i equal which value, changed in the process
-        will determine a sequence.
+        players and a variable i equal 0 which value, changed in the
+        process will determine a sequence.
         As long as a player attribute has no value, the user can choose
         the attribute by calling input_chosen_attr() and when enter a
         searched_value by calling input_search_value. Thanks to
-         player_search(), the players_list will only contain the players
-         corresponding. players_selection_data stores the entered attributes
+        player_search(), the players_list will only contain the players
+        corresponding. player_selection_data stores the entered attributes
         and values. If no corresponding, players_list will be empty and
-         the user can decide to enter the remaining attributes to create a
-         new player, begin again the research from scratch or cancel it
-         If players_list contains only one player, the user can validate
-         it as research player, if not he can o enter the remaining attributes to create a
-         new player, begin again the research from scratch or cancel it
+        the user can decide to enter the remaining attributes to create a
+        new player, begin again the research from scratch or cancel it
+        If players_list contains only one player, the user can validate
+        it as research player, if not he can enter the remaining
+        attributes to create a new player, begin again the research from
+        scratch or cancel it.
         """
 
         print(Fore.GREEN+"\nCréation / Sélection d'un joueur pour le tournoi : \n")
@@ -130,6 +132,8 @@ class ViewPlayer:
         else take the only one remaining. Returns a dict with the French
         item as key and the English wording of the attribute as value.
         """
+
+        print(Fore.RED)
 
         treated_attrs = list(player_selection_data.keys())
         remaining_french_player_attrs = [attr_ for attr_ in self.french_player_attrs + treated_attrs
@@ -205,8 +209,8 @@ class ViewPlayer:
 
     @staticmethod
     def input_player_new_rank():
-        """Called by a method the controller player_manager, allow to enter a
-         rank value"""
+        """Called by a method of the controller player_manager, allows
+        to enter a new rank value"""
 
         print(Fore.GREEN+"\nMettre à jour le classement du joueur : ")
 

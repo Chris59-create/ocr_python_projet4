@@ -127,6 +127,7 @@ class TournamentManager:
 
     @staticmethod
     def player_data(element, index_element):
+
         tournament_rank = index_element
         first_name = element[0].first_name
         last_name = element[0].last_name
