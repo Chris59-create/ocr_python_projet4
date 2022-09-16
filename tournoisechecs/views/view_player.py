@@ -31,7 +31,7 @@ class ViewPlayer:
 
     def player_selection(self, player_selection_data, players_list, i):
 
-        print(Fore.BLUE+"\nCréation / Sélection d'un joueur pour le tournoi : \n")
+        print(Fore.GREEN+"\nCréation / Sélection d'un joueur pour le tournoi : \n")
 
         selected_player = []
 
@@ -49,11 +49,10 @@ class ViewPlayer:
 
             if len(players_list) > 0:
 
-                print(Fore.BLUE+"\nListe des joueurs correspondants aux critères :\n")
-                print(Fore.WHITE)
+                print(Fore.GREEN+"\nListe des joueurs correspondants aux critères :\n")
 
                 for player in players_list:
-                    print(player)
+                    print(Fore.WHITE, player)
 
                 if len(players_list) == 1:
 
@@ -68,11 +67,10 @@ class ViewPlayer:
 
                     elif choice == "no":
 
+                        players_list = self.players_instances
                         player_selection_data = self.continue_or_restart(player_selection_data)
 
-                        if not player_selection_data:
-
-                            print(Fore.BLUE+"Abandon de l'action impliquant la création / sélection d'un joueur")
+                        if player_selection_data is None:
 
                             return None
 
@@ -81,7 +79,7 @@ class ViewPlayer:
                 player_selection_data = self.continue_or_restart(player_selection_data)
                 i = 1
 
-                if not player_selection_data:
+                if player_selection_data is None:
 
                     return None
 
@@ -139,17 +137,15 @@ class ViewPlayer:
 
         if next_choice == "Saisie des critères restants pour créer un nouveau joueur.":
 
-            print(Fore.BLUE+"\nSaisie des critères restants pour créer un nouveau joueur : \n")
+            print(Fore.GREEN+"\nSaisie des critères restants pour créer un nouveau joueur : \n")
 
             return player_selection_data
 
         elif next_choice == "Reprise au début de la saisie des données d'un joueur.":
 
-            player_selection_data = {}
+            print(Fore.GREEN+"\nReprise au début de la saisie des données d'un joueur : \n")
 
-            print(Fore.BLUE+"\nReprise au début de la saisie des données d'un joueur : \n")
-
-            return player_selection_data
+            return {}
 
         elif next_choice == "Abandon de la création / sélection d'un joueur.":
 
@@ -157,7 +153,9 @@ class ViewPlayer:
 
     @staticmethod
     def input_player_new_rank():
-        print(Fore.BLUE+"\nMettre à jour le classement du joueur : ")
+
+        print(Fore.GREEN+"\nMettre à jour le classement du joueur : ")
+
         new_rank = pyip.inputInt(prompt=Fore.RED+"\nSaisir le nouveau classement du joueur : \n")
 
         return new_rank
@@ -167,20 +165,17 @@ class ViewPlayer:
 
     def display_all_players(self):
 
-        print(Fore.WHITE)
-
         for player in self.players_instances:
-            print(player)
+            print(Fore.WHITE, player)
 
     @staticmethod
     def display_players(players_sorted, criteria):
 
         if criteria == "alphabetical":
-            print(Fore.BLUE+"Liste des joueurs par ordre alphabétique :\n")
+            print(Fore.GREEN+"Liste des joueurs par ordre alphabétique :\n")
 
         elif criteria == "rank":
-            print(Fore.BLUE+"Liste des joueurs par classement :\n")
+            print(Fore.GREEN+"Liste des joueurs par classement :\n")
 
         for player in players_sorted:
-            print(Fore.WHITE)
-            print(player)
+            print(Fore.WHITE, player)

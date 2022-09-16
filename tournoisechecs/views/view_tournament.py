@@ -32,7 +32,7 @@ class ViewTournament:
 
     def tournament_selection(self, tournament_selection_data, tournaments_list):
 
-        print(Fore.BLUE+"\nSélection d'un tournoi : \n")
+        print(Fore.GREEN+"\nSélection d'un tournoi : \n")
 
         selected_tournament = []
         tournament = None
@@ -55,19 +55,23 @@ class ViewTournament:
                     print(tournament)
 
                 if len(tournaments_list) == 1:
-                    choice = pyip.inputYesNo(prompt=Fore.BLUE+"est-ce le tournoi cherché : Oui(y/Y) / Non(n/N) ?\n")
+                    choice = pyip.inputYesNo(prompt=Fore.GREEN+"est-ce le tournoi cherché : Oui(y/Y) / Non(n/N) ?\n")
 
                     if choice == "yes":
+
                         for tournament in tournaments_list:
                             selected_tournament.append(tournament)
-                        tournament_selection_data = {}
-                        tournament = selected_tournament[0]
-                        break
+
+                        return selected_tournament[0]
 
                     elif choice == "no":
-                        tournament = self.restart_or_cancel(tournament_selection_data={})
-                        if not tournament:
-                            break
+
+                        tournaments_list = self.tournaments_instances
+                        tournament_selection_data = self.restart_or_cancel(tournament_selection_data)
+
+                        if tournament_selection_data is None:
+
+                            return None
 
             elif len(tournaments_list) == 0:
                 tournament = self.restart_or_cancel(tournament_selection_data={})
@@ -77,7 +81,7 @@ class ViewTournament:
             else:
                 pass
 
-        return tournament
+        # return tournament
 
     def input_chosen_attr_(self, tournament_selection_data):
 
@@ -127,24 +131,27 @@ class ViewTournament:
             return tournaments_found
 
     def restart_or_cancel(self, tournament_selection_data):
+
         next_choice = pyip.inputYesNo(prompt=Fore.RED+"Pas de tournoi existant.\nVoulez-vous reprendre la recherche"
-                                             " oui (y/N) ou non (n/N) ?")
+                                      " oui (y/N) ou non (n/N) ?")
 
         if next_choice == "no":
+
             print(Fore.RED+"\nAbandon de la recherche d'un tournoi \n")
-            tournament = None
-            return tournament
+
+            return None
 
         if next_choice == "yes":
+
             print(Fore.RED+"\nReprise au début de la recherche d'un tournoi : \n")
-            tournament = self.tournament_selection(tournament_selection_data={},
-                                                   tournaments_list=self.tournaments_instances)
-            return tournament
+
+            return {}
 
     @staticmethod
     def input_tournament_data():
 
         print(Fore.WHITE)
+
         dates_tournament = []
         tournament_name = pyip.inputStr("\nNom du tournoi : ", applyFunc=lambda str_: str_.upper())
         place = pyip.inputStr("Lieu : ", applyFunc=lambda str_: str_.upper())
@@ -168,7 +175,7 @@ class ViewTournament:
     @staticmethod
     def display_tournament_data(tournament):
 
-        print(Fore.BLUE+f"\nVous avez créé un tournoi avec les informations suivantes :\n")
+        print(Fore.GREEN+f"\nVous avez créé un tournoi avec les informations suivantes :\n")
         print(Fore.WHITE)
         print(f"Nom du tournoi : {tournament.tournament_name}\n"
               f"Lieu du tournoi : {tournament.place}\n"
@@ -179,16 +186,16 @@ class ViewTournament:
     @staticmethod
     def display_tournament(tournament):
 
-        print(Fore.WHITE)
-        print("\n", tournament)
+        print(Fore.WHITE, tournament)
 
     @staticmethod
     def display_tournament_in_progress():  # Vérifier si pas inutile
+
         print(Fore.RED+"\nCette action n'est pas possible tant que le tournoi n'est pas terminé !\n")
 
     @staticmethod
     def display_remaining_rounds(remaining_rounds):
-        print(Fore.BLUE+f"Il reste {remaining_rounds} tour(s) à jouer pour ce tournoi.\n")
+        print(Fore.GREEN+f"Il reste {remaining_rounds} tour(s) à jouer pour ce tournoi.\n")
 
     @staticmethod
     def display_tournament_total_scores(player_data):

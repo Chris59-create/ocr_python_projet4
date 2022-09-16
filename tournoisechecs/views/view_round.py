@@ -10,11 +10,10 @@ class ViewRound:
     @staticmethod
     def display_pairs_round(pairs_players):
 
-        print(Fore.BLUE+"\nVont jouer lors de ce tour :\n")
-        print(Fore.WHITE)
+        print(Fore.GREEN+"\nVont jouer lors de ce tour :\n")
 
         for element in pairs_players:
-            print(f"{element[0].first_name} {element[0].last_name} classé {element[0].rank} contre "
+            print(Fore.WHITE+f"{element[0].first_name} {element[0].last_name} classé {element[0].rank} contre "
                   f"{element[1].first_name} {element[1].last_name} classé {element[1].rank}.")
         print()
 
@@ -23,8 +22,9 @@ class ViewRound:
 
         print(Fore.WHITE+f"Joueur 1 : {player1.first_name} {player1.last_name}\nJoueur 2 :"
               f" {player2.first_name} {player2.last_name}")
-        print(Fore.BLUE+"\nQui a gagné le match ?\n")
+        print(Fore.GREEN+"\nQui a gagné le match ?\n")
         print(Fore.RED)
+
         match_winner = pyip.inputMenu(["Joueur 1", "Joueur 2", "Match nul"],
                                       prompt="Saisir le chiffre de l'action désirée : \n\n",
                                       numbered=True
@@ -51,9 +51,10 @@ class ViewRound:
     @staticmethod
     def display_round(round_, round_results):
 
-        print(Fore.BLUE+f"\n{round_.round_name} :\n")
+        print(Fore.GREEN+f"\n{round_.round_name} :\n")
 
         round_rank = 1
+
         for player, score in sorted(round_results.items(), key=lambda x: x[1], reverse=True):
             print(Fore.WHITE+f"{round_rank}. {player.last_name} {player.first_name}"
                   f" (né(e le {player.date_birth.strftime('%d/%m/%Y')} - score : {score}")
@@ -68,6 +69,7 @@ class ViewRound:
         score_2 = match_result[player_2]
         date_birth_1 = player_1.date_birth.strftime('%d/%m/%Y')
         date_birth_2 = player_2.date_birth.strftime('%d/%m/%Y')
+
         print(Fore.WHITE+f"{player_1.last_name} {player_1.first_name} (né(e) le {date_birth_1}) contre"
                          f" {player_2.last_name} {player_2.first_name} (née(e) le {date_birth_2}) :"
                          f" {score_1} - {score_2} ")

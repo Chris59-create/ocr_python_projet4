@@ -20,7 +20,6 @@ class PlayerManager:
         else:
 
             if isinstance(player_data, Player):
-
                 return player_data
 
             else:
@@ -36,10 +35,8 @@ class PlayerManager:
                 return player
 
     def update_player_rank(self):
-        player = self.view_player.player_selection(player_selection_data={},
-                                                   players_list=self.players_instances,
-                                                   i=0
-                                                   )
+
+        player = self.add_player()
 
         if player:
 

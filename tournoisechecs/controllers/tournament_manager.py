@@ -1,4 +1,4 @@
-from colorama import init, Fore
+from colorama import init, Fore, Back
 
 from controllers.player_manager import PlayerManager
 from controllers.swisspairs_manager import SwissPairs
@@ -58,6 +58,8 @@ class TournamentManager:
 
                 tournament.tournament_players.append(player)
                 number_players_added += 1
+
+                print(Back.BLACK)
                 print(Fore.BLUE+"Nombre de joueurs ajoutés au tournoi : ", number_players_added)
 
     # Calcule les paires de joueurs pour le round
