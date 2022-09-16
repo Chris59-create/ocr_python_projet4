@@ -15,16 +15,29 @@ NUMBER_ROUNDS = 4
 
 
 class TournamentManager:
-    """Tournament controller"""
+    """
+    Class variables:
+    - tournaments_instances: a empty list to store the future tournaments.
+    - number_rounds:    initialize to 1 this variable which will be
+                        incremented during a tournament process.
+    """
 
     tournaments_instances = []
     number_rounds = 1
 
     def __init__(self):
+        """Instantiated view_tournament to allow use of the methods of
+        ViewTournament (module view_tournament) needed to input and
+        display data of a tournament"""
         self.view_tournament = ViewTournament(self.tournaments_instances)
 
     # Crée le tournoi
     def input_tournament_data(self):
+        """Calls the method needed to enter the tournament features,
+        create the tournament as object of the class Tournament (module
+        tournament in models), add it to list of tournaments. Returns the
+        object tournament """
+
         tournament_data = self.view_tournament.input_tournament_data()
         tournament = Tournament(tournament_data["tournament_name"],
                                 tournament_data["place"],
@@ -41,9 +54,11 @@ class TournamentManager:
 
         self.view_tournament.display_tournament_data(tournament)
 
-    # Ajoute la liste des joueurs au tournoi
     @staticmethod
     def tournament_add_players(tournament):
+        """calls the needed times to have the number of players required
+        for a tournament the method to select or create a player. Add it
+        to the list of players of the tournament"""
 
         player_manager = PlayerManager()
 
@@ -62,8 +77,12 @@ class TournamentManager:
                 print(Back.BLACK)
                 print(Fore.BLUE+"Nombre de joueurs ajoutés au tournoi : ", number_players_added)
 
-    # Calcule les paires de joueurs pour le round
     def calculate_pairs(self, tournament):
+        """Called by self prepare_round(), return the list of the pairs
+        of players who will play one against the other during the round.
+        Passes the list of players, the list of played rounds and the
+        number of the round concerned to the method which will return the
+        list of pairs"""
 
         pairs = SwissPairs()
         pairs_players = pairs.run_creation_pairs_players(tournament.tournament_players,
@@ -72,6 +91,8 @@ class TournamentManager:
         return pairs_players
 
     def prepare_round(self, tournament):
+        """Calls the method which will determine the players who will
+        play one against the other, increments the number of rounds."""
         round_name = "Round " + str(self.number_rounds)
 
         pairs_players = self.calculate_pairs(tournament)
@@ -84,6 +105,9 @@ class TournamentManager:
 
     @staticmethod
     def start_round(round_name, pairs_players):
+        """Create the object round_ in class Round (module round in
+        models and call the method of this class to register the start
+        date and time of the round"""
 
         round_ = Round(round_name, pairs_players)
         round_.start_round()
@@ -92,6 +116,14 @@ class TournamentManager:
 
     @staticmethod
     def update_score(tournament, round_):
+        """Calls the method to register date and time of the end of the
+        round. Pairs of players by pairs of player calls the method to
+        update their scores, create the object match in the class Match
+        (module match in models) and update the attribute current
+        tournament score of the players (used to calculate later the final
+        scores of tournament). Calls the method to add the match to the
+        round. Calls the method to add the round to the tournament.
+        """
 
         view_round = ViewRound()
         round_.end_round()
@@ -110,23 +142,30 @@ class TournamentManager:
         tournament.add_round(round_)
 
     def update_tournament_final_scores(self, tournament):
+        """ Checks if all rounds of the tournaments have been played and
+        when calls the method to add the player and his final score to
+        tournament_final_scores of the tournament. If this method is
+        called before end of the tournament, it calls the display of a
+        warning."""
 
         remaining_rounds = NUMBER_ROUNDS - len(tournament.tournament_rounds)
 
-        # ! Check if all rounds have been played before updating the tournament final scores
         if remaining_rounds == 0:
+
             for player in tournament.tournament_players:
                 final_tournament_score = [player, player.current_tournament_score]
                 tournament.tournament_final_scores.append(final_tournament_score)
                 player.current_tournament_score = 0
         else:
-            # view_tournament = ViewTournament()
+
             self.view_tournament.display_tournament_in_progress()
 
         return remaining_rounds
 
     @staticmethod
     def player_data(element, index_element):
+        """Called by the self method display_tournament_total_scores.
+        Returns a dict of data useful to display the final scores"""
 
         tournament_rank = index_element
         first_name = element[0].first_name
@@ -146,6 +185,9 @@ class TournamentManager:
         return player_data
 
     def display_tournament_total_scores(self, tournament, remaining_rounds):
+        """Called by a method of the class MenuTournament (module view_menus
+        in views) iterate in the list of final scores sorted par score to
+        and calls the method to display in order the element of the list"""
 
         self.view_tournament.display_remaining_rounds(remaining_rounds)
         tournament_final_scores_sorted = sorted(tournament.tournament_final_scores, key=lambda x: x[1],
@@ -158,8 +200,10 @@ class TournamentManager:
         return tournament_final_scores_sorted
 
     def update_tournament_players_ranks(self, tournament_final_scores_sorted):
-
-        # self.display_tournament_total_scores()
+        """Called by a method of the class MenuTournament (module view_menus
+        in views) iterate in the list of final scores sorted par score
+        and calls each time the method to enter a new rank, uses the new
+        rank value to update the rank of the relative player."""
 
         for element in tournament_final_scores_sorted:
             index_element = tournament_final_scores_sorted.index(element)
@@ -169,6 +213,9 @@ class TournamentManager:
             element[0].rank = new_rank
 
     def select_tournament(self):
+        """Called by methods of MenuReports (module view_menus in views)
+        call the method to select a tournament and return the selected
+        tournament."""
 
         tournament = self.view_tournament.tournament_selection(tournament_selection_data={},
                                                                tournaments_list=self.tournaments_instances,
@@ -181,11 +228,22 @@ class TournamentManager:
             return tournament
 
     def display_tournament(self, tournament):
+        """Called by  a method of MenuReports (module view_menus in views)
+        call the method to display a tournament."""
 
         self.view_tournament.display_tournament(tournament)
 
     @staticmethod
     def display_rounds(tournament, round_name=None):
+        """Called by methods of MenuReports (module view_menus in views)
+        unpacks the matches(tuples of two lists) to create a flat list
+        (without nested lists) with the data. Uses this flat list to build
+        a list of players and a list of scores. Matchs the two lists to
+        build a dict (Keys = players, values = scores. The if statement
+        allows to use these method if called for a specific round or else
+        if called without specific round, meant for all rounds of the
+        tournament"""
+
         view_round = ViewRound()
 
         for round_ in tournament.tournament_rounds:
@@ -206,6 +264,10 @@ class TournamentManager:
 
     @staticmethod
     def display_matches(tournament):
+        """Called by  a method of MenuReports (module view_menus in views)
+        Iterates through the rounds and their matches to display all
+        matches of a tournament."""
+
         view_round = ViewRound()
 
         for round_ in tournament.tournament_rounds:
