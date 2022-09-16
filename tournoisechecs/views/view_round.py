@@ -1,4 +1,5 @@
 from colorama import init, Fore
+
 import pyinputplus as pyip
 from controllers.helpers import console_clear
 
@@ -9,6 +10,8 @@ class ViewRound:
 
     @staticmethod
     def display_pairs_round(pairs_players):
+        """Called by the prepare_round() method of TournamentManager
+        (controller tournament_manager), print the pairs of players"""
 
         print(Fore.GREEN+"\nVont jouer lors de ce tour :\n")
 
@@ -18,7 +21,10 @@ class ViewRound:
         print()
 
     @staticmethod
-    def input_score(self, player1, player2):
+    def input_score(player1, player2):
+        """Called by the update_score() method of TournamentManager
+        (controller tournament_manager) asks for choice the winner of
+        a match and stores the relative scores. Returns two scores """
 
         print(Fore.WHITE+f"Joueur 1 : {player1.first_name} {player1.last_name}\nJoueur 2 :"
               f" {player2.first_name} {player2.last_name}")
@@ -50,6 +56,8 @@ class ViewRound:
 
     @staticmethod
     def display_round(round_, round_results):
+        """display the results of a round with the list of the players
+        ranked by score"""
 
         print(Fore.GREEN+f"\n{round_.round_name} :\n")
 
@@ -62,6 +70,8 @@ class ViewRound:
 
     @staticmethod
     def display_match(match_result):
+        """Called by a method of TournamentManager, unpack the dict
+        match_result to print the results of the relative match"""
 
         player_1 = list(match_result.keys())[0]
         score_1 = match_result[player_1]
