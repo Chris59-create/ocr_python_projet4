@@ -16,8 +16,9 @@ NUMBER_ROUNDS = 4
 
 class TournamentManager:
     """
+    Contains all the methods needed to manage step by step a tournament.
     Class variables:
-    - tournaments_instances: a empty list to store the future tournaments.
+    - tournaments_instances: an empty list to store the future tournaments.
     - number_rounds:    initialize to 1 this variable which will be
                         incremented during a tournament process.
     """

@@ -44,7 +44,7 @@ class ViewPlayer:
                              }
 
     def __init__(self, players_instances):
-        """Initialize the list of players"""
+        """Initialize the list of players with all players"""
         self.players_instances = players_instances
 
     def player_selection(self, player_selection_data, players_list, i):

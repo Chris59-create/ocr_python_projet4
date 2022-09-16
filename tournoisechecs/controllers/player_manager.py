@@ -3,11 +3,27 @@ from views.view_player import ViewPlayer
 
 
 class PlayerManager:
+    """
+    Contains the methods needed to manage the players.
+    Class variables:
+    - players_instances: an empty list to store the future players
+    - view_player:  instance of ViewPlayer to allow further use of
+                    methods to input or display players data.
+    """
 
     players_instances = []
     view_player = ViewPlayer(players_instances)
 
     def add_player(self):
+        """Called by method of TournamentManager (module tournament_manager
+        in controllers) and by MenuPlayer (module view_menus in views.
+        Calls the method needed to select a player or collect the data for
+        a new player. Returns None to end the action if the user has chosen
+        to cancel, a player if found in existing list, if not create a
+        new player object of the class Player (module player in models)
+        and returns this player."
+        """
+
         player_data = self.view_player.player_selection(player_selection_data={},
                                                         players_list=self.players_instances,
                                                         i=0
@@ -35,6 +51,9 @@ class PlayerManager:
                 return player
 
     def update_player_rank(self):
+        """Calls the method to find a player and if found or created
+        calls the method to input a new rank and use it to update the
+        player rank."""
 
         player = self.add_player()
 
@@ -48,6 +67,9 @@ class PlayerManager:
             return
 
     def display_players(self, players_list, criteria):
+        """According to the criteria passed in the method, sorts the
+        players_list and passes the sorted list and the criteria to
+        the method which will display the sorted list."""
 
         players_sorted = []
 
