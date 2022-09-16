@@ -1,4 +1,5 @@
 from colorama import init, Fore
+
 import pyinputplus as pyip
 from operator import attrgetter
 
@@ -6,6 +7,22 @@ init()
 
 
 class ViewPlayer:
+    """
+    Contains all the methods to input or display players data. These
+    methods are called by the methods of the class PlayerManager (module
+    controller player_manager.
+    Class variables:
+    - players_attrs: a dict with as keys the French items seen by the user
+    and as values the relative attributes as initialized in the class Player
+    (module model player).
+    - french_players_attrs: a list of al French keys extracted from the
+    previous dict.
+    - player_input_function: a dict with the French items as keys and as
+    values under string format the methods of pyinputplus  the user will
+    call to input the values of the attributes. These strings including
+    the typo of pyip methods with their parameters will be called by the
+     method eval() to be used the relative method.
+    """
 
     player_attrs = {"Nom de famille": 'last_name',
                     "Prénom": 'first_name',
@@ -27,9 +44,27 @@ class ViewPlayer:
                              }
 
     def __init__(self, players_instances):
+        """Initialize the list of players"""
         self.players_instances = players_instances
 
     def player_selection(self, player_selection_data, players_list, i):
+        """ Allow to select a player if exit or if not to create one.
+        The controller player_manager call the method with an empty dict
+        player_selection_data, a players_list with all the existing
+        players and a variable i equal which value, changed in the process
+        will determine a sequence.
+        As long as a player attribute has no value, the user can choose
+        the attribute by calling input_chosen_attr() and when enter a
+        searched_value by calling input_search_value. Thanks to
+         player_search(), the players_list will only contain the players
+         corresponding. players_selection_data stores the entered attributes
+        and values. If no corresponding, players_list will be empty and
+         the user can decide to enter the remaining attributes to create a
+         new player, begin again the research from scratch or cancel it
+         If players_list contains only one player, the user can validate
+         it as research player, if not he can o enter the remaining attributes to create a
+         new player, begin again the research from scratch or cancel it
+        """
 
         print(Fore.GREEN+"\nCréation / Sélection d'un joueur pour le tournoi : \n")
 
@@ -88,6 +123,13 @@ class ViewPlayer:
         return player_data
 
     def input_chosen_attr_(self, player_selection_data):
+        """
+        check the already used attributes and store their French wordings
+        in treated_attrs. Create a comprehension list of the remaining
+        attributes. If several remaining submit them to the user for choice,
+        else take the only one remaining. Returns a dict with the French
+        item as key and the English wording of the attribute as value.
+        """
 
         treated_attrs = list(player_selection_data.keys())
         remaining_french_player_attrs = [attr_ for attr_ in self.french_player_attrs + treated_attrs
@@ -109,6 +151,10 @@ class ViewPlayer:
         return {french_attr_: chosen_attr_}
 
     def input_search_value(self, french_attr_):
+        """Select in the dict player_input_function the value corresponding
+        to the key french_attr_ and use it as callable method thanks to
+        the eval() method. Return the value entered by the user on demand
+        of called method."""
 
         print(Fore.WHITE)
         searched_value = eval(self.player_input_function[french_attr_])
@@ -117,6 +163,8 @@ class ViewPlayer:
 
     @ staticmethod
     def player_search(players_list, chosen_attr_, value):
+        """Select the players from players_list having the attribute
+        chosen_attr_ with value as value. Returns this list."""
 
         getter = attrgetter(chosen_attr_)
         players_found = [player for player in players_list if getter(player) == value]
@@ -125,6 +173,10 @@ class ViewPlayer:
 
     @staticmethod
     def continue_or_restart(player_selection_data):
+        """If no player selected or corresponding ask the user if he wants
+        to enter the remaining criteria (returns when the dict with the
+         already entered criteria and values), to begin from scratch a research
+         (returns an empty dict) or to cancel the research (returns None)"""
 
         next_choices = ["Saisie des critères restants pour créer un nouveau joueur.",
                         "Reprise au début de la saisie des données d'un joueur.",
@@ -153,6 +205,8 @@ class ViewPlayer:
 
     @staticmethod
     def input_player_new_rank():
+        """Called by a method the controller player_manager, allow to enter a
+         rank value"""
 
         print(Fore.GREEN+"\nMettre à jour le classement du joueur : ")
 
@@ -160,16 +214,10 @@ class ViewPlayer:
 
         return new_rank
 
-    def display_all_players_by_rank(self):
-        pass
-
-    def display_all_players(self):
-
-        for player in self.players_instances:
-            print(Fore.WHITE, player)
-
     @staticmethod
     def display_players(players_sorted, criteria):
+        """called by the relative method of the controller player_manager,
+         displays the title of the list and the demanded list."""
 
         if criteria == "alphabetical":
             print(Fore.GREEN+"Liste des joueurs par ordre alphabétique :\n")
