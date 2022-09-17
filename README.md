@@ -9,7 +9,8 @@ This python program is written as **study case** to be evaluated for validation 
 - Packages environment, see [requirements.txt](/requirements.txt)
 
 ## Structure
-<img width="20" alt="image" src="https://user-images.githubusercontent.com/65560007/190876529-c777c589-623d-44c9-9600-119130d39134.png">
+<img width="506" alt="Capture d’écran 2022-09-17 à 23 09 46" src="https://user-images.githubusercontent.com/65560007/190876742-aa13ad0b-b846-46b5-9e62-b4168496e9a3.png">
+
 
 ## How to use the program:
 - [ ] Clone [the github repository](https://github.com/Chris59-create/ocr_python_projet4.git) locally
