@@ -1,11 +1,13 @@
 from datetime import datetime
+
+from tinydb import TinyDB
+
 from controllers.player_manager import PlayerManager
 from controllers.tournament_manager import TournamentManager
 from models.match import Match
 from models.player import Player
 from models.round import Round
 from models.tournament import Tournament
-from tinydb import TinyDB
 
 
 db = TinyDB('db.json')
@@ -27,42 +29,7 @@ class TableTournament:
         serialized_tournaments = []
         for tournament in self.tournament_manager.tournaments_instances:
 
-            # serialization round - match
-            serialized_rounds = []
-            for round_ in tournament.tournament_rounds:
-
-                serialized_matches = []
-
-                for match in round_.matches:
-
-                    serialized_match = []
-
-                    for player, score in match:
-                        serialized_player = self.table_player.serialize_player(player)
-                        serialized_match_player = {'serialized_player': serialized_player, 'score player': score}
-
-                        serialized_match.append(serialized_match_player)
-
-                    serialized_matches.append(serialized_match)
-
-                serialized_pairs_players = []
-                for pair_players in round_.pairs_players:
-                    serialized_player_0 = self.table_player.serialize_player(pair_players[0])
-                    serialized_player_1 = self.table_player.serialize_player(pair_players[1])
-                    serialized_pair_players = {'serialized_player_0': serialized_player_0,
-                                               'serialized_player_1': serialized_player_1
-                                               }
-                    serialized_pairs_players.append(serialized_pair_players)
-
-                serialized_round = {
-                    'round_name': round_.round_name,
-                    'start_date_time': round_.start_date_time.strftime('%d/%m/%Y, %H:%M:%S'),
-                    'end_date_time': round_.end_date_time.strftime('%d/%m/%Y, %H:%M:%S'),
-                    'matches': serialized_matches,
-                    'pairs_players': serialized_pairs_players
-                }
-
-                serialized_rounds.append(serialized_round)
+            self.serialize_round_match(tournament)
 
             # serialization de la liste des joueurs
             serialized_tournament_players = []
@@ -93,6 +60,44 @@ class TableTournament:
             serialized_tournaments.append(serialized_tournament)
 
         tournaments_table.insert_multiple(serialized_tournaments)
+
+    def serialize_round_match(self, tournament):
+
+        serialized_rounds = []
+        for round_ in tournament.tournament_rounds:
+
+            serialized_matches = []
+
+            for match in round_.matches:
+
+                serialized_match = []
+
+                for player, score in match:
+                    serialized_player = self.table_player.serialize_player(player)
+                    serialized_match_player = {'serialized_player': serialized_player, 'score player': score}
+
+                    serialized_match.append(serialized_match_player)
+
+                serialized_matches.append(serialized_match)
+
+            serialized_pairs_players = []
+            for pair_players in round_.pairs_players:
+                serialized_player_0 = self.table_player.serialize_player(pair_players[0])
+                serialized_player_1 = self.table_player.serialize_player(pair_players[1])
+                serialized_pair_players = {'serialized_player_0': serialized_player_0,
+                                           'serialized_player_1': serialized_player_1
+                                           }
+                serialized_pairs_players.append(serialized_pair_players)
+
+            serialized_round = {
+                'round_name': round_.round_name,
+                'start_date_time': round_.start_date_time.strftime('%d/%m/%Y, %H:%M:%S'),
+                'end_date_time': round_.end_date_time.strftime('%d/%m/%Y, %H:%M:%S'),
+                'matches': serialized_matches,
+                'pairs_players': serialized_pairs_players
+            }
+
+            serialized_rounds.append(serialized_round)
 
     def install_tournament_data(self):
 

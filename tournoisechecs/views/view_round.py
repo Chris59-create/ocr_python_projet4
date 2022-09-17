@@ -65,7 +65,7 @@ class ViewRound:
 
         for player, score in sorted(round_results.items(), key=lambda x: x[1], reverse=True):
             print(Fore.WHITE+f"{round_rank}. {player.last_name} {player.first_name}"
-                  f" (né(e le {player.date_birth.strftime('%d/%m/%Y')} - score : {score}")
+                  f" (né(e) le {player.date_birth.strftime('%d/%m/%Y')}) - score : {score}")
             round_rank += 1
 
     @staticmethod

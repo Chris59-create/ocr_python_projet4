@@ -135,7 +135,7 @@ class SwissPairs:
         played_pairs = self.list_all_played_pairs(tournament_rounds)
 
         while players_by_score_rank:
-            # print("after while players_by_score_rank", players_by_score_rank)
+
             player = players_by_score_rank[0]
 
             pairs_to_add, pair_to_del = self.search_opponent(players_by_score_rank,
@@ -147,11 +147,12 @@ class SwissPairs:
             future_pairs_players = [pair for pair in future_pairs_players if pair not in pair_to_del]
 
             players_by_score_rank.remove(player)
+
             if len(pairs_to_add) == 1:
                 players_by_score_rank.remove(pairs_to_add[0][1])
+
             else:
                 break
-            # print("check boucle calculate pairs next round", len(players_by_score_rank))
 
         return future_pairs_players
 
