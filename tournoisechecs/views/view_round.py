@@ -48,7 +48,8 @@ class ViewRound:
             score_player1 = 0.5
             score_player2 = 0.5
 
-        print(Fore.WHITE+f"score du match :\n{player1.last_name} : {score_player1}, {player2.last_name} : {score_player2}")
+        print(Fore.WHITE+f"score du match :\n{player1.last_name} : {score_player1},"
+                         f" {player2.last_name} : {score_player2}")
 
         console_clear()
 

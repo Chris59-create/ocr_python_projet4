@@ -233,7 +233,7 @@ class ViewTournament:
         (module controller tournament_manager), display the features of
         a just created tournament"""
 
-        print(Fore.GREEN+f"\nVous avez créé un tournoi avec les informations suivantes :\n")
+        print(Fore.GREEN+"\nVous avez créé un tournoi avec les informations suivantes :\n")
         print(Fore.WHITE)
         print(f"Nom du tournoi : {tournament.tournament_name}\n"
               f"Lieu du tournoi : {tournament.place}\n"
