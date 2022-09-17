@@ -127,82 +127,25 @@ class TableTournament:
         return serialized_tournament_final_scores
 
     def install_tournament_data(self):
+        """Uploads the data of the table tournaments of the db.json and
+        uses and transforms them to instantiate the relative objects and
+        their attributes. Change the value data_loaded to 1 to avoid
+        a second upload during the same app session. """
 
         serialized_tournaments = tournaments_table.all()
 
         # Deserialization of tournaments
         for serialized_tournament in serialized_tournaments:
 
-            # Deserialization of tournament rounds
             serialized_tournament_rounds = serialized_tournament['tournament rounds']
+            deserialized_rounds = self.deserialize_rounds(serialized_tournament_rounds)
 
-            deserialized_rounds = []
-            for serialized_round in serialized_tournament_rounds:
-                deserialized_start_date_time = datetime.strptime(serialized_round['start_date_time'],
-                                                                 '%d/%m/%Y, %H:%M:%S')
-                deserialized_end_date_time = datetime.strptime(serialized_round['end_date_time'], '%d/%m/%Y, %H:%M:%S')
+            serialized_tournament_players = serialized_tournament['tournament players']
+            deserialized_tournament_players = self.deserialize_tournament_players(serialized_tournament_players)
 
-                # Deserialization of matches
-                deserialized_matches = []
-                for serialized_match in serialized_round['matches']:
-
-                    player_score_1 = serialized_match[0]
-                    player_score_2 = serialized_match[1]
-
-                    serialized_player_1 = player_score_1['serialized_player']
-                    deserialized_player_1 = self.table_player.deserialize_player(serialized_player_1)
-                    score_player_1 = player_score_1['score player']
-                    serialized_player_2 = player_score_2['serialized_player']
-                    deserialized_player_2 = self.table_player.deserialize_player(serialized_player_2)
-                    score_player_2 = player_score_2['score player']
-
-                    deserialized_match = Match(deserialized_player_1,
-                                               score_player_1,
-                                               deserialized_player_2,
-                                               score_player_2
-                                               )
-
-                    deserialized_matches.append(deserialized_match.match_tuple)
-
-                # Deserialization of pair players
-                deserialized_pairs_players = []
-                for serialized_pair_players in serialized_round['pairs_players']:
-
-                    deserialized_player_0 = self.table_player.deserialize_player(
-                        serialized_pair_players['serialized_player_0']
-                    )
-                    deserialized_player_1 = self.table_player.deserialize_player(
-                        serialized_pair_players['serialized_player_1']
-                    )
-                    deserialized_pair_players = [deserialized_player_0, deserialized_player_1]
-
-                    deserialized_pairs_players.append(deserialized_pair_players)
-
-                deserialized_round = Round(serialized_round['round_name'],
-                                           deserialized_pairs_players,
-                                           deserialized_start_date_time,
-                                           deserialized_end_date_time,
-                                           deserialized_matches
-                                           )
-
-                deserialized_rounds.append(deserialized_round)
-
-            # Deserialization of tournament players
-            deserialized_tournament_players = []
-            for serialized_player in serialized_tournament['tournament players']:
-                deserialized_player = self.table_player.deserialize_player(serialized_player)
-
-                deserialized_tournament_players.append(deserialized_player)
-
-            # Deserialization of tournament final scores
-            deserialized_tournament_final_scores = []
-            for serialized_tournament_final_score in serialized_tournament['tournament final scores']:
-                serialized_player = serialized_tournament_final_score['player']
-                deserialized_player = self.table_player.deserialize_player(serialized_player)
-                deserialized_final_score = serialized_tournament_final_score['final_score']
-                deserialized_tournament_final_score = [deserialized_player, deserialized_final_score]
-
-                deserialized_tournament_final_scores.append(deserialized_tournament_final_score)
+            serialized_tournament_final_score = serialized_tournament['tournament final scores']
+            deserialized_tournament_final_scores =\
+                self.deserialize_tournament_final_scores(serialized_tournament_final_score)
 
             # Deserialization of all tournament
             deserialized_tournament = Tournament(
@@ -220,8 +163,90 @@ class TableTournament:
 
         self.data_loaded = 1
 
+    def deserialize_rounds(self, serialized_tournament_rounds):
+
+        deserialized_rounds = []
+
+        for serialized_round in serialized_tournament_rounds:
+            deserialized_start_date_time = datetime.strptime(serialized_round['start_date_time'],
+                                                             '%d/%m/%Y, %H:%M:%S')
+            deserialized_end_date_time = datetime.strptime(serialized_round['end_date_time'], '%d/%m/%Y, %H:%M:%S')
+
+            # Deserialization of matches
+            deserialized_matches = []
+
+            for serialized_match in serialized_round['matches']:
+                player_score_1 = serialized_match[0]
+                player_score_2 = serialized_match[1]
+
+                serialized_player_1 = player_score_1['serialized_player']
+                deserialized_player_1 = self.table_player.deserialize_player(serialized_player_1)
+                score_player_1 = player_score_1['score player']
+                serialized_player_2 = player_score_2['serialized_player']
+                deserialized_player_2 = self.table_player.deserialize_player(serialized_player_2)
+                score_player_2 = player_score_2['score player']
+
+                deserialized_match = Match(deserialized_player_1,
+                                           score_player_1,
+                                           deserialized_player_2,
+                                           score_player_2
+                                           )
+
+                deserialized_matches.append(deserialized_match.match_tuple)
+
+            # Deserialization of pair players
+            deserialized_pairs_players = []
+            for serialized_pair_players in serialized_round['pairs_players']:
+                deserialized_player_0 = self.table_player.deserialize_player(
+                    serialized_pair_players['serialized_player_0']
+                )
+                deserialized_player_1 = self.table_player.deserialize_player(
+                    serialized_pair_players['serialized_player_1']
+                )
+                deserialized_pair_players = [deserialized_player_0, deserialized_player_1]
+
+                deserialized_pairs_players.append(deserialized_pair_players)
+
+            deserialized_round = Round(serialized_round['round_name'],
+                                       deserialized_pairs_players,
+                                       deserialized_start_date_time,
+                                       deserialized_end_date_time,
+                                       deserialized_matches
+                                       )
+
+            deserialized_rounds.append(deserialized_round)
+
+        return deserialized_rounds
+
+    def deserialize_tournament_players(self, serialized_tournament_players):
+
+        deserialized_tournament_players = []
+
+        for serialized_player in serialized_tournament_players:
+            deserialized_player = self.table_player.deserialize_player(serialized_player)
+
+            deserialized_tournament_players.append(deserialized_player)
+
+        return deserialized_tournament_players
+
+    def deserialize_tournament_final_scores(self, serialized_tournament_final_scores):
+
+        deserialized_tournament_final_scores = []
+
+        for serialized_tournament_final_score in serialized_tournament_final_scores:
+            serialized_player = serialized_tournament_final_score['player']
+            deserialized_player = self.table_player.deserialize_player(serialized_player)
+            deserialized_final_score = serialized_tournament_final_score['final_score']
+            deserialized_tournament_final_score = [deserialized_player, deserialized_final_score]
+
+            deserialized_tournament_final_scores.append(deserialized_tournament_final_score)
+
+        return deserialized_tournament_final_scores
+
 
 class TablePlayers:
+    """Manages the backup and upload of the players data in and from the
+     table players of db.json"""
 
     def __init__(self):
 
@@ -257,6 +282,8 @@ class TablePlayers:
         return player
 
     def save_players_data(self):
+        """backups the players data in the table players of the db.json
+        """
 
         players_table.truncate()
         serialized_players = []
@@ -267,6 +294,9 @@ class TablePlayers:
         players_table.insert_multiple(serialized_players)
 
     def install_players_data(self):
+        """Uploads the players data from the table players, calls the
+        method to instantiate the relative players and add them to the
+        list of players"""
 
         serialized_players = players_table.all()
         for serialized_player in serialized_players:
