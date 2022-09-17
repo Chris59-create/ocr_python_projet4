@@ -418,7 +418,7 @@ class MenuReports:
         tournament = self.tournament_manager.select_tournament()
 
         if tournament:
-            self.player_manager.display_players(tournament.tournament_players, "alphabetical")
+            self.tournament_manager.display_tournament_players_sorted(tournament, "alphabetical")
 
         self.reports_choices(table_tournament)
 
@@ -429,7 +429,7 @@ class MenuReports:
         tournament = self.tournament_manager.select_tournament()
 
         if tournament:
-            self.player_manager.display_players(tournament.tournament_players, "rank")
+            self.tournament_manager.display_tournament_players_sorted(tournament, "rank")
 
         self.reports_choices(table_tournament)
 

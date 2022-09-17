@@ -187,7 +187,7 @@ class TournamentManager:
 
     def display_tournament_total_scores(self, tournament, remaining_rounds):
         """Called by a method of the class MenuTournament (module view_menus
-        in views) iterate in the list of final scores sorted par score to
+        in views) iterate in the list of final scores sorted par score
         and calls the method to display in order the element of the list"""
 
         self.view_tournament.display_remaining_rounds(remaining_rounds)
@@ -279,3 +279,27 @@ class TournamentManager:
                     match_result[player] = score
 
                 view_round.display_match(match_result)
+
+    def display_tournament_players_sorted(self, tournament, criteria):
+        """Called by a method of the class MenuReports (module view_menus
+        in views) iterate in the list of final scores of tournament sorted
+        by criteria and calls the method to display in order the element
+        of the list with his final score in the tournament."""
+
+        if criteria == "alphabetical":
+
+            tournament_final_scores_sorted = sorted(tournament.tournament_final_scores,
+                                                    key=lambda x: (x[0].last_name, x[0].first_name),
+                                                    )
+
+        elif criteria == "rank":
+
+            tournament_final_scores_sorted = sorted(tournament.tournament_final_scores,
+                                                    key=lambda x: x[0].rank,
+                                                    reverse=True
+                                                    )
+
+        for element in tournament_final_scores_sorted:
+            index_element = tournament_final_scores_sorted.index(element)
+            player_data = self.player_data(element, index_element)
+            self.view_tournament.display_tournament_total_scores(player_data)

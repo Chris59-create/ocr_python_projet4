@@ -16,34 +16,37 @@ players_table = db.table("players")
 
 
 class TableTournament:
+    """Manages the backup and upload of the tournaments data in and from
+    the table tournaments in db.json
+    """
 
     def __init__(self):
+        """Among others initialise the variable data_loaded with the
+        value 0 (means data not already uploaded in the app. If the data
+        are uploaded by any method this will change the value to 1. To
+        avoid duplicates the tournament data will not be uploaded a
+        second time."""
+
         self.tournament_manager = TournamentManager()
         self.table_player = TablePlayers()
         self.data_loaded = 0
 
     def save_tournaments_data(self):
+        """Iterates through all the tournaments data to serialize them
+        in format jason. Before backup empties the tournaments table in
+        db.json. After serializes through steps with a specific methods
+        for each"""
 
         tournaments_table.truncate()
 
         serialized_tournaments = []
         for tournament in self.tournament_manager.tournaments_instances:
 
-            self.serialize_round_match(tournament)
+            serialized_rounds = self.serialize_round_match(tournament)
 
-            # serialization de la liste des joueurs
-            serialized_tournament_players = []
-            for player in tournament.tournament_players:
-                serialized_player = self.table_player.serialize_player(player)
-                serialized_tournament_players.append(serialized_player)
+            serialized_tournament_players = self.serialize_tournament_players(tournament)
 
-            # serialisation de la liste des scores
-            serialized_tournament_final_scores = []
-            for player, final_score in tournament.tournament_final_scores:
-                serialized_player = self.table_player.serialize_player(player)
-                serialized_final_score = {'player': serialized_player, 'final_score': final_score}
-
-                serialized_tournament_final_scores.append(serialized_final_score)
+            serialized_tournament_final_scores = self.serialize_tournament_final_scores(tournament)
 
             # serialization de tout le tournoi
             serialized_tournament = {
@@ -98,6 +101,30 @@ class TableTournament:
             }
 
             serialized_rounds.append(serialized_round)
+
+        return serialized_rounds
+
+    def serialize_tournament_players(self, tournament):
+
+        serialized_tournament_players = []
+
+        for player in tournament.tournament_players:
+            serialized_player = self.table_player.serialize_player(player)
+            serialized_tournament_players.append(serialized_player)
+
+        return serialized_tournament_players
+
+    def serialize_tournament_final_scores(self, tournament):
+
+        serialized_tournament_final_scores = []
+
+        for player, final_score in tournament.tournament_final_scores:
+            serialized_player = self.table_player.serialize_player(player)
+            serialized_final_score = {'player': serialized_player, 'final_score': final_score}
+
+            serialized_tournament_final_scores.append(serialized_final_score)
+
+        return serialized_tournament_final_scores
 
     def install_tournament_data(self):
 

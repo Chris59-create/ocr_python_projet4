@@ -231,3 +231,4 @@ class ViewPlayer:
 
         for player in players_sorted:
             print(Fore.WHITE, player)
+
