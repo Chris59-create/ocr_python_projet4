@@ -16,6 +16,7 @@ This python program is written as **study case** to be evaluated for validation 
 - [ ] Clone [the github repository](https://github.com/Chris59-create/ocr_python_projet4.git) locally
 - [ ] Install the packages according the configuration file `$ pip install -r requirements.txt`.
 - [ ] Run in the directory `tournoisechecs` `$ python tournois_echecs.py`.
+- [ ] The programm backups and uploads the data from a db.json file managed with the package TinyDB.
 
 ## How to check the PEP8 compliance:
 - [ ] `requirements.txt` will allow you to install the package flake8 and one of its plugin flake8-html. The chosen version of flake8 is not the last one but insure the compatibility between the two packages.
