@@ -109,14 +109,11 @@ class ViewTournament:
                             return None
 
             elif len(tournaments_list) == 0:
-                tournament = self.restart_or_cancel()
-                if not tournament:
-                    break
+                tournament_selection_data = self.restart_or_cancel()
 
-            else:
-                pass
+                if tournament_selection_data is None:
 
-        # return tournament
+                    return None
 
     def input_chosen_attr_(self, tournament_selection_data):
         """
