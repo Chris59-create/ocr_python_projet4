@@ -1,16 +1,7 @@
 class SwissPairs:
-    """ appaire les joueurs pour le round1 avec les règles du tournoi
-    suisse.
-    Au début du premier tour, triez tous les joueurs en fonction de leur
-    classement.
-    Divisez les joueurs en deux moitiés, une supérieure et une inférieure.
-    Le meilleur joueur de la moitié supérieure est jumelé avec le meilleur
-    joueur de la moitié inférieure, et ainsi de suite. Si nous avons huit
-     joueurs triés par rang, alors le joueur 1 est jumelé avec le joueur 5,
-     le joueur 2 est jumelé avec le joueur 6, etc."""
-
-    """Establish the list of all pairs of players who have played
-    against each other during the current tournament"""
+    """Applies the rules of the Swiss tournament to calculate according
+    the round number who will play against whom.
+    """
 
     @staticmethod
     def list_all_played_pairs(tournament_rounds):
@@ -19,8 +10,6 @@ class SwissPairs:
         for round_ in tournament_rounds:
             for pairs_players in round_.pairs_players:
                 played_pairs.append(pairs_players)
-
-        # print("toutes les paires jouées dans le tournoi : ", "nombre : ", len(played_pairs))
 
         return played_pairs
 
@@ -110,6 +99,8 @@ class SwissPairs:
 
     @staticmethod
     def calculate_pairs_players_round1(tournament_players):
+        """calculate the pair of players according to the Swiss rules for
+        the first round. Returns the list of the pairs"""
 
         pairs_players = []
 
@@ -126,6 +117,7 @@ class SwissPairs:
         return pairs_players
 
     def calculate_pairs_players_next_round(self, tournament_players, tournament_rounds):
+        """According to the Swiss tournament rules for the further rounds, ass"""
 
         future_pairs_players = []
 
@@ -157,6 +149,9 @@ class SwissPairs:
         return future_pairs_players
 
     def run_creation_pairs_players(self, tournament_players, tournament_rounds, number_rounds):
+        """According to the number of the round passed as argument by the
+         controller tournament_manager will call the adequate methods to
+         establish who from the list tournament_players will play against whom. """
 
         if number_rounds == 1:
             pairs_players = self.calculate_pairs_players_round1(tournament_players)

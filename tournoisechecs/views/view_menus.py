@@ -185,8 +185,8 @@ class MenuTournament:
 
     def create_tournament(self, table_tournament):
 
-        self.tournament = self.tournament_manager.input_tournament_data()
         console_clear()
+        self.tournament = self.tournament_manager.input_tournament_data()
         self.tournament_manager.display_tournament_data(self.tournament)
         self.i = 1
         self.tournament_choices(table_tournament)
@@ -212,7 +212,6 @@ class MenuTournament:
         print(Fore.BLUE + f"\nLe tour {self.round_name} a débuté !"
                           f" Date et heure de début : {self.round_.start_date_time}\n")
         self.i += 1
-        console_clear()
         self.tournament_choices(table_tournament)
 
     def enter_round_results(self, table_tournament):
@@ -222,8 +221,8 @@ class MenuTournament:
 
         if self.tournament_manager.number_rounds <= NUMBER_ROUNDS:
 
-            print(Fore.BLUE + f"les scores du tour {self.round_name} sont saisis."
-                              f"\nVous pouvez afficher les matchs du tour suivant.\n")
+            print(Fore.BLUE + f"les scores du tour {self.round_name} (Terminé le {self.round_.end_date_time}"
+                              f" sont saisis.\nVous pouvez afficher les matchs du tour suivant.\n")
             self.i -= 2
 
         else:

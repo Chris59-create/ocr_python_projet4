@@ -51,7 +51,7 @@ class ViewRound:
         print(Fore.WHITE+f"score du match :\n{player1.last_name} : {score_player1},"
                          f" {player2.last_name} : {score_player2}")
 
-        console_clear()
+        console_clear(1)
 
         return score_player1, score_player2
 
@@ -60,7 +60,7 @@ class ViewRound:
         """display the results of a round with the list of the players
         ranked by score"""
 
-        print(Fore.GREEN+f"\n{round_.round_name} :\n")
+        print(Fore.GREEN+f"\n{round_.round_name} terminé le {round_.end_date_time}:\n")
 
         round_rank = 1
 

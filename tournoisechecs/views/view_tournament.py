@@ -209,15 +209,17 @@ class ViewTournament:
 
         dates_tournament = []
         tournament_name = pyip.inputStr("\nNom du tournoi : ", applyFunc=lambda str_: str_.upper())
+        print()
         place = pyip.inputStr("Lieu : ", applyFunc=lambda str_: str_.upper())
-
+        print()
         input_date = "yes"
         while input_date == "yes":
             date_tournament = pyip.inputDatetime("Date (jjmmaaaa) : ", formats=['%d%m%Y'])
             dates_tournament.append(datetime.strftime(date_tournament, '%d/%m/%Y'))
             input_date = pyip.inputYesNo(prompt="Voulez-vous ajouter une date au tournoi Oui (y/Y) / Non (n/N) : ")
-
+        print()
         time_control = pyip.inputMenu(["Bullet", "Blitz", "Coup rapide"], prompt="Contrôle temps :\n", numbered=True)
+        print()
         tournament_description = pyip.inputStr("Description du tournoi : ", blank=True)
 
         return {"tournament_name": tournament_name,
